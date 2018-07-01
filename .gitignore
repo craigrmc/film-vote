@@ -1,5 +1,9 @@
+# MacOS ignore
+.DS_Store
+
 # gradle ignore
 build/
+.gradle
 
 # gradle dont ignore
 
