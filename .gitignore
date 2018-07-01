@@ -1,3 +1,9 @@
+# gradle ignore
+build/
+
+# gradle dont ignore
+
+# maven ignore
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -8,5 +14,11 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+# maven dont ignore
 !/.mvn/wrapper/maven-wrapper.jar
+
+# intellij ignore
+.idea
+*.iml
+
+# intellij dont ignore
