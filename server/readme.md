@@ -22,4 +22,4 @@ mvn clean install spring-boot:run
 
 [Server API via Swagger UI](http://localhost:8080/swagger-ui.html)
 
-[Server Diagram via Draw IO]()
+[Server Diagram via Draw IO](https://www.draw.io/?ui=min&splash=0#Hcraigrmc%2Ffilm-vote%2Fmaster%2Fserver%2Fdocs%2Ffilm-vote-server-diagram.xml)

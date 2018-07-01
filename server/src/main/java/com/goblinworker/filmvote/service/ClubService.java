@@ -65,6 +65,26 @@ public class ClubService {
     }
 
     /**
+     * Remove a club if it's in the map.
+     * Returns a club if it's removed.
+     *
+     * @param clubName String
+     * @return Club
+     */
+    public Club removeClub(String clubName) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (!clubMap.containsKey(clubName)) {
+            throw new Exception("club does not exist");
+        }
+
+        return clubMap.remove(clubName);
+    }
+
+    /**
      * Adds a user to the club if they're new.
      * Returns a user if they're in the club.
      *
