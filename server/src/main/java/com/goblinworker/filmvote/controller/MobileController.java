@@ -1,17 +1,16 @@
 package com.goblinworker.filmvote.controller;
 
+import com.goblinworker.filmvote.model.FilmDate;
 import com.goblinworker.filmvote.model.Theater;
 import com.goblinworker.filmvote.model.User;
 import com.goblinworker.filmvote.model.Vote;
 import com.goblinworker.filmvote.service.ClubService;
 import com.goblinworker.filmvote.service.FilmService;
-import com.goblinworker.filmvote.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,16 +20,11 @@ import java.util.Map;
 @RequestMapping("/mobile/v1/")
 public class MobileController {
 
-    // TODO: just club / imdb service
-
     @Autowired
     private ClubService clubService;
 
     @Autowired
     private FilmService filmService;
-
-    @Autowired
-    private VoteService voteService;
 
     /**
      * Add a Voting Club by name.
@@ -38,7 +32,8 @@ public class MobileController {
      * @param club String
      */
     @PostMapping("addClub/{club}")
-    public ResponseEntity addClub(@PathVariable String club) throws Exception {
+    public ResponseEntity addClub(@PathVariable String club)
+            throws Exception {
 
         clubService.addClub(club);
 
@@ -51,7 +46,8 @@ public class MobileController {
      * @param club String
      */
     @DeleteMapping("removeClub/{club}")
-    public ResponseEntity removeClub(@PathVariable String club) throws Exception {
+    public ResponseEntity removeClub(@PathVariable String club)
+            throws Exception {
 
         clubService.removeClub(club);
 
@@ -65,7 +61,8 @@ public class MobileController {
      * @param user String
      */
     @PostMapping("signUp/{club}/{user}")
-    public ResponseEntity<User> signUp(@PathVariable String club, @PathVariable String user) throws Exception {
+    public ResponseEntity<User> signUp(@PathVariable String club, @PathVariable String user)
+            throws Exception {
 
         User myUser = clubService.addUser(club, user);
 
@@ -79,7 +76,8 @@ public class MobileController {
      * @param user String
      */
     @PostMapping("signIn/{club}/{user}")
-    public ResponseEntity<User> signIn(@PathVariable String club, @PathVariable String user) throws Exception {
+    public ResponseEntity<User> signIn(@PathVariable String club, @PathVariable String user)
+            throws Exception {
 
         User myUser = clubService.getUser(club, user);
 
@@ -93,7 +91,8 @@ public class MobileController {
      * @param user String
      */
     @PostMapping("signOut/{club}/{user}")
-    public ResponseEntity signOut(@PathVariable String club, @PathVariable String user) throws Exception {
+    public ResponseEntity signOut(@PathVariable String club, @PathVariable String user)
+            throws Exception {
         // TODO: sign out process requires token authentication
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -101,25 +100,31 @@ public class MobileController {
     /**
      * Add a Theater to a Club.
      *
-     * @param user    User
+     * @param club    String
      * @param theater Theater
      * @return Theater
      */
-    @PostMapping("addTheater")
-    public ResponseEntity<Theater> addTheater(@RequestBody User user, @RequestBody Theater theater) throws Exception {
-        // TODO: finish him!!!
-        return new ResponseEntity<>(new Theater("test"), HttpStatus.OK);
+    @PostMapping("addTheater/{club}")
+    public ResponseEntity addTheater(@PathVariable String club, @RequestBody Theater theater)
+            throws Exception {
+
+        clubService.addTheater(club, theater);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
      * Remove a Theater from a Club.
      *
-     * @param user    User
+     * @param club    String
      * @param theater Theater
      */
-    @DeleteMapping("removeTheater")
-    public ResponseEntity removeTheater(@RequestBody User user, @RequestBody Theater theater) throws Exception {
-        // TODO: finish him!!!
+    @DeleteMapping("removeTheater/{club}/{theater}")
+    public ResponseEntity removeTheater(@PathVariable String club, @PathVariable String theater)
+            throws Exception {
+
+        clubService.removeTheater(club, theater);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -130,21 +135,28 @@ public class MobileController {
      * @return Theater Map
      */
     @GetMapping("getTheatersForLocation/{location}")
-    public Map<String, Theater> getTheatersForLocation(@PathVariable String location) throws Exception {
-        // TODO: finish him!!
-        return new HashMap<>();
+    public ResponseEntity<Map<String, Theater>> getTheatersForLocation(@PathVariable String location)
+            throws Exception {
+
+        Map<String, Theater> theaterMap = filmService.getTheatersForLocation(location);
+
+        return new ResponseEntity<>(theaterMap, HttpStatus.OK);
     }
 
     /**
      * Get your Club's Theaters for a specific date.
      *
-     * @param date String yyyy/MM/dd
+     * @param club String
+     * @param date String yyyy-MM-dd
      * @return Theater Map
      */
-    @GetMapping("getTheatersForDate/{date}")
-    public Map<String, Theater> getTheatersForDate(@PathVariable String date) throws Exception {
-        // TODO: finish him!!!
-        return new HashMap<>();
+    @GetMapping("getTheatersForDate/{club}/{date}")
+    public ResponseEntity<Map<String, Theater>> getTheatersForDate(@PathVariable String club, @PathVariable String date)
+            throws Exception {
+
+        Map<String, Theater> theaterMap = loadTheaterData(club, date);
+
+        return new ResponseEntity<>(theaterMap, HttpStatus.OK);
     }
 
     /**
@@ -155,7 +167,8 @@ public class MobileController {
      * @return Vote
      */
     @PostMapping("addFilmVote")
-    public ResponseEntity<Vote> addFilmVote(@RequestBody User user, @RequestBody Vote vote) throws Exception {
+    public ResponseEntity<Vote> addFilmVote(@RequestBody User user, @RequestBody Vote vote)
+            throws Exception {
         // TODO: finish him!!!
         return new ResponseEntity<>(new Vote(), HttpStatus.OK);
     }
@@ -167,7 +180,8 @@ public class MobileController {
      * @return Vote
      */
     @GetMapping("getFilmVote")
-    public ResponseEntity<Vote> getFilmVote(@RequestBody User user) throws Exception {
+    public ResponseEntity<Vote> getFilmVote(@RequestBody User user)
+            throws Exception {
         // TODO: finish him!!!
         return new ResponseEntity<>(new Vote(), HttpStatus.OK);
     }
@@ -176,13 +190,28 @@ public class MobileController {
      * Get the current vote for a specific date.
      *
      * @param user User
-     * @param date String yyyy/MM/dd
+     * @param date String yyyy-MM-dd
      * @return Vote
      */
     @GetMapping("getFilmVote/{date}")
-    public ResponseEntity<Vote> getFilmVote(@RequestBody User user, @PathVariable String date) throws Exception {
+    public ResponseEntity<Vote> getFilmVote(@RequestBody User user, @PathVariable String date)
+            throws Exception {
         // TODO: finish him!!!
         return new ResponseEntity<>(new Vote(), HttpStatus.OK);
+    }
+
+    private Map<String, Theater> loadTheaterData(String club, String date)
+            throws Exception {
+
+        Map<String, Theater> theaterMap = clubService.getTheaterMap(club);
+
+        for (Map.Entry<String, Theater> theaterEntry : theaterMap.entrySet()) {
+            Theater theater = theaterEntry.getValue();
+            FilmDate filmDate = filmService.getFilmsForDate(theater.getName(), date);
+            theater.addFilmDate(filmDate);
+        }
+
+        return theaterMap;
     }
 
 }

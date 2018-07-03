@@ -1,5 +1,7 @@
 package com.goblinworker.filmvote.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +10,16 @@ import java.util.List;
  */
 public class Film {
 
+    private static final String TIME_FORMAT = "HH:mm:ss";
+
     private final String name;
     private String description;
+    private String length;
+    private String genre;
 
+    private final List<String> directorList = new ArrayList<>();
+    private final List<String> writerList = new ArrayList<>();
+    private final List<String> actorList = new ArrayList<>();
     private final List<String> showTimeList = new ArrayList<>();
 
     /**
@@ -42,6 +51,14 @@ public class Film {
             return false;
         }
 
+        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+
+        try {
+            timeFormat.parse(time);
+        } catch (ParseException e) {
+            return false;
+        }
+
         if (showTimeList.contains(time)) {
             return false;
         }
@@ -61,6 +78,34 @@ public class Film {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public List<String> getDirectorList() {
+        return directorList;
+    }
+
+    public List<String> getWriterList() {
+        return writerList;
+    }
+
+    public List<String> getActorList() {
+        return actorList;
     }
 
     public List<String> getShowTimeList() {

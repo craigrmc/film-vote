@@ -5,9 +5,7 @@ import com.goblinworker.filmvote.model.Theater;
 import com.goblinworker.filmvote.model.User;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -81,6 +79,7 @@ public class ClubService {
             throw new Exception("club does not exist");
         }
 
+        LOGGER.info("removed club: " + clubName);
         return clubMap.remove(clubName);
     }
 
@@ -146,40 +145,116 @@ public class ClubService {
         return user;
     }
 
-    public Theater addTheater() {
-        // TODO: finish him!!!
-        return null;
-    }
-
-    public Theater getTheater() {
-        // TODO: finish him!!!
-        return null;
-    }
-
-    public Theater removeTheater() {
-        // TODO: finish him!!!
-        return null;
-    }
-
     /**
-     * Returns a list of theaters in the club.
+     * Remove a user from the club.
+     * Returns user that was removed.
      *
      * @param clubName String
-     * @return List<String>
+     * @param userName String
+     * @return User
      */
-    public List<String> getTheaterList(String clubName) {
+    public User removeUser(String clubName, String userName) throws Exception {
         // TODO: finish him!!!
-        return new ArrayList<>();
+        return null;
     }
 
     /**
-     * Is the date valid.
+     * Add a theater to the club.
+     * Returns a theater if it's added.
      *
-     * @return boolean
+     * @param clubName String
+     * @param theater  Theater
+     * @return Theater
      */
-    boolean isValid(String date) {
-        // TODO: finish him!!!
-        return true;
+    public Theater addTheater(String clubName, Theater theater) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (theater == null || theater.getName() == null) {
+            throw new Exception("theater invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        LOGGER.info("added theater: " + theater.getName());
+        return club.addTheater(theater);
+    }
+
+    /**
+     * Get a theater in a club.
+     *
+     * @param clubName    String
+     * @param theaterName String
+     * @return Theater
+     */
+    public Theater getTheater(String clubName, String theaterName) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (theaterName == null || theaterName.isEmpty()) {
+            throw new Exception("theater name invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        return club.getTheater(theaterName);
+    }
+
+    /**
+     * Remove a theater from the club.
+     * Return theater that was removed.
+     *
+     * @param clubName    String
+     * @param theaterName String
+     * @return Theater
+     */
+    public Theater removeTheater(String clubName, String theaterName) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (theaterName == null || theaterName.isEmpty()) {
+            throw new Exception("theater name invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        LOGGER.info("removed theater: " + theaterName);
+        return club.removeTheater(theaterName);
+    }
+
+    /**
+     * Get a map of theaters in the user's club.
+     *
+     * @param clubName String
+     * @return Theater Map
+     */
+    public Map<String, Theater> getTheaterMap(String clubName) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club invalid");
+        }
+
+        return club.getTheaterMap();
     }
 
 }

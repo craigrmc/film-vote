@@ -1,5 +1,9 @@
 package com.goblinworker.filmvote.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +12,7 @@ import java.util.Map;
  */
 public class FilmDate {
 
-    public static final String DATE_FORMAT = "yyyy/MM/dd";
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private final String date;
 
@@ -47,7 +51,9 @@ public class FilmDate {
             return filmMap.get(film.getName());
         }
 
-        return filmMap.put(film.getName(), film);
+        filmMap.put(film.getName(), film);
+
+        return film;
     }
 
     /**
@@ -69,6 +75,30 @@ public class FilmDate {
      */
     public Film removeFilm(String name) {
         return filmMap.remove(name);
+    }
+
+    /**
+     * Is the date valid.
+     * Returns false if date is missing or wrong format.
+     *
+     * @return boolean
+     */
+    @JsonIgnore
+    public boolean isValid() {
+
+        if (date == null || date.isEmpty()) {
+            return false;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+        try {
+            dateFormat.parse(date);
+        } catch (ParseException e) {
+            return false;
+        }
+
+        return true;
     }
 
     // Getter / Setter

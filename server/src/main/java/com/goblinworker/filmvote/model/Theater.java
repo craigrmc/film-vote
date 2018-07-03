@@ -10,6 +10,11 @@ public class Theater {
 
     private final String name;
     private String location;
+    private String address;
+    private String city;
+    private String state;
+    private String zipcode;
+    private String phone;
 
     private final Map<String, FilmDate> filmDateMap = new HashMap<>();
 
@@ -32,20 +37,19 @@ public class Theater {
     /**
      * Add the viewing date to the theater.
      *
-     * @param date String
+     * @param filmDate FilmDate
      * @return FilmDate
      */
-    public FilmDate addDate(String date) {
+    public FilmDate addFilmDate(FilmDate filmDate) {
 
-        if (date == null || date.isEmpty()) {
+        if (filmDate == null || !filmDate.isValid()) {
             return null;
         }
 
-        if (filmDateMap.containsKey(date)) {
+        if (filmDateMap.containsKey(filmDate.getDate())) {
             return null;
         }
 
-        FilmDate filmDate = new FilmDate(date);
         filmDateMap.put(filmDate.getDate(), filmDate);
 
         return filmDate;
@@ -57,7 +61,7 @@ public class Theater {
      * @param date String
      * @return FilmDate
      */
-    public FilmDate getDate(String date) {
+    public FilmDate getFilmDate(String date) {
         return filmDateMap.get(date);
     }
 
@@ -67,7 +71,7 @@ public class Theater {
      * @param date String
      * @return FilmDate
      */
-    public FilmDate removeDate(String date) {
+    public FilmDate removeFilmDate(String date) {
         return filmDateMap.remove(date);
     }
 
@@ -83,6 +87,46 @@ public class Theater {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Map<String, FilmDate> getFilmDateMap() {
