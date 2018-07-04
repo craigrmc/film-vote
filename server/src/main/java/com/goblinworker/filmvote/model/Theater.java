@@ -1,5 +1,7 @@
 package com.goblinworker.filmvote.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,6 +75,21 @@ public class Theater {
      */
     public FilmDate removeFilmDate(String date) {
         return filmDateMap.remove(date);
+    }
+
+    /**
+     * Is the theater valid.
+     *
+     * @return boolean
+     */
+    @JsonIgnore
+    public boolean isValid() {
+
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 
     // Getter / Setter

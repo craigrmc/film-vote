@@ -1,5 +1,7 @@
 package com.goblinworker.filmvote.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,10 +10,13 @@ import java.util.Map;
  */
 public class Club {
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+
     private final String name;
 
     private final Map<String, User> userMap = new HashMap<>();
     private final Map<String, Theater> theaterMap = new HashMap<>();
+    private final Map<String, VoteDate> voteDateMap = new HashMap<>();
 
     /**
      * Constructor used for testing.
@@ -117,6 +122,112 @@ public class Club {
         return theaterMap.remove(name);
     }
 
+    /**
+     * Add a user's vote to the club.
+     * Returns the vote if added.
+     *
+     * @param userName String
+     * @param vote     Vote
+     * @return Vote
+     */
+    public Vote addVote(String userName, Vote vote) {
+
+        if (vote == null || !vote.isValid()) {
+            return null;
+        }
+
+        VoteDate voteDate = voteDateMap.get(vote.getDate());
+        if (voteDate == null) {
+            voteDate = new VoteDate(vote.getDate());
+            voteDateMap.put(voteDate.getDate(), voteDate);
+        }
+
+        return voteDate.addVote(userName, vote);
+    }
+
+    /**
+     * Get a user's vote from the club.
+     *
+     * @param userName String
+     * @param date     String yyyy-MM-dd
+     * @return Vote
+     */
+    public Vote getVote(String userName, String date) {
+
+        VoteDate voteDate = voteDateMap.get(date);
+        if (voteDate == null) {
+            return null;
+        }
+
+        return voteDate.getVote(userName);
+    }
+
+    /**
+     * Remove a user's vote from the club.
+     *
+     * @param userName String
+     * @param date     String yyyy-MM-dd
+     * @return Vote
+     */
+    public Vote removeVote(String userName, String date) {
+
+        VoteDate voteDate = voteDateMap.get(date);
+        if (voteDate == null) {
+            return null;
+        }
+
+        return voteDate.removeVote(userName);
+    }
+
+    /**
+     * Get the leading vote for the closest date with activity.
+     *
+     * @return Vote
+     */
+    public Vote getFilmVote() {
+
+        Vote vote = new Vote(-1);
+
+        String date = getCurrentDate();
+
+        for (Map.Entry<String, VoteDate> voteDateEntry : voteDateMap.entrySet()) {
+            VoteDate voteDate = voteDateEntry.getValue();
+            if (voteDate.isBetween(date, vote.getDate())) {
+                vote = voteDate.getVote();
+            }
+        }
+
+        return vote;
+    }
+
+    /**
+     * Get the leading vote for a specific date.
+     *
+     * @param date String yyyy-MM-dd
+     * @return Vote
+     */
+    public Vote getFilmVote(String date) {
+
+        VoteDate voteDate = voteDateMap.get(date);
+        if (voteDate == null) {
+            return null;
+        }
+
+        return voteDate.getVote();
+    }
+
+    /**
+     * Get the current date as a string.
+     *
+     * @return String
+     */
+    String getCurrentDate() {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+        return dateFormat.format(new Date());
+    }
+
     // Getter / Setter
 
     public String getName() {
@@ -129,6 +240,10 @@ public class Club {
 
     public Map<String, Theater> getTheaterMap() {
         return theaterMap;
+    }
+
+    public Map<String, VoteDate> getVoteDateMap() {
+        return voteDateMap;
     }
 
 }

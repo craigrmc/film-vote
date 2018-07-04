@@ -3,6 +3,7 @@ package com.goblinworker.filmvote.service;
 import com.goblinworker.filmvote.model.Club;
 import com.goblinworker.filmvote.model.Theater;
 import com.goblinworker.filmvote.model.User;
+import com.goblinworker.filmvote.model.Vote;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -172,7 +173,7 @@ public class ClubService {
             throw new Exception("club name invalid");
         }
 
-        if (theater == null || theater.getName() == null) {
+        if (theater == null || !theater.isValid()) {
             throw new Exception("theater invalid");
         }
 
@@ -255,6 +256,115 @@ public class ClubService {
         }
 
         return club.getTheaterMap();
+    }
+
+    /**
+     * Add a user vote for a film.
+     * Returns the Vote if it's added to the club.
+     *
+     * @param clubName String
+     * @param userName String
+     * @param vote     Vote
+     * @return Vote
+     */
+    public Vote addVote(String clubName, String userName, Vote vote) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (userName == null || userName.isEmpty()) {
+            throw new Exception("user name invalid");
+        }
+
+        if (vote == null || !vote.isValid()) {
+            throw new Exception("vote invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        LOGGER.info("added vote: " + clubName + " - " + userName);
+        return club.addVote(userName, vote);
+    }
+
+    /**
+     * Get the leading vote for the closest date with activity.
+     *
+     * @param clubName String
+     * @return Vote
+     */
+    public Vote getFilmVote(String clubName) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        return club.getFilmVote();
+    }
+
+    /**
+     * Get the leading vote for a specific date.
+     *
+     * @param clubName String
+     * @param date     String yyyy-MM-dd
+     * @return Vote
+     */
+    public Vote getFilmVote(String clubName, String date) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (date == null || date.isEmpty()) {
+            throw new Exception("date invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        return club.getFilmVote(date);
+    }
+
+    /**
+     * Remove a user vote from the club on a specific date.
+     * Returns the vote that was removed.
+     *
+     * @param clubName String
+     * @param userName String
+     * @param date     String yyyy-MM-dd
+     * @return Vote
+     */
+    public Vote removeFilmVote(String clubName, String userName, String date) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (userName == null || userName.isEmpty()) {
+            throw new Exception("user name invalid");
+        }
+
+        if (date == null || date.isEmpty()) {
+            throw new Exception("date invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        LOGGER.info("removed vote: " + clubName + " - " + userName + " - " + date);
+        return club.removeVote(userName, date);
     }
 
 }

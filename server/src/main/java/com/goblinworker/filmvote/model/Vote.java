@@ -13,6 +13,7 @@ public class Vote {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
 
+    private Integer tally;
     private String date;
     private String time;
     private String film;
@@ -22,6 +23,55 @@ public class Vote {
      * Constructor used to create a vote.
      */
     public Vote() {
+        this(1);
+    }
+
+    /**
+     * Constructor used to tally votes.
+     *
+     * @param tally Integer
+     */
+    public Vote(Integer tally) {
+        this.tally = tally;
+    }
+
+    /**
+     * Is the given object the same vote.
+     * Does not compare the vote tally.
+     *
+     * @param object Object
+     * @return boolean
+     */
+    @Override
+    public boolean equals(Object object) {
+
+        if (!(object instanceof Vote)) {
+            return false;
+        }
+
+        Vote vote = (Vote) object;
+
+        return isEqual(date, vote.date) &&
+                isEqual(time, vote.time) &&
+                isEqual(film, vote.film) &&
+                isEqual(theater, vote.theater);
+    }
+
+    /**
+     * Compare strings.
+     * TODO: There is probably already a util class for this.
+     *
+     * @param string1 String
+     * @param string2 String
+     * @return boolean
+     */
+    boolean isEqual(String string1, String string2) {
+
+        if (string1 != null) {
+            return string1.equals(string2);
+        }
+
+        return string2 == null;
     }
 
     /**
@@ -34,6 +84,10 @@ public class Vote {
      */
     @JsonIgnore
     public boolean isValid() {
+
+        if (tally == null || tally < 0) {
+            return false;
+        }
 
         if (date == null || date.isEmpty()) {
             return false;
@@ -70,7 +124,24 @@ public class Vote {
         return true;
     }
 
+    /**
+     * Increments the current tally of votes.
+     */
+    public void addTally() {
+        if (tally != null) {
+            tally++;
+        }
+    }
+
     // Getter / Setter
+
+    public Integer getTally() {
+        return tally;
+    }
+
+    public void setTally(Integer tally) {
+        this.tally = tally;
+    }
 
     public String getDate() {
         return date;

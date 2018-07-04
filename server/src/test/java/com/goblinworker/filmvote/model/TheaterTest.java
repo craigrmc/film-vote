@@ -95,8 +95,35 @@ public class TheaterTest {
         Assert.assertNotNull(result);
     }
 
+    @Test
+    public void testIsValidNewTheater() {
+        Theater theater = new Theater();
+        boolean result = theater.isValid();
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testIsValidFullTheater() {
+        Theater theater = makeTheater();
+        boolean result = theater.isValid();
+        Assert.assertTrue(result);
+    }
+
     private FilmDate makeFilmDate() {
         return new FilmDate("2000-01-01");
+    }
+
+    private Theater makeTheater() {
+
+        Theater theater = new Theater("name");
+        theater.setState("state");
+        theater.setLocation("location");
+        theater.setAddress("address");
+        theater.setCity("city");
+        theater.setZipcode("zipcode");
+        theater.setPhone("phone");
+
+        return theater;
     }
 
 }

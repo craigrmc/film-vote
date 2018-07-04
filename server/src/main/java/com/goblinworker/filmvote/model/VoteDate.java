@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Object that holds all votes for a specific date.
+ */
 public class VoteDate {
 
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -33,25 +35,114 @@ public class VoteDate {
 
     /**
      * Add a user's vote to the date.
-     * Returns false if vote not added.
+     * Returns the vote if added.
      *
-     * @param user User
+     * @param user String
      * @param vote Vote
-     * @return boolean
+     * @return Vote
      */
-    public boolean addVote(User user, Vote vote) {
+    public Vote addVote(String user, Vote vote) {
 
-        if (user == null || user.getUserName() == null) {
-            return false;
+        if (user == null || user.isEmpty()) {
+            return null;
         }
 
         if (vote == null || !vote.isValid()) {
-            return false;
+            return null;
         }
 
         // user can change their vote
-        voteMap.put(user.getUserName(), vote);
-        return true;
+        voteMap.put(user, vote);
+        return vote;
+    }
+
+    /**
+     * Get the leading vote.
+     *
+     * @return Vote
+     */
+    public Vote getVote() {
+
+        List<Vote> voteList = new ArrayList<>();
+
+        // add vote tally
+        for (Map.Entry<String, Vote> voteEntry : voteMap.entrySet()) {
+            Vote vote = voteEntry.getValue();
+            int voteIndex = voteList.indexOf(vote);
+            if (0 <= voteIndex) {
+                voteList.get(voteIndex).addTally();
+            } else {
+                voteList.add(vote);
+            }
+        }
+
+        Vote leadingVote = new Vote(-1);
+
+        // get leading vote
+        for (Vote vote : voteList) {
+            if (leadingVote.getTally() < vote.getTally()) {
+                leadingVote = vote;
+            }
+        }
+
+        return leadingVote;
+    }
+
+    /**
+     * Get the vote made by a specific user.
+     *
+     * @param user String
+     * @return Vote
+     */
+    public Vote getVote(String user) {
+        return voteMap.get(user);
+    }
+
+    /**
+     * Remove the vote made by a specific user.
+     * Returns the vote that was removed.
+     *
+     * @param user String
+     * @return Vote
+     */
+    public Vote removeVote(String user) {
+        return voteMap.remove(user);
+    }
+
+    /**
+     * Is the voting date between the start / end dates.
+     *
+     * @param start String yyyy-MM-dd
+     * @param end   String yyyy-MM-dd
+     * @return boolean
+     */
+    @JsonIgnore
+    public boolean isBetween(String start, String end) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+        Date startDate;
+        try {
+            startDate = dateFormat.parse(start);
+        } catch (Exception e) {
+            return false;
+        }
+
+        Date endDate;
+        try {
+            endDate = dateFormat.parse(end);
+        } catch (Exception e) {
+            return false;
+        }
+
+        Date voteDate;
+        try {
+            voteDate = dateFormat.parse(date);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return voteDate.after(startDate) && voteDate.before(endDate);
     }
 
     /**

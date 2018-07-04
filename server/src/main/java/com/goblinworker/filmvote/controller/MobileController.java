@@ -59,6 +59,7 @@ public class MobileController {
      *
      * @param club String
      * @param user String
+     * @return User
      */
     @PostMapping("signUp/{club}/{user}")
     public ResponseEntity<User> signUp(@PathVariable String club, @PathVariable String user)
@@ -74,6 +75,7 @@ public class MobileController {
      *
      * @param club String
      * @param user String
+     * @return User
      */
     @PostMapping("signIn/{club}/{user}")
     public ResponseEntity<User> signIn(@PathVariable String club, @PathVariable String user)
@@ -102,7 +104,6 @@ public class MobileController {
      *
      * @param club    String
      * @param theater Theater
-     * @return Theater
      */
     @PostMapping("addTheater/{club}")
     public ResponseEntity addTheater(@PathVariable String club, @RequestBody Theater theater)
@@ -162,42 +163,49 @@ public class MobileController {
     /**
      * Add a vote for a film on a specific date.
      *
-     * @param user User
+     * @param club String
+     * @param user String
      * @param vote Vote
      * @return Vote
      */
-    @PostMapping("addFilmVote")
-    public ResponseEntity<Vote> addFilmVote(@RequestBody User user, @RequestBody Vote vote)
+    @PostMapping("addVote/{club}/{user}")
+    public ResponseEntity<Vote> addVote(@PathVariable String club, @PathVariable String user, @RequestBody Vote vote)
             throws Exception {
-        // TODO: finish him!!!
-        return new ResponseEntity<>(new Vote(), HttpStatus.OK);
+
+        Vote myVote = clubService.addVote(club, user, vote);
+
+        return new ResponseEntity<>(myVote, HttpStatus.OK);
     }
 
     /**
      * Get the current vote for the closest date with activity.
      *
-     * @param user String
+     * @param club String
      * @return Vote
      */
-    @GetMapping("getFilmVote")
-    public ResponseEntity<Vote> getFilmVote(@RequestBody User user)
+    @GetMapping("getFilmVote/{club}")
+    public ResponseEntity<Vote> getFilmVote(@PathVariable String club)
             throws Exception {
-        // TODO: finish him!!!
-        return new ResponseEntity<>(new Vote(), HttpStatus.OK);
+
+        Vote myVote = clubService.getFilmVote(club);
+
+        return new ResponseEntity<>(myVote, HttpStatus.OK);
     }
 
     /**
      * Get the current vote for a specific date.
      *
-     * @param user User
+     * @param club String
      * @param date String yyyy-MM-dd
      * @return Vote
      */
-    @GetMapping("getFilmVote/{date}")
-    public ResponseEntity<Vote> getFilmVote(@RequestBody User user, @PathVariable String date)
+    @GetMapping("getFilmVote/{club}/{date}")
+    public ResponseEntity<Vote> getFilmVote(@PathVariable String club, @PathVariable String date)
             throws Exception {
-        // TODO: finish him!!!
-        return new ResponseEntity<>(new Vote(), HttpStatus.OK);
+
+        Vote myVote = clubService.getFilmVote(club, date);
+
+        return new ResponseEntity<>(myVote, HttpStatus.OK);
     }
 
     private Map<String, Theater> loadTheaterData(String club, String date)
