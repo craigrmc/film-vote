@@ -57,11 +57,32 @@ public class VoteDate {
     }
 
     /**
+     * Get the vote made by a specific user.
+     *
+     * @param user String
+     * @return Vote
+     */
+    public Vote getVote(String user) {
+        return voteMap.get(user);
+    }
+
+    /**
+     * Remove the vote made by a specific user.
+     * Returns the vote that was removed.
+     *
+     * @param user String
+     * @return Vote
+     */
+    public Vote removeVote(String user) {
+        return voteMap.remove(user);
+    }
+
+    /**
      * Get the leading vote.
      *
      * @return Vote
      */
-    public Vote getVote() {
+    public Vote getFilmVote() {
 
         List<Vote> voteList = new ArrayList<>();
 
@@ -86,27 +107,6 @@ public class VoteDate {
         }
 
         return leadingVote;
-    }
-
-    /**
-     * Get the vote made by a specific user.
-     *
-     * @param user String
-     * @return Vote
-     */
-    public Vote getVote(String user) {
-        return voteMap.get(user);
-    }
-
-    /**
-     * Remove the vote made by a specific user.
-     * Returns the vote that was removed.
-     *
-     * @param user String
-     * @return Vote
-     */
-    public Vote removeVote(String user) {
-        return voteMap.remove(user);
     }
 
     /**

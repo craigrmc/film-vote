@@ -9,13 +9,19 @@ An open source app to let you and your friends vote on the new films to watch.
 Gradle
 
 ```
-gradle clean bootRun
+gradle clean build bootRun
 ```
 
 Maven
 
 ```
 mvn clean install spring-boot:run
+```
+
+Docker
+
+```
+docker run goblin-worker/film-vote
 ```
 
 #### Interface

@@ -193,7 +193,7 @@ public class Club {
         for (Map.Entry<String, VoteDate> voteDateEntry : voteDateMap.entrySet()) {
             VoteDate voteDate = voteDateEntry.getValue();
             if (voteDate.isBetween(date, vote.getDate())) {
-                vote = voteDate.getVote();
+                vote = voteDate.getFilmVote();
             }
         }
 
@@ -213,7 +213,7 @@ public class Club {
             return null;
         }
 
-        return voteDate.getVote();
+        return voteDate.getFilmVote();
     }
 
     /**

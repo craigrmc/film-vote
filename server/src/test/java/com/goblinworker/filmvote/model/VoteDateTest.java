@@ -74,12 +74,12 @@ public class VoteDateTest {
     }
 
     @Test
-    public void testGetVoteTheMatrixByOne() {
+    public void testGetFilmVoteTheMatrixByOne() {
         Vote vote1 = makeVote();
         vote1.setFilm(THE_MATRIX);
         voteDate.addVote("user1", vote1);
 
-        Vote vote = voteDate.getVote();
+        Vote vote = voteDate.getFilmVote();
         Assert.assertEquals(TODAY, vote.getDate());
         Assert.assertEquals(SEVEN_THIRTY_PM, vote.getTime());
         Assert.assertEquals(THE_MATRIX, vote.getFilm());
@@ -87,7 +87,7 @@ public class VoteDateTest {
     }
 
     @Test
-    public void testGetVoteTied() {
+    public void testGetFilmVoteTied() {
         Vote vote1 = makeVote();
         vote1.setFilm(THE_MATRIX);
         voteDate.addVote("user1", vote1);
@@ -96,7 +96,7 @@ public class VoteDateTest {
         vote2.setFilm(BLADE_RUNNER);
         voteDate.addVote("user2", vote2);
 
-        Vote vote = voteDate.getVote();
+        Vote vote = voteDate.getFilmVote();
         Assert.assertEquals(TODAY, vote.getDate());
         Assert.assertEquals(SEVEN_THIRTY_PM, vote.getTime());
         Assert.assertEquals(THE_MATRIX, vote.getFilm());
@@ -104,7 +104,7 @@ public class VoteDateTest {
     }
 
     @Test
-    public void testGetVoteBladeRunnerByTwo() {
+    public void testGetFilmVoteBladeRunnerByTwo() {
         Vote vote1 = makeVote();
         vote1.setFilm(BLADE_RUNNER);
         voteDate.addVote("user1", vote1);
@@ -117,7 +117,7 @@ public class VoteDateTest {
         vote3.setFilm(BLADE_RUNNER);
         voteDate.addVote("user3", vote3);
 
-        Vote vote = voteDate.getVote();
+        Vote vote = voteDate.getFilmVote();
         Assert.assertEquals(TODAY, vote.getDate());
         Assert.assertEquals(SEVEN_THIRTY_PM, vote.getTime());
         Assert.assertEquals(BLADE_RUNNER, vote.getFilm());

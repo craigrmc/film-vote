@@ -10,6 +10,7 @@ buildscript {
 
 plugins {
     id 'org.springframework.boot' version '2.0.3.RELEASE'
+    id 'com.palantir.docker' version '0.20.1'
 }
 
 apply plugin: 'java'
@@ -19,15 +20,15 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'gs-spring-boot'
-    version = '0.1.0'
+    baseName = 'film-vote'
+    version = '0.1'
 }
 
 springBoot {
     buildInfo {
         properties {
             group = 'com.goblin-worker'
-            artifact = 'film-addFilmVot'
+            artifact = 'film-vote'
             version = '0.1'
             name = 'Film Vote'
             description = 'An open source app to let you and your friends addFilmVot on the new films to watch.'
@@ -49,4 +50,11 @@ dependencies {
     compile("io.springfox:springfox-swagger-ui:2.9.2")
     compile("com.google.code.gson:gson:2.8.5")
     testCompile("junit:junit")
+}
+
+docker {
+    name 'goblin-worker/film-vote:0.1'
+    tags 'latest'
+    files "$buildDir/libs"
+    buildArgs([JAR_FILE: 'film-vote-0.1.jar'])
 }
