@@ -18,6 +18,26 @@ public class Vote {
         this.tally = 1;
     }
 
+    /**
+     * Get the Date to display on UI.
+     *
+     * @return String
+     */
+    public String getDisplayDate() {
+        // TODO: finish him!!!
+        return "Friday";
+    }
+
+    /**
+     * Get the Time to display on UI.
+     *
+     * @return String
+     */
+    public String getDisplayTime() {
+        // TODO: finish him!!!
+        return "7:30 PM";
+    }
+
     // Getter / Setter
 
     public Integer getTally() {

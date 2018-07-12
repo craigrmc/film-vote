@@ -140,6 +140,17 @@ public class MobileClient extends BaseClient {
     }
 
     /**
+     * Get a map of Theaters in a club.
+     *
+     * @param club String
+     * @return Map of Theaters
+     */
+    public Map<String, Theater> getTheatersForClub(String club) {
+        // TODO: finish him!!!
+        return null;
+    }
+
+    /**
      * Get a map of Theaters for a specific date.
      *
      * @param club String

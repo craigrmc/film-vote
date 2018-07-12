@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/fragment_margin"
+    tools:context=".fragment.HomeFragment">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_home_next_vote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_home_next_vote_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Vote Date:" />
+
+        <TextView
+            android:id="@+id/text_view_home_next_vote_date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friday" />
+
+        <TextView
+            android:id="@+id/text_view_home_next_vote_theater_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Grand 16" />
+
+        <TextView
+            android:id="@+id/text_view_home_next_vote_film_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Matrix" />
+
+        <TextView
+            android:id="@+id/text_view_home_next_vote_time_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2:30 PM" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_home_build"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_view_home_build_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Build:" />
+
+            <TextView
+                android:id="@+id/text_view_home_build_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_home_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_view_home_version_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version:" />
+
+            <TextView
+                android:id="@+id/text_view_home_version_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -3,30 +3,42 @@ package com.goblinworker.filmvote.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
+import com.goblinworker.filmvote.fragment.ClubFragment;
+import com.goblinworker.filmvote.fragment.HomeFragment;
+import com.goblinworker.filmvote.fragment.VoteFragment;
 
+/**
+ * Activity that displays the Home / Vote / Club Fragments via Bottom Navigation View.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private ViewPagerAdapter viewPagerAdapter;
+    private ViewPager viewPager;
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navigationListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_vote:
-                    mTextMessage.setText(R.string.title_vote);
+                    viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_club:
-                    mTextMessage.setText(R.string.title_club);
+                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -38,9 +50,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation_view_main);
+        navigation.setOnNavigationItemSelectedListener(navigationListener);
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        viewPager = (ViewPager) findViewById(R.id.view_pager_main);
+        viewPager.setAdapter(viewPagerAdapter);
+    }
+
+    /**
+     * Adapter to handle the fragments in BottomNavigationView.
+     */
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        /**
+         * Constructor to initiate adapter.
+         *
+         * @param manager FragmentManager
+         */
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        /**
+         * Called to instantiate the fragment for the given page.
+         *
+         * @param position int
+         * @return Fragment
+         */
+        @Override
+        public Fragment getItem(int position) {
+
+            Fragment fragment;
+
+            switch (position) {
+                default:
+                case 0:
+                    fragment = HomeFragment.newInstance();
+                    break;
+                case 1:
+                    fragment = VoteFragment.newInstance();
+                    break;
+                case 2:
+                    fragment = ClubFragment.newInstance();
+                    break;
+            }
+
+            return fragment;
+        }
+
+        /**
+         * Show 3 total pages.
+         *
+         * @return int
+         */
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
     }
 
 }
