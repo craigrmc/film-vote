@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_vote:
                     viewPager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_club:
+                case R.id.navigation_theater:
                     viewPager.setCurrentItem(2);
                     return true;
             }

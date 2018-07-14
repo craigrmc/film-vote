@@ -12,8 +12,8 @@
         android:title="@string/title_vote" />
 
     <item
-        android:id="@+id/navigation_club"
+        android:id="@+id/navigation_theater"
         android:icon="@drawable/ic_club_black_24dp"
-        android:title="@string/title_club" />
+        android:title="@string/title_theater" />
 
 </menu>

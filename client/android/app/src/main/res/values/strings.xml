@@ -2,5 +2,5 @@
     <string name="app_name">Film Vote</string>
     <string name="title_home">Home</string>
     <string name="title_vote">Vote</string>
-    <string name="title_club">Club</string>
+    <string name="title_theater">Theaters</string>
 </resources>
