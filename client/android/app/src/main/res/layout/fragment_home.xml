@@ -3,42 +3,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/fragment_margin"
     tools:context=".fragment.HomeFragment">
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_next_vote"
+        android:id="@+id/linear_layout_home_club_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_home_club"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_view_home_club_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Club Name:" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="@dimen/text_view_space"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/text_view_home_club_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Club RC" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_layout_home_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_view_home_user_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User Name:" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="@dimen/text_view_space"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/text_view_home_user_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User RC" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout_home_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_view_home_next_vote_header"
+            android:id="@+id/text_view_home_vote_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next Vote Date:" />
+            android:text="Next Film (1 Vote)" />
 
         <TextView
-            android:id="@+id/text_view_home_next_vote_date_value"
+            android:id="@+id/text_view_home_vote_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Friday" />
 
         <TextView
-            android:id="@+id/text_view_home_next_vote_theater_value"
+            android:id="@+id/text_view_home_vote_theater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="The Grand 16" />
 
         <TextView
-            android:id="@+id/text_view_home_next_vote_film_value"
+            android:id="@+id/text_view_home_vote_film"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="The Matrix" />
 
         <TextView
-            android:id="@+id/text_view_home_next_vote_time_value"
+            android:id="@+id/text_view_home_vote_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2:30 PM" />
@@ -46,6 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear_layout_home_build_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -62,6 +118,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Build:" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="@dimen/text_view_space"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/text_view_home_build_value"
@@ -82,6 +142,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Version:" />
+
+            <android.support.v4.widget.Space
+                android:layout_width="@dimen/text_view_space"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/text_view_home_version_value"

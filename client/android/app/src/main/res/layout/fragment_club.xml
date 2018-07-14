@@ -3,74 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/fragment_margin"
     tools:context=".fragment.ClubFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/linear_layout_club_club_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_view_club_club_name_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Club Name:" />
-
-            <android.support.v4.widget.Space
-                android:layout_width="@dimen/text_view_space"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/text_view_club_club_name_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Club RC" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear_layout_club_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/text_view_club_user_name_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User Name:" />
-
-            <android.support.v4.widget.Space
-                android:layout_width="@dimen/text_view_space"
-                android:layout_height="match_parent" />
-
-            <TextView
-                android:id="@+id/text_view_club_user_name_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User RC" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_view_club_theater"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Theaters" />
-
-        <!-- TODO: add theater info (address etc.) -->
-        <ListView
-            android:id="@+id/list_view_club_theater"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
+        android:text="Club View" />
 
 </FrameLayout>

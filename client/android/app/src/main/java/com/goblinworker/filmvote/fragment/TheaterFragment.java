@@ -2,11 +2,11 @@ package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,29 +17,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fragment that displays upcoming voting dates for the club.
+ * Fragment that displays list of theaters in the club.
  */
-public class VoteFragment extends Fragment {
+public class TheaterFragment extends Fragment {
 
-    private static final String TAG = VoteFragment.class.getSimpleName();
+    private static final String ARG_THEATER_LIST = "ARG_THEATER_LIST";
 
     private OnFragmentInteractionListener listener;
 
-    private VoteListAdapter voteListAdapter;
+    private TheaterListAdapter theaterListAdapter;
+
+    private String theaterList;
 
     /**
-     * Required empty public constructor
+     * Required empty public constructor.
      */
-    public VoteFragment() {
+    public TheaterFragment() {
     }
 
     /**
      * Create a new instance of the fragment.
      *
-     * @return VoteFragment
+     * @param theaterList List of Theaters
+     * @return TheaterFragment
      */
-    public static VoteFragment newInstance() {
-        return new VoteFragment();
+    public static TheaterFragment newInstance(String theaterList) {
+        TheaterFragment fragment = new TheaterFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_THEATER_LIST, theaterList);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     /**
@@ -50,18 +57,17 @@ public class VoteFragment extends Fragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        if (getArguments() != null) {
+            theaterList = getArguments().getString(ARG_THEATER_LIST);
+        }
 
-        List<VoteListItem> voteList = new ArrayList<>();
-        voteList.add(new VoteListItem("Monday (1 Vote)", "The Matrix - 12:00 PM"));
-        voteList.add(new VoteListItem("Tuesday (0 Votes)", "N/A"));
-        voteList.add(new VoteListItem("Wednesday (0 Votes)", "N/A"));
-        voteList.add(new VoteListItem("Thursday (1 Vote)", "Alien - 5:15 PM"));
-        voteList.add(new VoteListItem("Friday (3 Votes)", "Fight Club - 7:30 PM"));
-        voteList.add(new VoteListItem("Saturday (4 Vote)", "Blade Runner - 10:00 PM"));
-        voteList.add(new VoteListItem("Sunday (1 Vote)", "Batman: Mask of the Phantasm - 12:00 PM"));
+        List<TheaterListItem> theaterList = new ArrayList<>();
+        theaterList.add(new TheaterListItem("The Grand 16 - Pier Park", "Pier Park"));
+        theaterList.add(new TheaterListItem("Martin Theatre", "409 Harrison Ave"));
+        theaterList.add(new TheaterListItem("AMC Panama City 10", "4049 W 23rd St"));
 
         // TODO: add real list
-        voteListAdapter = new VoteListAdapter(voteList);
+        theaterListAdapter = new TheaterListAdapter(theaterList);
     }
 
     /**
@@ -75,15 +81,17 @@ public class VoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
-        View view = inflater.inflate(R.layout.fragment_vote, container, false);
+        View view = inflater.inflate(R.layout.fragment_theater, container, false);
 
-        ListView listView = view.findViewById(R.id.list_view_vote);
-        listView.setAdapter(voteListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listView = view.findViewById(R.id.list_view_theater);
+        listView.setAdapter(theaterListAdapter);
+
+        FloatingActionButton addTheaterButton = view.findViewById(R.id.floating_action_button_theater_add);
+        addTheaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onClick(View view) {
                 if (listener != null) {
-                    listener.onDateTap();
+                    listener.onAddTheater();
                 }
             }
         });
@@ -116,11 +124,16 @@ public class VoteFragment extends Fragment {
     /**
      * Adapter that handles items in List View.
      */
-    public class VoteListAdapter extends BaseAdapter {
+    public class TheaterListAdapter extends BaseAdapter {
 
-        private final List<VoteListItem> itemList;
+        private final List<TheaterListItem> itemList;
 
-        public VoteListAdapter(List<VoteListItem> itemList) {
+        /**
+         * Constructor to initialize items.
+         *
+         * @param itemList List of Theaters
+         */
+        public TheaterListAdapter(List<TheaterListItem> itemList) {
             this.itemList = itemList;
         }
 
@@ -135,7 +148,7 @@ public class VoteFragment extends Fragment {
         }
 
         @Override
-        public VoteListItem getItem(int index) {
+        public TheaterListItem getItem(int index) {
 
             if (itemList == null || itemList.size() < index) {
                 return null;
@@ -154,15 +167,15 @@ public class VoteFragment extends Fragment {
 
             if (view == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
-                view = inflater.inflate(R.layout.item_vote, root, false);
+                view = inflater.inflate(R.layout.item_theater, root, false);
             }
 
-            VoteListItem item = getItem(index);
+            TheaterListItem item = getItem(index);
 
-            TextView headerTextView = view.findViewById(R.id.text_view_vote_item_header);
+            TextView headerTextView = view.findViewById(R.id.text_view_theater_item_header);
             headerTextView.setText(item.getHeader());
 
-            TextView detailTextView = view.findViewById(R.id.text_view_vote_item_detail);
+            TextView detailTextView = view.findViewById(R.id.text_view_theater_item_detail);
             detailTextView.setText(item.getDetail());
 
             return view;
@@ -171,14 +184,14 @@ public class VoteFragment extends Fragment {
     }
 
     /**
-     * Class that holds voting information for the list.
+     * Class that holds theater information for the list.
      */
-    public class VoteListItem {
+    public class TheaterListItem {
 
         private final String header;
         private final String detail;
 
-        public VoteListItem(String header, String detail) {
+        public TheaterListItem(String header, String detail) {
             this.header = header;
             this.detail = detail;
         }
@@ -194,10 +207,10 @@ public class VoteFragment extends Fragment {
     }
 
     /**
-     * Listener that handles when the user taps on a date.
+     * Listener that handles when the user taps Add Theater button.
      */
     public interface OnFragmentInteractionListener {
-        void onDateTap();
+        void onAddTheater();
     }
 
 }

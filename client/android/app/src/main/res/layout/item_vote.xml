@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_vote_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_vote_item_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Monday (1 Vote)"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/text_view_vote_item_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Matrix - 7: 30 PM"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

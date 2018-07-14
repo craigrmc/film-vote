@@ -11,8 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.goblinworker.filmvote.R;
-import com.goblinworker.filmvote.fragment.ClubFragment;
 import com.goblinworker.filmvote.fragment.HomeFragment;
+import com.goblinworker.filmvote.fragment.TheaterFragment;
 import com.goblinworker.filmvote.fragment.VoteFragment;
 
 /**
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     fragment = VoteFragment.newInstance();
                     break;
                 case 2:
-                    fragment = ClubFragment.newInstance();
+                    fragment = TheaterFragment.newInstance("list");
                     break;
             }
 
