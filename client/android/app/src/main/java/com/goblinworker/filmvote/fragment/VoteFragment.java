@@ -23,9 +23,9 @@ public class VoteFragment extends Fragment {
 
     private static final String TAG = VoteFragment.class.getSimpleName();
 
-    private OnFragmentInteractionListener listener;
+    private OnInteractionListener listener;
 
-    private VoteListAdapter voteListAdapter;
+    private VoteListAdapter listAdapter;
 
     /**
      * Required empty public constructor
@@ -61,7 +61,7 @@ public class VoteFragment extends Fragment {
         voteList.add(new VoteListItem("Sunday (1 Vote)", "Batman: Mask of the Phantasm - 12:00 PM"));
 
         // TODO: add real list
-        voteListAdapter = new VoteListAdapter(voteList);
+        listAdapter = new VoteListAdapter(voteList);
     }
 
     /**
@@ -78,12 +78,13 @@ public class VoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vote, container, false);
 
         ListView listView = view.findViewById(R.id.list_view_vote);
-        listView.setAdapter(voteListAdapter);
+        listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
                 if (listener != null) {
-                    listener.onDateTap();
+                    String date = listAdapter.getItem(index).getDate();
+                    listener.onVoteDateTap(date);
                 }
             }
         });
@@ -99,8 +100,8 @@ public class VoteFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnInteractionListener) {
+            listener = (OnInteractionListener) context;
         }
     }
 
@@ -183,6 +184,11 @@ public class VoteFragment extends Fragment {
             this.detail = detail;
         }
 
+        public String getDate() {
+            // TODO: finish him!!!
+            return "2000-01-01";
+        }
+
         public String getHeader() {
             return header;
         }
@@ -196,8 +202,8 @@ public class VoteFragment extends Fragment {
     /**
      * Listener that handles when the user taps on a date.
      */
-    public interface OnFragmentInteractionListener {
-        void onDateTap();
+    public interface OnInteractionListener {
+        void onVoteDateTap(String date);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.goblinworker.filmvote.model.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,6 +18,28 @@ public class Film {
     private final List<String> writerList = new ArrayList<>();
     private final List<String> actorList = new ArrayList<>();
     private final List<String> showTimeList = new ArrayList<>();
+
+    /**
+     * Get the list of show times as a string.
+     *
+     * @return String
+     */
+    public String getShowTimes() {
+
+        StringBuilder builder = new StringBuilder();
+
+        Iterator<String> iterator = showTimeList.iterator();
+
+        while (iterator.hasNext()) {
+            builder.append(iterator.next());
+
+            if (iterator.hasNext()) {
+                builder.append(", ");
+            }
+        }
+
+        return builder.toString();
+    }
 
     // Getter / Setter
 

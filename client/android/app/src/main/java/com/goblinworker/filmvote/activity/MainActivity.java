@@ -1,5 +1,6 @@
 package com.goblinworker.filmvote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.goblinworker.filmvote.R;
@@ -18,7 +20,7 @@ import com.goblinworker.filmvote.fragment.VoteFragment;
 /**
  * Activity that displays the Home / Vote / Club Fragments via Bottom Navigation View.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements VoteFragment.OnInteractionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -60,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         viewPager = (ViewPager) findViewById(R.id.view_pager_main);
         viewPager.setAdapter(viewPagerAdapter);
+    }
+
+    @Override
+    public void onVoteDateTap(String date) {
+        Intent intent = VoteDateActivity.newIntent(this, date);
+        startActivity(intent);
     }
 
     /**
