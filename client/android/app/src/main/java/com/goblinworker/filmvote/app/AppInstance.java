@@ -22,6 +22,11 @@ public class AppInstance {
     private AppInstance() {
     }
 
+    /**
+     * Get the current mobile server for the API.
+     *
+     * @return String URL
+     */
     public String getServer() {
 
         if (server == null) {
@@ -31,14 +36,29 @@ public class AppInstance {
         return server;
     }
 
+    /**
+     * Set the current mobile server for the API.
+     *
+     * @param server String URL
+     */
     public void setServer(String server) {
         this.server = server;
     }
 
+    /**
+     * Get the user's sign-in data.
+     *
+     * @return User
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * Set the user's sign-in data.
+     *
+     * @param user User
+     */
     public void setUser(User user) {
         this.user = user;
     }
