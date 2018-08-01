@@ -1,17 +1,22 @@
 package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
+import com.goblinworker.filmvote.model.server.Theater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +26,11 @@ import java.util.List;
  */
 public class TheaterFragment extends Fragment {
 
+    private static final String TAG = TheaterFragment.class.getSimpleName();
+
     private static final String ARG_THEATER_LIST = "ARG_THEATER_LIST";
 
-    private OnFragmentInteractionListener listener;
+    private OnInteractionListener listener;
 
     private TheaterListAdapter theaterListAdapter;
 
@@ -61,10 +68,7 @@ public class TheaterFragment extends Fragment {
             theaterList = getArguments().getString(ARG_THEATER_LIST);
         }
 
-        List<TheaterListItem> theaterList = new ArrayList<>();
-        theaterList.add(new TheaterListItem("The Grand 16 - Pier Park", "Pier Park"));
-        theaterList.add(new TheaterListItem("Martin Theatre", "409 Harrison Ave"));
-        theaterList.add(new TheaterListItem("AMC Panama City 10", "4049 W 23rd St"));
+        List<TheaterListItem> theaterList = makeTheaterList();
 
         // TODO: add real list
         theaterListAdapter = new TheaterListAdapter(theaterList);
@@ -85,13 +89,22 @@ public class TheaterFragment extends Fragment {
 
         ListView listView = view.findViewById(R.id.list_view_theater);
         listView.setAdapter(theaterListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
+                if (listener != null) {
+                    Theater theater = theaterListAdapter.getItem(index).getTheater();
+                    showItemDialog(theater);
+                }
+            }
+        });
 
         FloatingActionButton addTheaterButton = view.findViewById(R.id.floating_action_button_theater_add);
         addTheaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onAddTheater();
+                    listener.onTheaterFind();
                 }
             }
         });
@@ -107,8 +120,8 @@ public class TheaterFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            listener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnInteractionListener) {
+            listener = (OnInteractionListener) context;
         }
     }
 
@@ -119,6 +132,63 @@ public class TheaterFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    /**
+     * Show a dialog for a specific theater info.
+     * Allow user to delete theater.
+     */
+    protected void showItemDialog(final Theater theater) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(theater.getName());
+        builder.setMessage(theater.getInfo());
+        builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int index) {
+                if (listener != null) {
+                    listener.onTheaterDelete(theater);
+                }
+            }
+        });
+        builder.setPositiveButton("OK", null);
+        builder.show();
+    }
+
+    /**
+     * Make fake data until networking is added.
+     */
+    private List<TheaterListItem> makeTheaterList() {
+
+        Theater theater1 = new Theater();
+        theater1.setName("The Grand 16 - Pier Park");
+        theater1.setLocation("Pier Park");
+        theater1.setPhone("555-555-5555");
+        theater1.setAddress("555 St. Road");
+        theater1.setCity("Panama City");
+        theater1.setState("FL");
+        theater1.setZipcode("55555");
+
+        Theater theater2 = new Theater();
+        theater2.setName("Martin Theatre");
+        theater2.setLocation("409 Harrison Ave");
+        theater2.setAddress("555 St. Road");
+        theater2.setCity("Panama City");
+        theater2.setState("FL");
+        theater2.setZipcode("55555");
+
+        Theater theater3 = new Theater();
+        theater3.setName("AMC Panama City 10");
+        theater3.setLocation("4049 W 23rd St");
+        theater3.setPhone("555-555-5555");
+        theater3.setZipcode("55555");
+
+        List<TheaterListItem> theaterList = new ArrayList<>();
+        theaterList.add(new TheaterListItem(theater1));
+        theaterList.add(new TheaterListItem(theater2));
+        theaterList.add(new TheaterListItem(theater3));
+
+        return theaterList;
     }
 
     /**
@@ -188,20 +258,34 @@ public class TheaterFragment extends Fragment {
      */
     public class TheaterListItem {
 
-        private final String header;
-        private final String detail;
+        private final Theater theater;
 
-        public TheaterListItem(String header, String detail) {
-            this.header = header;
-            this.detail = detail;
+        public TheaterListItem(Theater theater) {
+            this.theater = theater;
         }
 
         public String getHeader() {
-            return header;
+
+            if (theater == null) {
+                return null;
+            }
+
+            return theater.getName();
         }
 
         public String getDetail() {
-            return detail;
+
+            if (theater == null) {
+                return null;
+            }
+
+            return theater.getLocation();
+        }
+
+        // Getter / Setter
+
+        public Theater getTheater() {
+            return theater;
         }
 
     }
@@ -209,8 +293,12 @@ public class TheaterFragment extends Fragment {
     /**
      * Listener that handles when the user taps Add Theater button.
      */
-    public interface OnFragmentInteractionListener {
-        void onAddTheater();
+    public interface OnInteractionListener {
+
+        void onTheaterFind();
+
+        void onTheaterDelete(Theater theater);
+
     }
 
 }

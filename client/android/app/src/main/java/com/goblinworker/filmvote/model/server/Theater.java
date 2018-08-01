@@ -18,6 +18,49 @@ public class Theater {
 
     private final Map<String, FilmDate> filmDateMap = new HashMap<>();
 
+    /**
+     * Get all information as a string.
+     *
+     * @return String of Theater Info
+     */
+    public String getInfo() {
+
+
+        StringBuilder builder = new StringBuilder();
+
+        if (location != null) {
+            builder.append(location);
+            builder.append("\n");
+        }
+
+        if (phone != null) {
+            builder.append(phone);
+            builder.append("\n");
+        }
+
+        if (address != null) {
+            builder.append(address);
+            builder.append("\n");
+        }
+
+        if (city != null) {
+            builder.append(city);
+            builder.append("\n");
+        }
+
+        if (state != null) {
+            builder.append(state);
+            builder.append("\n");
+        }
+
+        if (zipcode != null) {
+            builder.append(zipcode);
+            builder.append("\n");
+        }
+
+        return builder.toString();
+    }
+
     // Getter / Setter
 
     public String getName() {

@@ -16,11 +16,13 @@ import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.fragment.HomeFragment;
 import com.goblinworker.filmvote.fragment.TheaterFragment;
 import com.goblinworker.filmvote.fragment.VoteFragment;
+import com.goblinworker.filmvote.model.server.Theater;
 
 /**
  * Activity that displays the Home / Vote / Club Fragments via Bottom Navigation View.
  */
-public class MainActivity extends AppCompatActivity implements VoteFragment.OnInteractionListener {
+public class MainActivity extends AppCompatActivity
+        implements VoteFragment.OnInteractionListener, TheaterFragment.OnInteractionListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -67,6 +69,18 @@ public class MainActivity extends AppCompatActivity implements VoteFragment.OnIn
     @Override
     public void onVoteDateTap(String date) {
         Intent intent = VoteDateActivity.newIntent(this, date);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onTheaterDelete(Theater theater) {
+        // TODO: send network request to delete
+    }
+
+    @Override
+    public void onTheaterFind() {
+        // TODO: fit add / find / delete into this activity
+        Intent intent = TheaterFindActivity.newIntent(this);
         startActivity(intent);
     }
 

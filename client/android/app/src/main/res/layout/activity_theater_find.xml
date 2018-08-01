@@ -3,20 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_margin"
-    tools:context=".activity.VoteDateActivity">
+    tools:context=".activity.TheaterFindActivity">
 
-    <TextView
-        android:id="@+id/vote_date_header_text_view"
+    <SearchView
+        android:id="@+id/theater_find_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Monday"
-        android:textSize="@dimen/text_view_text_size_header" />
+        android:queryHint="Search by name or location" />
 
     <ListView
-        android:id="@+id/vote_date_list_view"
+        android:id="@+id/theater_find_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/vote_date_header_text_view" />
+        android:layout_below="@id/theater_find_search_view" />
 
 </RelativeLayout>
