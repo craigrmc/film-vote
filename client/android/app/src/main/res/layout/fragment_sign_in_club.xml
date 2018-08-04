@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SignInClubFragment">
+
+    <LinearLayout
+        android:id="@+id/sign_in_club_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/sign_in_club_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your club name"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/sign_in_club_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign in to or sign up for a club." />
+
+        <Button
+            android:id="@+id/sign_in_club_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/sign_in_club_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/sign_up_club_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/sign_up_club_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Hit Next to create a new club." />
+
+        <Button
+            android:id="@+id/sign_up_club_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Next" />
+
+    </LinearLayout>
+
+</FrameLayout>

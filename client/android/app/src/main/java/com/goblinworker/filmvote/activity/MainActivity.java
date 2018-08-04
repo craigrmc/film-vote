@@ -1,5 +1,6 @@
 package com.goblinworker.filmvote.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -48,6 +49,17 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
     };
+
+    /**
+     * Create a new intent for activity.
+     *
+     * @param context Activity Context
+     * @return Intent to Start Activity
+     */
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
