@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.fragment.HomeFragment;
 import com.goblinworker.filmvote.fragment.SignInClubFragment;
+import com.goblinworker.filmvote.fragment.SignInGetStartedFragment;
 import com.goblinworker.filmvote.fragment.SignInUserFragment;
 import com.goblinworker.filmvote.fragment.TheaterFragment;
 import com.goblinworker.filmvote.fragment.VoteFragment;
@@ -19,7 +20,8 @@ import com.goblinworker.filmvote.fragment.VoteFragment;
  * Activity to sign in / up to server.
  */
 public class SignInActivity extends AppCompatActivity
-        implements SignInClubFragment.OnInteractionListener, SignInUserFragment.OnInteractionListener {
+        implements SignInGetStartedFragment.OnInteractListener,
+        SignInClubFragment.OnInteractionListener, SignInUserFragment.OnInteractionListener {
 
     private static final String TAG = SignInActivity.class.getSimpleName();
 
@@ -41,8 +43,13 @@ public class SignInActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSignInClub(String clubName) {
+    public void onGetStarted() {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onSignInClub(String clubName) {
+        viewPager.setCurrentItem(2);
     }
 
     @Override
@@ -91,13 +98,15 @@ public class SignInActivity extends AppCompatActivity
 
             Fragment fragment;
 
-            // TODO: add pretty intro page
             switch (position) {
                 default:
                 case 0:
-                    fragment = SignInClubFragment.newInstance();
+                    fragment = SignInGetStartedFragment.newInstance();
                     break;
                 case 1:
+                    fragment = SignInClubFragment.newInstance();
+                    break;
+                case 2:
                     fragment = SignInUserFragment.newInstance("Club Name");
                     break;
             }
@@ -106,13 +115,13 @@ public class SignInActivity extends AppCompatActivity
         }
 
         /**
-         * Show 2 total pages.
+         * Show 3 total pages.
          *
          * @return int
          */
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
     }
