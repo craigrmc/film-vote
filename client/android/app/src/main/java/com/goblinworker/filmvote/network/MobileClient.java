@@ -49,7 +49,7 @@ public class MobileClient extends BaseClient {
      * @return User
      */
     public User signUp(String club, String user) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + SIGN_UP + club + SLASH + user;
+        String url = server + MOBILE_V1 + SIGN_UP + encode(club) + SLASH + encode(user);
 
         // TODO: change api from post to put
         String json = post(url, "");
@@ -65,7 +65,7 @@ public class MobileClient extends BaseClient {
      * @return User
      */
     public User signIn(String club, String user) throws IOException, JsonSyntaxException, JSONException {
-        String url = server + MOBILE_V1 + SIGN_IN + club + SLASH + user;
+        String url = server + MOBILE_V1 + SIGN_IN + encode(club) + SLASH + encode(user);
 
         // TODO: change api from post to put
         String json = post(url, "");
@@ -90,7 +90,7 @@ public class MobileClient extends BaseClient {
      * @param user String
      */
     public void signOut(String club, String user) throws IOException {
-        String url = server + MOBILE_V1 + SIGN_OUT + club + SLASH + user;
+        String url = server + MOBILE_V1 + SIGN_OUT + encode(club) + SLASH + encode(user);
 
         // TODO: change api from post to put
         String json = post(url, "");
@@ -104,7 +104,7 @@ public class MobileClient extends BaseClient {
      * @param club String
      */
     public void addClub(String club) throws IOException {
-        String url = server + MOBILE_V1 + ADD_CLUB + club;
+        String url = server + MOBILE_V1 + ADD_CLUB + encode(club);
 
         // TODO: change api from post to put
         String json = post(url, "");
@@ -118,7 +118,7 @@ public class MobileClient extends BaseClient {
      * @param club String
      */
     public void removeClub(String club) throws IOException {
-        String url = server + MOBILE_V1 + REMOVE_CLUB + club;
+        String url = server + MOBILE_V1 + REMOVE_CLUB + encode(club);
 
         String json = delete(url);
 
@@ -133,7 +133,7 @@ public class MobileClient extends BaseClient {
      * @return Theater
      */
     public Theater addTheater(String club, Theater theater) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + ADD_THEATER + club;
+        String url = server + MOBILE_V1 + ADD_THEATER + encode(club);
 
         String requestJson = gson.toJson(theater);
         String responseJson = post(url, requestJson);
@@ -149,7 +149,7 @@ public class MobileClient extends BaseClient {
      * @return Theater
      */
     public Theater removeTheater(String club, String theater) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + REMOVE_THEATER + club + SLASH + theater;
+        String url = server + MOBILE_V1 + REMOVE_THEATER + encode(club) + SLASH + encode(theater);
 
         String json = delete(url);
 
@@ -175,7 +175,7 @@ public class MobileClient extends BaseClient {
      * @return Map of Theaters
      */
     public Map<String, Theater> getTheatersForDate(String club, String date) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + GET_THEATERS_FOR_DATE + club + SLASH + date;
+        String url = server + MOBILE_V1 + GET_THEATERS_FOR_DATE + encode(club) + SLASH + encode(date);
 
         String json = get(url);
 
@@ -192,7 +192,7 @@ public class MobileClient extends BaseClient {
      * @return Map of Theaters
      */
     public Map<String, Theater> getTheatersForLocation(String location) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + GET_THEATERS_FOR_LOCATION + location;
+        String url = server + MOBILE_V1 + GET_THEATERS_FOR_LOCATION + encode(location);
 
         String json = get(url);
 
@@ -211,7 +211,7 @@ public class MobileClient extends BaseClient {
      * @return Vote
      */
     public Vote addVote(String club, String user, Vote vote) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + ADD_VOTE + club + SLASH + user;
+        String url = server + MOBILE_V1 + ADD_VOTE + encode(club) + SLASH + encode(user);
 
         String requestJson = gson.toJson(vote);
         String responseJson = post(url, requestJson);
@@ -226,7 +226,7 @@ public class MobileClient extends BaseClient {
      * @return Vote
      */
     public Vote getFilmVote(String club) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + GET_FILM_VOTE + club;
+        String url = server + MOBILE_V1 + GET_FILM_VOTE + encode(club);
 
         String json = get(url);
 
@@ -241,7 +241,7 @@ public class MobileClient extends BaseClient {
      * @return Vote
      */
     public Vote getFilmVote(String club, String date) throws IOException, JsonSyntaxException {
-        String url = server + MOBILE_V1 + GET_FILM_VOTE + club + SLASH + date;
+        String url = server + MOBILE_V1 + GET_FILM_VOTE + encode(club) + SLASH + encode(date);
 
         String json = get(url);
 

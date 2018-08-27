@@ -6,6 +6,8 @@ import com.goblinworker.filmvote.BuildConfig;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -117,6 +119,10 @@ public abstract class BaseClient {
         }
 
         return responseJson;
+    }
+
+    String encode(String string) throws UnsupportedEncodingException {
+        return URLEncoder.encode(string, "utf-8");
     }
 
 }
