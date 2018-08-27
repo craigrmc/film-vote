@@ -11,69 +11,31 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/sign_in_club_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/sign_in_club_linear_layout"
+            <EditText
+                android:id="@+id/sign_in_club_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:hint="Your club name"
+                android:textSize="25dp" />
 
-                <EditText
-                    android:id="@+id/sign_in_club_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Your club name"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:id="@+id/sign_in_club_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sign in to or sign up for a club." />
-
-                <Button
-                    android:id="@+id/sign_in_club_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Next" />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/sign_in_club_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/sign_up_club_linear_layout"
+            <TextView
+                android:id="@+id/sign_in_club_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:text="Sign in to or sign up for a club." />
 
-                <TextView
-                    android:id="@+id/sign_up_club_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Hit Next to create a new club." />
-
-                <Button
-                    android:id="@+id/sign_up_club_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Next" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/sign_in_club_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next" />
 
         </LinearLayout>
 

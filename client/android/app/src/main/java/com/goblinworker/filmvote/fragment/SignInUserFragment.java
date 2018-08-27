@@ -1,13 +1,13 @@
 package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.goblinworker.filmvote.R;
 
@@ -18,11 +18,7 @@ public class SignInUserFragment extends Fragment {
 
     private static final String TAG = SignInUserFragment.class.getSimpleName();
 
-    private static final String ARG_CLUB_NAME = "ARG_CLUB_NAME";
-
     private OnInteractionListener listener;
-
-    private String clubName;
 
     /**
      * Required empty public constructor.
@@ -35,12 +31,8 @@ public class SignInUserFragment extends Fragment {
      *
      * @return SignInUserFragment
      */
-    public static SignInUserFragment newInstance(String clubName) {
-        SignInUserFragment fragment = new SignInUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_CLUB_NAME, clubName);
-        fragment.setArguments(args);
-        return fragment;
+    public static SignInUserFragment newInstance() {
+        return new SignInUserFragment();
     }
 
     /**
@@ -51,9 +43,6 @@ public class SignInUserFragment extends Fragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if (getArguments() != null) {
-            clubName = getArguments().getString(ARG_CLUB_NAME);
-        }
     }
 
     /**
@@ -69,24 +58,15 @@ public class SignInUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sign_in_user, container, false);
 
-        Button signInButton = view.findViewById(R.id.sign_in_user_button);
+        final EditText signInEditText = view.findViewById(R.id.sign_in_user_edit_text);
+
+        final Button signInButton = view.findViewById(R.id.sign_in_user_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = ((Button) view).getText().toString();
+                String userName = signInEditText.getText().toString();
                 if (listener != null) {
-                    listener.onSignInUser(clubName, userName);
-                }
-            }
-        });
-
-        Button signUpButton = view.findViewById(R.id.sign_up_user_button);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = ((Button) view).getText().toString();
-                if (listener != null) {
-                    listener.onSignUpUser(clubName, userName);
+                    listener.onSignInUser(userName);
                 }
             }
         });
@@ -113,9 +93,7 @@ public class SignInUserFragment extends Fragment {
      */
     public interface OnInteractionListener {
 
-        void onSignInUser(String clubName, String userName);
-
-        void onSignUpUser(String clubName, String userName);
+        void onSignInUser(String userName);
 
     }
 

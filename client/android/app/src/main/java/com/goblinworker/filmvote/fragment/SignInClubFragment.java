@@ -1,13 +1,13 @@
 package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.goblinworker.filmvote.R;
 
@@ -58,24 +58,15 @@ public class SignInClubFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sign_in_club, container, false);
 
-        Button signInButton = view.findViewById(R.id.sign_in_club_button);
+        final EditText signInEditText = view.findViewById(R.id.sign_in_club_edit_text);
+
+        final Button signInButton = view.findViewById(R.id.sign_in_club_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String clubName = ((Button) view).getText().toString();
+                String clubName = signInEditText.getText().toString();
                 if (listener != null) {
                     listener.onSignInClub(clubName);
-                }
-            }
-        });
-
-        Button signUpButton = view.findViewById(R.id.sign_up_club_button);
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String clubName = ((Button) view).getText().toString();
-                if (listener != null) {
-                    listener.onSignUpClub(clubName);
                 }
             }
         });
@@ -103,8 +94,6 @@ public class SignInClubFragment extends Fragment {
     public interface OnInteractionListener {
 
         void onSignInClub(String clubName);
-
-        void onSignUpClub(String clubName);
 
     }
 

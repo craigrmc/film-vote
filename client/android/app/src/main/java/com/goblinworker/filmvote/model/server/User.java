@@ -8,6 +8,24 @@ public class User {
     private String clubName;
     private String userName;
 
+    /**
+     * Is the user valid enough to vote.
+     *
+     * @return boolean
+     */
+    public boolean isValid() {
+
+        if (clubName == null || clubName.isEmpty()) {
+            return false;
+        }
+
+        if (userName == null || userName.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
     // Getter / Setter
 
     public String getClubName() {

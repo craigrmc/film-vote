@@ -1,10 +1,13 @@
 package com.goblinworker.filmvote.network;
 
+import com.goblinworker.filmvote.model.server.Error;
 import com.goblinworker.filmvote.model.server.Theater;
 import com.goblinworker.filmvote.model.server.User;
 import com.goblinworker.filmvote.model.server.Vote;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -48,7 +51,8 @@ public class MobileClient extends BaseClient {
     public User signUp(String club, String user) throws IOException, JsonSyntaxException {
         String url = server + MOBILE_V1 + SIGN_UP + club + SLASH + user;
 
-        String json = post(url, null);
+        // TODO: change api from post to put
+        String json = post(url, "");
 
         return gson.fromJson(json, User.class);
     }
@@ -60,10 +64,21 @@ public class MobileClient extends BaseClient {
      * @param user String
      * @return User
      */
-    public User signIn(String club, String user) throws IOException, JsonSyntaxException {
+    public User signIn(String club, String user) throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + SIGN_IN + club + SLASH + user;
 
-        String json = post(url, null);
+        // TODO: change api from post to put
+        String json = post(url, "");
+
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        User responseUser = gson.fromJson(json, User.class);
+        if (responseUser == null || !responseUser.isValid()) {
+            throw new JSONException("Invalid User.");
+        }
 
         return gson.fromJson(json, User.class);
     }
@@ -77,7 +92,8 @@ public class MobileClient extends BaseClient {
     public void signOut(String club, String user) throws IOException {
         String url = server + MOBILE_V1 + SIGN_OUT + club + SLASH + user;
 
-        String json = post(url, null);
+        // TODO: change api from post to put
+        String json = post(url, "");
 
         return;
     }
@@ -90,7 +106,8 @@ public class MobileClient extends BaseClient {
     public void addClub(String club) throws IOException {
         String url = server + MOBILE_V1 + ADD_CLUB + club;
 
-        String json = post(url, null);
+        // TODO: change api from post to put
+        String json = post(url, "");
 
         return;
     }

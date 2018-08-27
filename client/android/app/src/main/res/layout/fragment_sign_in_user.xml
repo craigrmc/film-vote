@@ -11,69 +11,31 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/sign_in_user_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/sign_in_user_linear_layout"
+            <EditText
+                android:id="@+id/sign_in_user_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:hint="Your user name"
+                android:textSize="25dp" />
 
-                <EditText
-                    android:id="@+id/sign_in_user_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Your user name"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:id="@+id/sign_in_user_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sign in or sign up start voting." />
-
-                <Button
-                    android:id="@+id/sign_in_user_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Next" />
-
-            </LinearLayout>
-
-            <ProgressBar
-                android:id="@+id/sign_in_user_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/sign_up_user_linear_layout"
+            <TextView
+                android:id="@+id/sign_in_user_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:text="Sign in or sign up start voting." />
 
-                <TextView
-                    android:id="@+id/sign_up_user_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Hit Next to create a new user." />
-
-                <Button
-                    android:id="@+id/sign_up_user_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Next" />
-
-            </LinearLayout>
+            <Button
+                android:id="@+id/sign_in_user_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next" />
 
         </LinearLayout>
 
