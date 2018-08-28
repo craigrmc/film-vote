@@ -15,7 +15,7 @@ import com.goblinworker.filmvote.R;
  */
 public class SignInGetStartedFragment extends Fragment {
 
-    private OnInteractListener listener;
+    private Listener listener;
 
     /**
      * Required empty public constructor.
@@ -76,8 +76,8 @@ public class SignInGetStartedFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInteractListener) {
-            listener = (OnInteractListener) context;
+        if (context instanceof Listener) {
+            listener = (Listener) context;
         }
     }
 
@@ -93,7 +93,7 @@ public class SignInGetStartedFragment extends Fragment {
     /**
      * Interface when user hits Get Started.
      */
-    public interface OnInteractListener {
+    public interface Listener {
 
         void onGetStarted();
 

@@ -18,7 +18,7 @@ public class SignInClubFragment extends Fragment {
 
     private static final String TAG = SignInClubFragment.class.getSimpleName();
 
-    private OnInteractionListener listener;
+    private Listener listener;
 
     /**
      * Required empty public constructor.
@@ -58,15 +58,25 @@ public class SignInClubFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sign_in_club, container, false);
 
-        final EditText signInEditText = view.findViewById(R.id.sign_in_club_edit_text);
+        final EditText clubEditText = view.findViewById(R.id.sign_in_club_edit_text);
 
-        final Button signInButton = view.findViewById(R.id.sign_in_club_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        final Button nextButton = view.findViewById(R.id.sign_in_club_next_button);
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String clubName = signInEditText.getText().toString();
+                String clubName = clubEditText.getText().toString();
                 if (listener != null) {
-                    listener.onSignInClub(clubName);
+                    listener.onClubNext(clubName);
+                }
+            }
+        });
+
+        final Button backButton = view.findViewById(R.id.sign_in_club_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onClubBack();
                 }
             }
         });
@@ -77,8 +87,8 @@ public class SignInClubFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInteractionListener) {
-            listener = (OnInteractionListener) context;
+        if (context instanceof Listener) {
+            listener = (Listener) context;
         }
     }
 
@@ -91,9 +101,11 @@ public class SignInClubFragment extends Fragment {
     /**
      * Interface when the user hits next.
      */
-    public interface OnInteractionListener {
+    public interface Listener {
 
-        void onSignInClub(String clubName);
+        void onClubBack();
+
+        void onClubNext(String clubName);
 
     }
 

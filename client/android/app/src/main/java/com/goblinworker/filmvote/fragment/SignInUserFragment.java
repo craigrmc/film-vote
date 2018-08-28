@@ -18,7 +18,7 @@ public class SignInUserFragment extends Fragment {
 
     private static final String TAG = SignInUserFragment.class.getSimpleName();
 
-    private OnInteractionListener listener;
+    private Listener listener;
 
     /**
      * Required empty public constructor.
@@ -58,15 +58,25 @@ public class SignInUserFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sign_in_user, container, false);
 
-        final EditText signInEditText = view.findViewById(R.id.sign_in_user_edit_text);
+        final EditText userEditText = view.findViewById(R.id.sign_in_user_edit_text);
 
-        final Button signInButton = view.findViewById(R.id.sign_in_user_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        final Button nextButton = view.findViewById(R.id.sign_in_user_next_button);
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userName = signInEditText.getText().toString();
+                String userName = userEditText.getText().toString();
                 if (listener != null) {
-                    listener.onSignInUser(userName);
+                    listener.onUserNext(userName);
+                }
+            }
+        });
+
+        final Button backButton = view.findViewById(R.id.sign_in_user_back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onUserBack();
                 }
             }
         });
@@ -77,8 +87,8 @@ public class SignInUserFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInteractionListener) {
-            listener = (OnInteractionListener) context;
+        if (context instanceof Listener) {
+            listener = (Listener) context;
         }
     }
 
@@ -91,9 +101,11 @@ public class SignInUserFragment extends Fragment {
     /**
      * Interface when user hits next.
      */
-    public interface OnInteractionListener {
+    public interface Listener {
 
-        void onSignInUser(String userName);
+        void onUserBack();
+
+        void onUserNext(String userName);
 
     }
 

@@ -24,8 +24,7 @@ import com.goblinworker.filmvote.network.MobileClient;
  * Activity to sign in / up to server.
  */
 public class SignInActivity extends AppCompatActivity
-        implements SignInGetStartedFragment.OnInteractListener, SignInClubFragment.OnInteractionListener,
-        SignInUserFragment.OnInteractionListener {
+        implements SignInGetStartedFragment.Listener, SignInClubFragment.Listener, SignInUserFragment.Listener {
 
     private static final String TAG = SignInActivity.class.getSimpleName();
 
@@ -57,14 +56,24 @@ public class SignInActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSignInClub(String clubName) {
+    public void onClubBack() {
+        viewPager.setCurrentItem(0);
+    }
+
+    @Override
+    public void onClubNext(String clubName) {
         this.clubName = clubName;
 
         viewPager.setCurrentItem(2);
     }
 
     @Override
-    public void onSignInUser(String userName) {
+    public void onUserBack() {
+        viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onUserNext(String userName) {
         this.userName = userName;
 
         viewPager.setCurrentItem(3);
