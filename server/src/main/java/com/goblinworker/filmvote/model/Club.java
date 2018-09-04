@@ -186,14 +186,16 @@ public class Club {
      */
     public Vote getFilmVote() {
 
-        Vote vote = new Vote(-1);
+        Vote vote = null;
 
-        String date = getCurrentDate();
+        String currentDate = getCurrentDate();
 
         for (Map.Entry<String, VoteDate> voteDateEntry : voteDateMap.entrySet()) {
             VoteDate voteDate = voteDateEntry.getValue();
-            if (voteDate.isBetween(date, vote.getDate())) {
-                vote = voteDate.getFilmVote();
+            if (voteDate.isAfter(currentDate)) {
+                if (vote == null || voteDate.isBefore(vote.getDate())) {
+                    vote = voteDate.getFilmVote();
+                }
             }
         }
 

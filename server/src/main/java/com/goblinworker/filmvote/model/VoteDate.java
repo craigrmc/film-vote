@@ -146,6 +146,62 @@ public class VoteDate {
     }
 
     /**
+     * Is the voting date before the specified date.
+     *
+     * @param when String yyyy-MM-dd
+     * @return boolean
+     */
+    @JsonIgnore
+    public boolean isBefore(String when) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+        Date whenDate;
+        try {
+            whenDate = dateFormat.parse(when);
+        } catch (Exception e) {
+            return false;
+        }
+
+        Date voteDate;
+        try {
+            voteDate = dateFormat.parse(date);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return voteDate.before(whenDate);
+    }
+
+    /**
+     * Is the voting date on or after the specified date.
+     *
+     * @param when String yyyy-MM-dd
+     * @return boolean
+     */
+    @JsonIgnore
+    public boolean isAfter(String when) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+
+        Date whenDate;
+        try {
+            whenDate = dateFormat.parse(when);
+        } catch (Exception e) {
+            return false;
+        }
+
+        Date voteDate;
+        try {
+            voteDate = dateFormat.parse(date);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return voteDate.equals(whenDate) || voteDate.after(whenDate);
+    }
+
+    /**
      * Is the date valid.
      * Returns false if date is missing or wrong format.
      *

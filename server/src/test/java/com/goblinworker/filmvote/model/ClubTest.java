@@ -2,7 +2,6 @@ package com.goblinworker.filmvote.model;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
@@ -301,18 +300,17 @@ public class ClubTest {
     }
 
     @Test
-    @Ignore("method currently returns empty vote")
     public void testGetFilmVoteZeroVotes() {
         Vote result = club.getFilmVote();
         Assert.assertNull(result);
     }
 
     @Test
-    @Ignore("method currently returns empty vote")
     public void testGetFilmVoteOneAncientRomanVote() {
         Vote vote = makeVote();
         vote.setDate("0235-01-01");
         club.addVote("ASeverus", vote);
+
         Vote result = club.getFilmVote();
         Assert.assertNull(result);
     }
@@ -322,8 +320,41 @@ public class ClubTest {
         Vote vote = makeVote();
         vote.setDate("2400-01-01");
         club.addVote("TKovacs", vote);
+
         Vote result = club.getFilmVote();
         Assert.assertNotNull(result);
+        Assert.assertEquals("2400-01-01", result.getDate());
+    }
+
+    @Test
+    public void testGetFilmVoteManyVotes() {
+        Vote vote1 = makeVote();
+        vote1.setDate("1001-01-01");
+        club.addVote("User1", vote1);
+
+        Vote vote2 = makeVote();
+        vote2.setDate("1002-01-01");
+        club.addVote("User2", vote2);
+
+        Vote vote3 = makeVote();
+        vote3.setDate("1003-01-01");
+        club.addVote("User3", vote3);
+
+        Vote vote4 = makeVote();
+        vote4.setDate("3004-01-01");
+        club.addVote("User4", vote4);
+
+        Vote vote5 = makeVote();
+        vote5.setDate("3005-01-01");
+        club.addVote("User5", vote5);
+
+        Vote vote6 = makeVote();
+        vote6.setDate("3006-01-01");
+        club.addVote("User6", vote6);
+
+        Vote result = club.getFilmVote();
+        Assert.assertNotNull(result);
+        Assert.assertEquals("3004-01-01", result.getDate());
     }
 
     @Test

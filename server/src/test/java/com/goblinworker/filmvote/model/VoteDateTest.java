@@ -236,6 +236,160 @@ public class VoteDateTest {
         Assert.assertTrue(between);
     }
 
+    @Test
+    public void testIsBeforeNullDate() {
+        VoteDate voteDate = new VoteDate(null);
+        boolean before = voteDate.isBefore(TOMORROW);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeEmptyDate() {
+        VoteDate voteDate = new VoteDate("");
+        boolean before = voteDate.isBefore(TOMORROW);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeNullMarkDate() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(null);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeEmptyMarkDate() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore("");
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeLastYear() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(LAST_YEAR);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeNextYear() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(NEXT_YEAR);
+        Assert.assertTrue(before);
+    }
+
+    @Test
+    public void testIsBeforeLastMonth() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(LAST_MONTH);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeNextMonth() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(NEXT_MONTH);
+        Assert.assertTrue(before);
+    }
+
+    @Test
+    public void testIsBeforeYesterday() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(YESTERDAY);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeToday() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(TODAY);
+        Assert.assertFalse(before);
+    }
+
+    @Test
+    public void testIsBeforeTomorrow() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean before = voteDate.isBefore(TOMORROW);
+        Assert.assertTrue(before);
+    }
+
+    @Test
+    public void testIsAfterNullDate() {
+        VoteDate voteDate = new VoteDate(null);
+        boolean after = voteDate.isAfter(TODAY);
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterEmptyDate() {
+        VoteDate voteDate = new VoteDate("");
+        boolean after = voteDate.isAfter(TODAY);
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterNullMarkDate() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(null);
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterEmptyMarkDate() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter("");
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterLastYear() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(LAST_YEAR);
+        Assert.assertTrue(after);
+    }
+
+    @Test
+    public void testIsAfterNextYear() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(NEXT_YEAR);
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterLastMonth() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(LAST_MONTH);
+        Assert.assertTrue(after);
+    }
+
+    @Test
+    public void testIsAfterNextMonth() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(NEXT_MONTH);
+        Assert.assertFalse(after);
+    }
+
+    @Test
+    public void testIsAfterYesterday() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(YESTERDAY);
+        Assert.assertTrue(after);
+    }
+
+    @Test
+    public void testIsAfterToday() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(TODAY);
+        Assert.assertTrue(after);
+    }
+
+    @Test
+    public void testIsAfterTomorrow() {
+        VoteDate voteDate = new VoteDate(TODAY);
+        boolean after = voteDate.isAfter(TOMORROW);
+        Assert.assertFalse(after);
+    }
+
     private User makeUser() {
         return new User("club", "user");
     }
