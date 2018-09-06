@@ -1,13 +1,12 @@
 package com.goblinworker.filmvote.network;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.goblinworker.filmvote.BuildConfig;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -121,8 +120,9 @@ public abstract class BaseClient {
         return responseJson;
     }
 
-    String encode(String string) throws UnsupportedEncodingException {
-        return URLEncoder.encode(string, "utf-8");
+    String encode(String string) {
+        // NOTE: URLEncoder encodes spaces as "+" instead of "%20"
+        return Uri.encode(string);
     }
 
 }
