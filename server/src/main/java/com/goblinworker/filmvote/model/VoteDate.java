@@ -79,6 +79,7 @@ public class VoteDate {
 
     /**
      * Get the leading vote.
+     * Returns an empty vote if none found.
      *
      * @return Vote
      */
@@ -142,11 +143,11 @@ public class VoteDate {
             return false;
         }
 
-        return voteDate.after(startDate) && voteDate.before(endDate);
+        return !voteDate.before(startDate) && !voteDate.after(endDate);
     }
 
     /**
-     * Is the voting date before the specified date.
+     * Is the voting date on or before the specified date.
      *
      * @param when String yyyy-MM-dd
      * @return boolean
@@ -170,7 +171,7 @@ public class VoteDate {
             return false;
         }
 
-        return voteDate.before(whenDate);
+        return !voteDate.after(whenDate);
     }
 
     /**
@@ -198,7 +199,7 @@ public class VoteDate {
             return false;
         }
 
-        return voteDate.equals(whenDate) || voteDate.after(whenDate);
+        return !voteDate.before(whenDate);
     }
 
     /**

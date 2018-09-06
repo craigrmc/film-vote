@@ -1,9 +1,7 @@
 package com.goblinworker.filmvote.model;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Object that holds the collection of user's that will vote on a film.
@@ -216,6 +214,26 @@ public class Club {
         }
 
         return voteDate.getFilmVote();
+    }
+
+    /**
+     * Get the leading vote for a specific date range.
+     *
+     * @param startDate String yyyy-MM-dd
+     * @param endDate   String yyyy-MM-dd
+     * @return Vote List
+     */
+    public List<Vote> getFilmVoteList(String startDate, String endDate) {
+
+        List<Vote> list = new ArrayList<>();
+
+        for (VoteDate voteDate : voteDateMap.values()) {
+            if (voteDate.isBetween(startDate, endDate)) {
+                list.add(voteDate.getFilmVote());
+            }
+        }
+
+        return list;
     }
 
     /**

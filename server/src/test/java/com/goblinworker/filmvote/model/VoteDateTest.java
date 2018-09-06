@@ -74,6 +74,16 @@ public class VoteDateTest {
     }
 
     @Test
+    public void testGetFilmVoteNoActivity() {
+        Vote vote = voteDate.getFilmVote();
+        Assert.assertNotNull(vote);
+        Assert.assertNull(vote.getDate());
+        Assert.assertNull(vote.getTime());
+        Assert.assertNull(vote.getFilm());
+        Assert.assertNull(vote.getTheater());
+    }
+
+    @Test
     public void testGetFilmVoteTheMatrixByOne() {
         Vote vote1 = makeVote();
         vote1.setFilm(THE_MATRIX);
@@ -303,7 +313,7 @@ public class VoteDateTest {
     public void testIsBeforeToday() {
         VoteDate voteDate = new VoteDate(TODAY);
         boolean before = voteDate.isBefore(TODAY);
-        Assert.assertFalse(before);
+        Assert.assertTrue(before);
     }
 
     @Test

@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import java.util.List;
+
 public class ClubTest {
 
     @InjectMocks
@@ -380,6 +382,117 @@ public class ClubTest {
         Vote vote = club.addVote("user1", makeVote());
         Vote result = club.getFilmVote(vote.getDate());
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetFilmVoteListNullStartDate() {
+        List<Vote> result = club.getFilmVoteList(null, "2000-01-03");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListEmptyStartDate() {
+        List<Vote> result = club.getFilmVoteList("", "2000-01-03");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListNullEndDate() {
+        List<Vote> result = club.getFilmVoteList("2000-01-01", null);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListEmptyEndDate() {
+        List<Vote> result = club.getFilmVoteList("2000-01-01", "");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListZeroVotes() {
+        List<Vote> result = club.getFilmVoteList("2000-01-01", "2000-01-03");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListThreeVotesSmallRange() {
+        Vote vote1 = makeVote();
+        vote1.setDate("2000-01-01");
+        club.addVote("User1", vote1);
+
+        Vote vote2 = makeVote();
+        vote2.setDate("2000-01-02");
+        club.addVote("User2", vote2);
+
+        Vote vote3 = makeVote();
+        vote3.setDate("2000-01-03");
+        club.addVote("User3", vote3);
+
+        List<Vote> result = club.getFilmVoteList("2000-01-01", "2000-01-01");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListThreeVotesNormalRange() {
+        Vote vote1 = makeVote();
+        vote1.setDate("2000-01-01");
+        club.addVote("User1", vote1);
+
+        Vote vote2 = makeVote();
+        vote2.setDate("2000-01-02");
+        club.addVote("User2", vote2);
+
+        Vote vote3 = makeVote();
+        vote3.setDate("2000-01-03");
+        club.addVote("User3", vote3);
+
+        List<Vote> result = club.getFilmVoteList("2000-01-01", "2000-01-03");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(3L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListThreeVotesLargeRange() {
+        Vote vote1 = makeVote();
+        vote1.setDate("2000-01-01");
+        club.addVote("User1", vote1);
+
+        Vote vote2 = makeVote();
+        vote2.setDate("2000-01-02");
+        club.addVote("User2", vote2);
+
+        Vote vote3 = makeVote();
+        vote3.setDate("2000-01-03");
+        club.addVote("User3", vote3);
+
+        List<Vote> result = club.getFilmVoteList("1000-01-01", "3000-01-03");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(3L, result.size());
+    }
+
+    @Test
+    public void testGetFilmVoteListTimeWarp() {
+        Vote vote1 = makeVote();
+        vote1.setDate("2000-01-01");
+        club.addVote("User1", vote1);
+
+        Vote vote2 = makeVote();
+        vote2.setDate("2000-01-02");
+        club.addVote("User2", vote2);
+
+        Vote vote3 = makeVote();
+        vote3.setDate("2000-01-03");
+        club.addVote("User3", vote3);
+
+        List<Vote> result = club.getFilmVoteList("2000-01-03", "2000-01-01");
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0L, result.size());
     }
 
     @Test

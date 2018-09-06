@@ -7,6 +7,7 @@ import com.goblinworker.filmvote.model.Vote;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -104,7 +105,7 @@ public class ClubService {
 
         Club club = clubMap.get(clubName);
         if (club == null) {
-            throw new Exception("club does not exist");
+            club = addClub(clubName);
         }
 
         User user = club.addUser(userName);
@@ -365,6 +366,36 @@ public class ClubService {
 
         LOGGER.info("removed vote: " + clubName + " - " + userName + " - " + date);
         return club.removeVote(userName, date);
+    }
+
+    /**
+     * Get the leading votes for a specific date range.
+     *
+     * @param clubName  String
+     * @param startDate String yyyy-MM-dd
+     * @param endDate   String yyyy-MM-dd
+     * @return Vote List
+     */
+    public List<Vote> getFilmVoteList(String clubName, String startDate, String endDate) throws Exception {
+
+        if (clubName == null || clubName.isEmpty()) {
+            throw new Exception("club name invalid");
+        }
+
+        if (startDate == null || startDate.isEmpty()) {
+            throw new Exception("start date invalid");
+        }
+
+        if (endDate == null || endDate.isEmpty()) {
+            throw new Exception("end date invalid");
+        }
+
+        Club club = clubMap.get(clubName);
+        if (club == null) {
+            throw new Exception("club does not exist");
+        }
+
+        return club.getFilmVoteList(startDate, endDate);
     }
 
 }

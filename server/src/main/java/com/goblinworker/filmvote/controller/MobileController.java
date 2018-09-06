@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -206,6 +207,23 @@ public class MobileController {
         Vote myVote = clubService.getFilmVote(club, date);
 
         return new ResponseEntity<>(myVote, HttpStatus.OK);
+    }
+
+    /**
+     * Get the current vote for a specific date range.
+     *
+     * @param club  String
+     * @param start String yyyy-MM-dd
+     * @param end   String yyyy-MM-dd
+     * @return Vote List
+     */
+    @GetMapping("getFilmVote/{club}/{start}/{end}")
+    public ResponseEntity<List<Vote>> getFilmVoteList(
+            @PathVariable String club, @PathVariable String start, @PathVariable String end) throws Exception {
+
+        List<Vote> filmVoteList = clubService.getFilmVoteList(club, start, end);
+
+        return new ResponseEntity<>(filmVoteList, HttpStatus.OK);
     }
 
     private Map<String, Theater> loadTheaterData(String club, String date)
