@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ClubTest {
@@ -362,19 +364,20 @@ public class ClubTest {
     @Test
     public void testGetFilmVoteNullDate() {
         Vote result = club.getFilmVote(null);
-        Assert.assertNull(result);
+        Assert.assertNotNull(result);
     }
 
     @Test
     public void testGetFilmVoteEmptyDate() {
         Vote result = club.getFilmVote("");
-        Assert.assertNull(result);
+        Assert.assertNotNull(result);
     }
 
     @Test
     public void testGetFilmVoteNoVotesOnDate() {
         Vote result = club.getFilmVote("2000-01-01");
-        Assert.assertNull(result);
+        Assert.assertNotNull(result);
+        Assert.assertEquals("2000-01-01", result.getDate());
     }
 
     @Test
@@ -382,6 +385,7 @@ public class ClubTest {
         Vote vote = club.addVote("user1", makeVote());
         Vote result = club.getFilmVote(vote.getDate());
         Assert.assertNotNull(result);
+        Assert.assertEquals("2000-01-01", result.getDate());
     }
 
     @Test
@@ -416,7 +420,7 @@ public class ClubTest {
     public void testGetFilmVoteListZeroVotes() {
         List<Vote> result = club.getFilmVoteList("2000-01-01", "2000-01-03");
         Assert.assertNotNull(result);
-        Assert.assertEquals(0L, result.size());
+        Assert.assertEquals(3L, result.size());
     }
 
     @Test
@@ -471,9 +475,9 @@ public class ClubTest {
         vote3.setDate("2000-01-03");
         club.addVote("User3", vote3);
 
-        List<Vote> result = club.getFilmVoteList("1000-01-01", "3000-01-03");
+        List<Vote> result = club.getFilmVoteList("2000-01-01", "2000-01-05");
         Assert.assertNotNull(result);
-        Assert.assertEquals(3L, result.size());
+        Assert.assertEquals(5L, result.size());
     }
 
     @Test
@@ -496,8 +500,74 @@ public class ClubTest {
     }
 
     @Test
-    public void testGetCurrentDate() {
-        String result = club.getCurrentDate();
+    public void testGetCalendarFromNullString() {
+        Calendar result = club.getCalendar((String) null);
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetCalendarFromEmptyString() {
+        Calendar result = club.getCalendar("");
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetCalendarFromJunkString() {
+        Calendar result = club.getCalendar("junk");
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetCalendarFromGoodString() {
+        Calendar result = club.getCalendar("2000-01-01");
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetCalendarFromNullDate() {
+        Calendar result = club.getCalendar((Date) null);
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetCalendarFromGoodDate() {
+        Calendar result = club.getCalendar(new Date(0));
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetDateFromNullString() {
+        Date result = club.getDate(null);
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetDateFromEmptyString() {
+        Date result = club.getDate("");
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetDateFromJunkString() {
+        Date result = club.getDate("junk");
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetDateFromGoodString() {
+        Date result = club.getDate("2000-01-01");
+        Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void testGetDateStringFromNullDate() {
+        String result = club.getDateString(null);
+        Assert.assertNull(result);
+    }
+
+    @Test
+    public void testGetDateStringFromGoodDate() {
+        String result = club.getDateString(new Date(0));
         Assert.assertNotNull(result);
     }
 

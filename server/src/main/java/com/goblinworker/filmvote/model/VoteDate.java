@@ -98,7 +98,7 @@ public class VoteDate {
             }
         }
 
-        Vote leadingVote = new Vote(-1);
+        Vote leadingVote = new Vote(0, date);
 
         // get leading vote
         for (Vote vote : voteList) {

@@ -8,7 +8,11 @@ import java.util.*;
  */
 public class Club {
 
+    private static final Locale DATE_LOCALE = Locale.US;
+
     private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    private static final TimeZone DATE_TIMEZONE = TimeZone.getTimeZone("GMT");
 
     private final String name;
 
@@ -179,6 +183,7 @@ public class Club {
 
     /**
      * Get the leading vote for the closest date with activity.
+     * Returns null if no upcoming votes.
      *
      * @return Vote
      */
@@ -186,7 +191,7 @@ public class Club {
 
         Vote vote = null;
 
-        String currentDate = getCurrentDate();
+        String currentDate = getDateString(new Date());
 
         for (Map.Entry<String, VoteDate> voteDateEntry : voteDateMap.entrySet()) {
             VoteDate voteDate = voteDateEntry.getValue();
@@ -202,6 +207,7 @@ public class Club {
 
     /**
      * Get the leading vote for a specific date.
+     * Returns empty vote if none found.
      *
      * @param date String yyyy-MM-dd
      * @return Vote
@@ -210,7 +216,7 @@ public class Club {
 
         VoteDate voteDate = voteDateMap.get(date);
         if (voteDate == null) {
-            return null;
+            return new Vote(0, date);
         }
 
         return voteDate.getFilmVote();
@@ -227,25 +233,105 @@ public class Club {
 
         List<Vote> list = new ArrayList<>();
 
-        for (VoteDate voteDate : voteDateMap.values()) {
-            if (voteDate.isBetween(startDate, endDate)) {
+        Calendar startCalendar = getCalendar(startDate);
+        if (startCalendar == null) {
+            return list;
+        }
+
+        Calendar endCalendar = getCalendar(endDate);
+        if (endCalendar == null) {
+            return list;
+        }
+
+        while (startCalendar.before(endCalendar) || startCalendar.equals(endCalendar)) {
+            String dateString = getDateString(startCalendar.getTime());
+            VoteDate voteDate = voteDateMap.get(dateString);
+
+            if (voteDate == null) {
+                list.add(new Vote(0, dateString));
+            } else {
                 list.add(voteDate.getFilmVote());
             }
+
+            startCalendar.add(Calendar.DATE, 1);
         }
 
         return list;
     }
 
     /**
-     * Get the current date as a string.
+     * Get a calendar with the server timezone / locale.
+     * Returns null if string not valid.
      *
-     * @return String
+     * @param string String yyyy-MM-dd
+     * @return Calendar
      */
-    String getCurrentDate() {
+    Calendar getCalendar(String string) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        Date date = getDate(string);
+        if (date == null) {
+            return null;
+        }
 
-        return dateFormat.format(new Date());
+        return getCalendar(date);
+    }
+
+    /**
+     * Get a calendar with the server timezone / locale.
+     *
+     * @param date Date
+     * @return Calendar
+     */
+    Calendar getCalendar(Date date) {
+
+        if (date == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance(DATE_TIMEZONE, DATE_LOCALE);
+        calendar.setTime(date);
+
+        return calendar;
+    }
+
+    /**
+     * Get the date by parsing a string.
+     * Returns null if string not valid.
+     *
+     * @param string String yyyy-MM-dd
+     * @return Date
+     */
+    Date getDate(String string) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, DATE_LOCALE);
+        dateFormat.setTimeZone(DATE_TIMEZONE);
+
+        Date date;
+        try {
+            date = dateFormat.parse(string);
+        } catch (Exception e) {
+            date = null;
+        }
+
+        return date;
+    }
+
+    /**
+     * Get the date as a string.
+     *
+     * @param date Date
+     * @return String yyyy-MM-dd
+     */
+    String getDateString(Date date) {
+
+        if (date == null) {
+            return null;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, DATE_LOCALE);
+        dateFormat.setTimeZone(DATE_TIMEZONE);
+
+        return dateFormat.format(date);
     }
 
     // Getter / Setter

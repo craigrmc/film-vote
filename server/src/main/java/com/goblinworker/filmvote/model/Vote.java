@@ -20,19 +20,21 @@ public class Vote {
     private String theater;
 
     /**
-     * Constructor used to create a vote.
+     * Constructor used for testing.
      */
     public Vote() {
-        this(1);
+        this(1, null);
     }
 
     /**
      * Constructor used to tally votes.
      *
      * @param tally Integer
+     * @param date String
      */
-    public Vote(Integer tally) {
+    public Vote(Integer tally, String date) {
         this.tally = tally;
+        this.date = date;
     }
 
     /**
