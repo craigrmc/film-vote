@@ -1,8 +1,11 @@
 package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
+import com.goblinworker.filmvote.app.AppInstance;
+import com.goblinworker.filmvote.model.server.Vote;
+import com.goblinworker.filmvote.network.MobileClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +29,11 @@ public class VoteFragment extends Fragment {
 
     private static final String TAG = VoteFragment.class.getSimpleName();
 
-    private OnInteractionListener listener;
+    private Listener listener;
 
     private VoteListAdapter listAdapter;
+
+    private VoteListTask voteListTask;
 
     /**
      * Required empty public constructor
@@ -50,18 +58,6 @@ public class VoteFragment extends Fragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
-        List<VoteListItem> voteList = new ArrayList<>();
-        voteList.add(new VoteListItem("Monday (1 Vote)", "The Matrix - 12:00 PM"));
-        voteList.add(new VoteListItem("Tuesday (0 Votes)", "N/A"));
-        voteList.add(new VoteListItem("Wednesday (0 Votes)", "N/A"));
-        voteList.add(new VoteListItem("Thursday (1 Vote)", "Alien - 5:15 PM"));
-        voteList.add(new VoteListItem("Friday (3 Votes)", "Fight Club - 7:30 PM"));
-        voteList.add(new VoteListItem("Saturday (4 Vote)", "Blade Runner - 10:00 PM"));
-        voteList.add(new VoteListItem("Sunday (1 Vote)", "Batman: Mask of the Phantasm - 12:00 PM"));
-
-        // TODO: add real list
-        listAdapter = new VoteListAdapter(voteList);
     }
 
     /**
@@ -76,6 +72,8 @@ public class VoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
         View view = inflater.inflate(R.layout.fragment_vote, container, false);
+
+        listAdapter = new VoteListAdapter();
 
         ListView listView = view.findViewById(R.id.list_view_vote);
         listView.setAdapter(listAdapter);
@@ -100,8 +98,8 @@ public class VoteFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInteractionListener) {
-            listener = (OnInteractionListener) context;
+        if (context instanceof Listener) {
+            listener = (Listener) context;
         }
     }
 
@@ -115,30 +113,72 @@ public class VoteFragment extends Fragment {
     }
 
     /**
+     * Start the fragment.
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        startVoteListTask();
+    }
+
+    /**
+     * Stop the fragment.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        cancelVoteListTask();
+    }
+
+    public void updateVoteList(List<Vote> voteList) {
+        listAdapter.setItemList(voteList);
+        listAdapter.notifyDataSetChanged();
+    }
+
+    public void startVoteListTask() {
+
+        cancelVoteListTask();
+
+        // TODO: suppress data reloads
+
+        // TODO: get real dates
+        voteListTask = new VoteListTask("2000-01-01", "2000-01-07");
+        voteListTask.setCallback(new VoteListTask.Callback() {
+            @Override
+            public void onResult(Boolean result, String message, List<Vote> voteList) {
+                if (result) {
+                    updateVoteList(voteList);
+                } else {
+                    Log.w(TAG, "failed to get vote list: " + message);
+                }
+            }
+        });
+        voteListTask.execute();
+    }
+
+    public void cancelVoteListTask() {
+        if (voteListTask != null) {
+            voteListTask.cancel(true);
+            voteListTask = null;
+        }
+    }
+
+    /**
      * Adapter that handles items in List View.
      */
     public class VoteListAdapter extends BaseAdapter {
 
-        private final List<VoteListItem> itemList;
-
-        public VoteListAdapter(List<VoteListItem> itemList) {
-            this.itemList = itemList;
-        }
+        private final List<VoteListItem> itemList = new ArrayList<>();
 
         @Override
         public int getCount() {
-
-            if (itemList == null) {
-                return 0;
-            }
-
             return itemList.size();
         }
 
         @Override
         public VoteListItem getItem(int index) {
 
-            if (itemList == null || itemList.size() < index) {
+            if (itemList.size() < index) {
                 return null;
             }
 
@@ -169,6 +209,15 @@ public class VoteFragment extends Fragment {
             return view;
         }
 
+        void setItemList(List<Vote> voteList) {
+            if (voteList != null) {
+                itemList.clear();
+                for (Vote vote : voteList) {
+                    itemList.add(new VoteListItem(vote));
+                }
+            }
+        }
+
     }
 
     /**
@@ -176,25 +225,101 @@ public class VoteFragment extends Fragment {
      */
     public class VoteListItem {
 
-        private final String header;
-        private final String detail;
+        private final Vote vote;
 
-        public VoteListItem(String header, String detail) {
-            this.header = header;
-            this.detail = detail;
-        }
-
-        public String getDate() {
-            // TODO: finish him!!!
-            return "2000-01-01";
+        public VoteListItem(Vote vote) {
+            this.vote = vote;
         }
 
         public String getHeader() {
-            return header;
+
+            if (vote == null) {
+                return null;
+            }
+
+            String day = getDay();
+
+            Integer tally = vote.getTally();
+            if (tally == null || tally < 0) {
+                tally = 0;
+            }
+
+            // TODO: move to strings.xml
+            String vote;
+            if (tally == 1) {
+                vote = "Vote";
+            } else {
+                vote = "Votes";
+            }
+
+            return day + " (" + tally + " " + vote + ")";
         }
 
         public String getDetail() {
-            return detail;
+
+            // TODO: move to strings.xml
+            if (vote == null) {
+                return "N/A";
+            }
+
+            String film = vote.getFilm();
+            if (film == null) {
+                film = "N/A";
+            }
+
+            String time = getLocalTime();
+            if (time == null) {
+                time = "N/A";
+            }
+
+            return film + " - " + time;
+        }
+
+        String getDay() {
+
+            if (vote == null) {
+                return null;
+            }
+
+            String day;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                day = vote.getDay();
+            } else {
+                day = vote.getDayLegacy();
+            }
+
+            return day;
+        }
+
+        String getLocalTime() {
+
+            if (vote == null) {
+                return null;
+            }
+
+            String time;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                time = vote.getLocalTime();
+            } else {
+                time = vote.getLocalTimeLegacy();
+            }
+
+            return time;
+        }
+
+        public String getDate() {
+
+            if (vote == null) {
+                return null;
+            }
+
+            return vote.getDate();
+        }
+
+        public Vote getVote() {
+            return vote;
         }
 
     }
@@ -202,8 +327,78 @@ public class VoteFragment extends Fragment {
     /**
      * Listener that handles when the user taps on a date.
      */
-    public interface OnInteractionListener {
+    public interface Listener {
         void onVoteDateTap(String date);
+    }
+
+    /**
+     * Task to get Vote Date List from server.
+     */
+    public static class VoteListTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String startDate;
+        private final String endDate;
+
+        private Callback asyncCallback;
+        private Boolean asyncResult;
+        private String asyncMessage;
+        private final List<Vote> asyncVoteList = new ArrayList<>();
+
+        public VoteListTask(String startDate, String endDate) {
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            AppInstance appInstance = AppInstance.getInstance();
+
+            MobileClient client = new MobileClient(appInstance.getServer());
+
+            asyncVoteList.clear();
+
+            try {
+
+                List<Vote> voteList = client.getFilmVoteList(appInstance.getClubName(), startDate, endDate);
+
+                asyncVoteList.addAll(voteList);
+
+                asyncResult = true;
+                asyncMessage = "Success";
+            } catch (Exception e) {
+
+                asyncResult = false;
+                asyncMessage = e.getMessage();
+            }
+
+            return asyncResult;
+        }
+
+        @Override
+        protected void onCancelled() {
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage, asyncVoteList);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage, asyncVoteList);
+            }
+        }
+
+        public void setCallback(Callback callback) {
+            this.asyncCallback = callback;
+        }
+
+        interface Callback {
+
+            void onResult(Boolean result, String message, List<Vote> voteList);
+
+        }
+
     }
 
 }

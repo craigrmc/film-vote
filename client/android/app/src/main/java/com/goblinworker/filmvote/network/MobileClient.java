@@ -11,6 +11,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -237,7 +238,7 @@ public class MobileClient extends BaseClient {
      * Get the leading vote for a specific date.
      *
      * @param club String
-     * @param date String
+     * @param date String yyyy-MM-dd
      * @return Vote
      */
     public Vote getFilmVote(String club, String date) throws IOException, JsonSyntaxException {
@@ -246,6 +247,25 @@ public class MobileClient extends BaseClient {
         String json = get(url);
 
         return gson.fromJson(json, Vote.class);
+    }
+
+    /**
+     * Get the leading vote for a specific date range.
+     *
+     * @param club  String
+     * @param start String yyyy-MM-dd
+     * @param end   String yyyy-MM-dd
+     * @return Vote List
+     */
+    public List<Vote> getFilmVoteList(String club, String start, String end) throws IOException, JsonSyntaxException {
+        String url = server + MOBILE_V1 + GET_FILM_VOTE + encode(club) + SLASH + start + SLASH + end;
+
+        String json = get(url);
+
+        Type type = new TypeToken<List<Vote>>() {
+        }.getType();
+
+        return gson.fromJson(json, type);
     }
 
 }

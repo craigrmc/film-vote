@@ -23,6 +23,34 @@ public class AppInstance {
     }
 
     /**
+     * Get the current club name for user.
+     *
+     * @return String
+     */
+    public String getClubName() {
+
+        if (user == null) {
+            return null;
+        }
+
+        return user.getClubName();
+    }
+
+    /**
+     * Get the current user name for user.
+     *
+     * @return String
+     */
+    public String getUserName() {
+
+        if (user == null) {
+            return null;
+        }
+
+        return user.getUserName();
+    }
+
+    /**
      * Get the current mobile server for the API.
      *
      * @return String URL

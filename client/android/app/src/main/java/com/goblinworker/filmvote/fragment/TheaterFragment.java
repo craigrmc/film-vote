@@ -2,6 +2,7 @@ package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,10 +17,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
+import com.goblinworker.filmvote.app.AppInstance;
 import com.goblinworker.filmvote.model.server.Theater;
+import com.goblinworker.filmvote.network.MobileClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment that displays list of theaters in the club.
@@ -28,13 +32,11 @@ public class TheaterFragment extends Fragment {
 
     private static final String TAG = TheaterFragment.class.getSimpleName();
 
-    private static final String ARG_THEATER_LIST = "ARG_THEATER_LIST";
-
-    private OnInteractionListener listener;
+    private Listener listener;
 
     private TheaterListAdapter theaterListAdapter;
 
-    private String theaterList;
+    private TheaterTask theaterTask;
 
     /**
      * Required empty public constructor.
@@ -45,15 +47,10 @@ public class TheaterFragment extends Fragment {
     /**
      * Create a new instance of the fragment.
      *
-     * @param theaterList List of Theaters
      * @return TheaterFragment
      */
-    public static TheaterFragment newInstance(String theaterList) {
-        TheaterFragment fragment = new TheaterFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_THEATER_LIST, theaterList);
-        fragment.setArguments(args);
-        return fragment;
+    public static TheaterFragment newInstance() {
+        return new TheaterFragment();
     }
 
     /**
@@ -64,14 +61,6 @@ public class TheaterFragment extends Fragment {
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        if (getArguments() != null) {
-            theaterList = getArguments().getString(ARG_THEATER_LIST);
-        }
-
-        List<TheaterListItem> theaterList = makeTheaterList();
-
-        // TODO: add real list
-        theaterListAdapter = new TheaterListAdapter(theaterList);
     }
 
     /**
@@ -86,6 +75,8 @@ public class TheaterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
         View view = inflater.inflate(R.layout.fragment_theater, container, false);
+
+        theaterListAdapter = new TheaterListAdapter();
 
         ListView listView = view.findViewById(R.id.list_view_theater);
         listView.setAdapter(theaterListAdapter);
@@ -120,8 +111,8 @@ public class TheaterFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnInteractionListener) {
-            listener = (OnInteractionListener) context;
+        if (context instanceof Listener) {
+            listener = (Listener) context;
         }
     }
 
@@ -135,9 +126,28 @@ public class TheaterFragment extends Fragment {
     }
 
     /**
-     * Show a dialog for a specific theater info.
-     * Allow user to delete theater.
+     * Start the fragment.
      */
+    @Override
+    public void onStart() {
+        super.onStart();
+        startTheaterListTask();
+    }
+
+    /**
+     * Stop the fragment.
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        cancelTheaterListTask();
+    }
+
+    protected void updateTheaterList(List<Theater> theaterList) {
+        theaterListAdapter.setItemList(theaterList);
+        theaterListAdapter.notifyDataSetChanged();
+    }
+
     protected void showItemDialog(final Theater theater) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -155,40 +165,31 @@ public class TheaterFragment extends Fragment {
         builder.show();
     }
 
-    /**
-     * Make fake data until networking is added.
-     */
-    private List<TheaterListItem> makeTheaterList() {
+    protected void startTheaterListTask() {
 
-        Theater theater1 = new Theater();
-        theater1.setName("The Grand 16 - Pier Park");
-        theater1.setLocation("Pier Park");
-        theater1.setPhone("555-555-5555");
-        theater1.setAddress("555 St. Road");
-        theater1.setCity("Panama City");
-        theater1.setState("FL");
-        theater1.setZipcode("55555");
+        cancelTheaterListTask();
 
-        Theater theater2 = new Theater();
-        theater2.setName("Martin Theatre");
-        theater2.setLocation("409 Harrison Ave");
-        theater2.setAddress("555 St. Road");
-        theater2.setCity("Panama City");
-        theater2.setState("FL");
-        theater2.setZipcode("55555");
+        // TODO: suppress data reloads
 
-        Theater theater3 = new Theater();
-        theater3.setName("AMC Panama City 10");
-        theater3.setLocation("4049 W 23rd St");
-        theater3.setPhone("555-555-5555");
-        theater3.setZipcode("55555");
+        theaterTask = new TheaterTask();
+        theaterTask.setCallback(new TheaterTask.Callback() {
+            @Override
+            public void onResult(Boolean result, String message, List<Theater> theaterList) {
+                if (result) {
+                    updateTheaterList(theaterList);
+                } else {
+                    Log.w(TAG, "failed to get theaters: " + message);
+                }
+            }
+        });
+        theaterTask.execute();
+    }
 
-        List<TheaterListItem> theaterList = new ArrayList<>();
-        theaterList.add(new TheaterListItem(theater1));
-        theaterList.add(new TheaterListItem(theater2));
-        theaterList.add(new TheaterListItem(theater3));
-
-        return theaterList;
+    protected void cancelTheaterListTask() {
+        if (theaterTask != null) {
+            theaterTask.cancel(true);
+            theaterTask = null;
+        }
     }
 
     /**
@@ -196,31 +197,17 @@ public class TheaterFragment extends Fragment {
      */
     public class TheaterListAdapter extends BaseAdapter {
 
-        private final List<TheaterListItem> itemList;
-
-        /**
-         * Constructor to initialize items.
-         *
-         * @param itemList List of Theaters
-         */
-        public TheaterListAdapter(List<TheaterListItem> itemList) {
-            this.itemList = itemList;
-        }
+        private final List<TheaterListItem> itemList = new ArrayList<>();
 
         @Override
         public int getCount() {
-
-            if (itemList == null) {
-                return 0;
-            }
-
             return itemList.size();
         }
 
         @Override
         public TheaterListItem getItem(int index) {
 
-            if (itemList == null || itemList.size() < index) {
+            if (itemList.size() < index) {
                 return null;
             }
 
@@ -249,6 +236,15 @@ public class TheaterFragment extends Fragment {
             detailTextView.setText(item.getDetail());
 
             return view;
+        }
+
+        void setItemList(List<Theater> theaterList) {
+            if (theaterList != null) {
+                itemList.clear();
+                for (Theater theater : theaterList) {
+                    itemList.add(new TheaterListItem(theater));
+                }
+            }
         }
 
     }
@@ -293,11 +289,74 @@ public class TheaterFragment extends Fragment {
     /**
      * Listener that handles when the user taps Add Theater button.
      */
-    public interface OnInteractionListener {
+    public interface Listener {
 
         void onTheaterFind();
 
         void onTheaterDelete(Theater theater);
+
+    }
+
+    /**
+     * Task to get list of theaters from server.
+     */
+    public static class TheaterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private Callback asyncCallback;
+        private Boolean asyncResult;
+        private String asyncMessage;
+        private final List<Theater> asyncTheaterList = new ArrayList<>();
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            AppInstance appInstance = AppInstance.getInstance();
+
+            MobileClient client = new MobileClient(appInstance.getServer());
+
+            asyncTheaterList.clear();
+
+            try {
+
+                Map<String, Theater> theaterMap = client
+                        .getTheatersForDate(appInstance.getClubName(), "2000-01-01");
+
+                asyncTheaterList.addAll(theaterMap.values());
+
+                asyncResult = true;
+                asyncMessage = "Success";
+            } catch (Exception e) {
+
+                asyncResult = false;
+                asyncMessage = e.getMessage();
+            }
+
+            return asyncResult;
+        }
+
+        @Override
+        protected void onCancelled() {
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage, asyncTheaterList);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage, asyncTheaterList);
+            }
+        }
+
+        void setCallback(Callback callback) {
+            asyncCallback = callback;
+        }
+
+        interface Callback {
+
+            void onResult(Boolean result, String message, List<Theater> theaterList);
+
+        }
 
     }
 

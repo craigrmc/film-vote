@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.goblinworker.filmvote.R;
@@ -23,7 +22,7 @@ import com.goblinworker.filmvote.model.server.Theater;
  * Activity that displays the Home / Vote / Club Fragments via Bottom Navigation View.
  */
 public class MainActivity extends AppCompatActivity
-        implements VoteFragment.OnInteractionListener, TheaterFragment.OnInteractionListener {
+        implements VoteFragment.Listener, TheaterFragment.Listener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity
                     fragment = VoteFragment.newInstance();
                     break;
                 case 2:
-                    fragment = TheaterFragment.newInstance("list");
+                    fragment = TheaterFragment.newInstance();
                     break;
             }
 
