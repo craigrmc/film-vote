@@ -110,7 +110,7 @@ public class FilmService {
     Theater makeTheaterAMC() {
 
         Theater theater = new Theater("AMC Panama City 10");
-        theater.setLocation(null);
+        theater.setLocation("Downtown");
         theater.setAddress("4049 W 23rd St");
         theater.setCity("Panama City");
         theater.setState("FL");
@@ -128,7 +128,7 @@ public class FilmService {
     Theater makeTheaterMartin() {
 
         Theater theater = new Theater("Martin Theatre");
-        theater.setLocation(null);
+        theater.setLocation("Downtown");
         theater.setAddress("409 Harrison Ave");
         theater.setCity("Panama City");
         theater.setState("FL");
