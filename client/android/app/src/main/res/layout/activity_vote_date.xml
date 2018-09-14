@@ -10,7 +10,6 @@
         android:id="@+id/vote_date_header_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Monday"
         android:textSize="@dimen/text_view_text_size_header" />
 
     <ListView

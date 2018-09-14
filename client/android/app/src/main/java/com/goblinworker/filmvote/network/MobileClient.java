@@ -214,6 +214,7 @@ public class MobileClient extends BaseClient {
     public Vote addVote(String club, String user, Vote vote) throws IOException, JsonSyntaxException {
         String url = server + MOBILE_V1 + ADD_VOTE + encode(club) + SLASH + encode(user);
 
+        // TODO: check for server error
         String requestJson = gson.toJson(vote);
         String responseJson = post(url, requestJson);
 

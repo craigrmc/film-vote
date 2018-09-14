@@ -43,10 +43,26 @@ public class Vote {
     private String theater;
 
     /**
-     * Constructor used to create a vote.
+     * Constructor used for testing.
      */
     public Vote() {
         this.tally = 1;
+    }
+
+    /**
+     * Constructor used to create a vote.
+     *
+     * @param theater String
+     * @param date    String yyyy-MM-dd
+     * @param film    String
+     * @param time    String
+     */
+    public Vote(String theater, String date, String film, String time) {
+        this.tally = 1;
+        this.theater = theater;
+        this.date = date;
+        this.film = film;
+        this.time = time;
     }
 
     /**

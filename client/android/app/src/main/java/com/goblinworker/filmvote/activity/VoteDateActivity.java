@@ -3,9 +3,11 @@ package com.goblinworker.filmvote.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
+import com.goblinworker.filmvote.app.AppInstance;
 import com.goblinworker.filmvote.model.server.Film;
+import com.goblinworker.filmvote.model.server.Theater;
+import com.goblinworker.filmvote.model.server.Vote;
+import com.goblinworker.filmvote.network.MobileClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Activity that allows user to vote for a film on a specific date.
@@ -29,7 +37,11 @@ public class VoteDateActivity extends AppCompatActivity {
 
     private static final String EXTRA_DATE = "EXTRA_DATE";
 
+    private String date;
+
     private VoteDateListAdapter listAdapter;
+    private TheaterTask theaterTask;
+    private VoteTask voteTask;
 
     /**
      * Create a new intent for activity on a specific date.
@@ -54,10 +66,15 @@ public class VoteDateActivity extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_vote_date);
 
-        List<VoteDateListItem> voteDateItemList = makeVoteDateList();
+        if (getIntent() != null) {
+            date = getIntent().getStringExtra(EXTRA_DATE);
+        }
 
-        // TODO: add real list
-        listAdapter = new VoteDateListAdapter(voteDateItemList);
+        // TODO: use relative date
+        TextView headerTextView = findViewById(R.id.vote_date_header_text_view);
+        headerTextView.setText(date);
+
+        listAdapter = new VoteDateListAdapter();
 
         ListView listView = findViewById(R.id.vote_date_list_view);
         listView.setAdapter(listAdapter);
@@ -67,6 +84,8 @@ public class VoteDateActivity extends AppCompatActivity {
                 onFilmSelect(listAdapter.getItem(index));
             }
         });
+
+        startTheaterTask();
     }
 
     /**
@@ -77,6 +96,7 @@ public class VoteDateActivity extends AppCompatActivity {
     protected void onFilmSelect(final VoteDateListItem item) {
 
         if (item == null) {
+            Log.w(TAG, "failed to select film, invalid item");
             return;
         }
 
@@ -87,7 +107,7 @@ public class VoteDateActivity extends AppCompatActivity {
         builder.setAdapter(showTimeListAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
-                onTimeSelect(item.getTheater(), item.getFilm(), showTimeListAdapter.getItem(index));
+                onTimeSelect(item.getTheaterName(), item.getFilm(), showTimeListAdapter.getItem(index));
             }
         });
         builder.setNegativeButton("CANCEL", null);
@@ -95,57 +115,133 @@ public class VoteDateActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends vote to server.
+     * Send vote to server.
      *
      * @param film Selected Film
      * @param time Selected Show Time
      */
     protected void onTimeSelect(String theater, Film film, String time) {
-        // TODO: finish him!!!
+
+        if (film == null) {
+            Log.w(TAG, "failed to select film time, invalid film");
+            return;
+        }
+
+        Vote vote = new Vote(theater, date, film.getName(), time);
+
+        startVoteTask(vote);
     }
 
     /**
-     * Make fake data until networking is added.
+     * Update list view with new theaters, films, and show times.
+     *
+     * @param theaterMap Theater Map
      */
-    private List<VoteDateListItem> makeVoteDateList() {
+    protected void updateVoteList(Map<String, Theater> theaterMap) {
+
+        if (theaterMap == null) {
+            Log.w(TAG, "failed to update vote list, invalid theater map");
+            return;
+        }
 
         List<VoteDateListItem> itemList = new ArrayList<>();
 
-        Film film1 = new Film();
-        film1.setName("The Matrix");
-        film1.getShowTimeList().add("12:05 PM");
-        film1.getShowTimeList().add("3:30 PM");
-        film1.getShowTimeList().add("5:00 PM");
-        film1.getShowTimeList().add("7:30 PM");
-        film1.getShowTimeList().add("10:45 PM");
+        for (Theater theater : theaterMap.values()) {
+            for (Film film : theater.getFilmList(date)) {
+                itemList.add(new VoteDateListItem(theater.getName(), film));
+            }
+        }
 
-        Film film2 = new Film();
-        film2.setName("Blade Runner");
-        film2.getShowTimeList().add("12:00 PM");
-        film2.getShowTimeList().add("3:30 PM");
-        film2.getShowTimeList().add("5:30 PM");
-        film2.getShowTimeList().add("7:15 PM");
-        film2.getShowTimeList().add("10:05 PM");
+        listAdapter.setItemList(itemList);
+        listAdapter.notifyDataSetChanged();
+    }
 
-        Film film3 = new Film();
-        film3.setName("Blade Runner");
-        film3.getShowTimeList().add("12:30 PM");
-        film3.getShowTimeList().add("3:00 PM");
-        film3.getShowTimeList().add("5:30 PM");
-        film3.getShowTimeList().add("7:05 PM");
-        film3.getShowTimeList().add("10:30 PM");
+    /**
+     * Show dialog for Vote Task failures.
+     *
+     * @param message String
+     */
+    protected void showFailDialog(String message) {
 
-        itemList.add(new VoteDateListItem("The Grand 16", film1));
-        itemList.add(new VoteDateListItem("The Grand 16", film2));
-        itemList.add(new VoteDateListItem("The Grand 16", film3));
-        itemList.add(new VoteDateListItem("AMC Panama City 10", film1));
-        itemList.add(new VoteDateListItem("AMC Panama City 10", film2));
-        itemList.add(new VoteDateListItem("AMC Panama City 10", film3));
-        itemList.add(new VoteDateListItem("Martin Theater", film1));
-        itemList.add(new VoteDateListItem("Martin Theater", film2));
-        itemList.add(new VoteDateListItem("Martin Theater", film3));
+        // TODO: move to strings.xml
+        String title = "Failed to send vote";
+        String defaultMessage = "Please try again later.";
 
-        return itemList;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+
+        if (message == null || message.isEmpty()) {
+            builder.setMessage(defaultMessage);
+        } else {
+            builder.setMessage(message);
+        }
+
+        builder.setPositiveButton("OK", null);
+        builder.create().show();
+    }
+
+    /**
+     * Start network task to get list of theaters, films, and show times for date.
+     */
+    protected void startTheaterTask() {
+
+        cancelTheaterTask();
+
+        theaterTask = new TheaterTask(date);
+        theaterTask.setCallback(new TheaterTask.Callback() {
+            @Override
+            public void onResult(Boolean result, String message, Map<String, Theater> theaterMap) {
+                if (result) {
+                    updateVoteList(theaterMap);
+                } else {
+                    Log.w(TAG, "failed to get theater: " + message);
+                }
+            }
+        });
+        theaterTask.execute();
+    }
+
+    /**
+     * Cancel network task.
+     */
+    protected void cancelTheaterTask() {
+        if (theaterTask != null) {
+            theaterTask.cancel(true);
+            theaterTask = null;
+        }
+    }
+
+    /**
+     * Start network task to cast vote.
+     *
+     * @param vote Vote
+     */
+    protected void startVoteTask(Vote vote) {
+
+        cancelVoteTask();
+
+        voteTask = new VoteTask(vote);
+        voteTask.setCallback(new VoteTask.Callback() {
+            @Override
+            public void onResult(Boolean result, String message) {
+                if (result) {
+                    finish();
+                } else {
+                    showFailDialog(message);
+                }
+            }
+        });
+        voteTask.execute();
+    }
+
+    /**
+     * Cancel network task.
+     */
+    protected void cancelVoteTask() {
+        if (voteTask != null) {
+            voteTask.cancel(true);
+            voteTask = null;
+        }
     }
 
     /**
@@ -153,26 +249,17 @@ public class VoteDateActivity extends AppCompatActivity {
      */
     public class VoteDateListAdapter extends BaseAdapter {
 
-        private final List<VoteDateListItem> itemList;
-
-        public VoteDateListAdapter(List<VoteDateListItem> itemList) {
-            this.itemList = itemList;
-        }
+        private final List<VoteDateListItem> itemList = new ArrayList<>();
 
         @Override
         public int getCount() {
-
-            if (itemList == null) {
-                return 0;
-            }
-
             return itemList.size();
         }
 
         @Override
         public VoteDateListItem getItem(int index) {
 
-            if (itemList == null || itemList.size() < index) {
+            if (itemList.size() < index) {
                 return null;
             }
 
@@ -203,6 +290,13 @@ public class VoteDateActivity extends AppCompatActivity {
             return view;
         }
 
+        void setItemList(List<VoteDateListItem> list) {
+            if (list != null) {
+                itemList.clear();
+                itemList.addAll(list);
+            }
+        }
+
     }
 
     /**
@@ -212,7 +306,7 @@ public class VoteDateActivity extends AppCompatActivity {
 
         private final Film film;
 
-        public VoteTimeListAdapter(Film film) {
+        VoteTimeListAdapter(Film film) {
             this.film = film;
         }
 
@@ -250,21 +344,20 @@ public class VoteDateActivity extends AppCompatActivity {
     }
 
     /**
-     * Class that holds voting information for the list.
+     * Object that holds voting information for the list.
      */
     public class VoteDateListItem {
 
-        // TODO: private final String date;???
-        private final String theater;
+        private final String theaterName;
         private final Film film;
 
-        public VoteDateListItem(String theater, Film film) {
-            this.theater = theater;
+        VoteDateListItem(String theaterName, Film film) {
+            this.theaterName = theaterName;
             this.film = film;
         }
 
         public String getHeader() {
-            return theater + " - " + film.getName();
+            return theaterName + " - " + film.getName();
         }
 
         public String getDetail() {
@@ -273,12 +366,146 @@ public class VoteDateActivity extends AppCompatActivity {
 
         // Getter / Setter
 
-        public String getTheater() {
-            return theater;
+        public String getTheaterName() {
+            return theaterName;
         }
 
         public Film getFilm() {
             return film;
+        }
+
+    }
+
+    /**
+     * Task that gets theaters, films, and show times from server.
+     */
+    public static class TheaterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final String date;
+
+        private Callback asyncCallback;
+        private Boolean asyncResult;
+        private String asyncMessage;
+        private final Map<String, Theater> asyncTheaterMap = new HashMap<>();
+
+        TheaterTask(String date) {
+            this.date = date;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            AppInstance appInstance = AppInstance.getInstance();
+
+            MobileClient client = new MobileClient(appInstance.getServer());
+
+            asyncTheaterMap.clear();
+
+            try {
+
+                Map<String, Theater> theaterMap = client.getTheatersForDate(appInstance.getClubName(), date);
+
+                asyncTheaterMap.putAll(theaterMap);
+
+                asyncResult = true;
+                asyncMessage = "Request was successful.";
+            } catch (Exception e) {
+
+                asyncResult = false;
+                asyncMessage = e.getMessage();
+            }
+
+            return asyncResult;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(false);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage, asyncTheaterMap);
+            }
+        }
+
+        void setCallback(Callback callback) {
+            this.asyncCallback = callback;
+        }
+
+        public interface Callback {
+
+            void onResult(Boolean result, String message, Map<String, Theater> theaterMap);
+
+        }
+
+    }
+
+    /**
+     * Task that allows user to send film vote to server.
+     */
+    public static class VoteTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final Vote vote;
+
+        private Callback asyncCallback;
+        private Boolean asyncResult;
+        private String asyncMessage;
+
+        VoteTask(Vote vote) {
+            this.vote = vote;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            AppInstance appInstance = AppInstance.getInstance();
+
+            MobileClient client = new MobileClient(appInstance.getServer());
+
+            try {
+
+                client.addVote(appInstance.getClubName(), appInstance.getUserName(), vote);
+
+                asyncResult = true;
+                asyncMessage = "Request was successful.";
+            } catch (Exception e) {
+                asyncResult = false;
+                asyncMessage = e.getMessage();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(false);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage);
+            }
+        }
+
+        void setCallback(Callback callback) {
+            this.asyncCallback = callback;
+        }
+
+        public interface Callback {
+
+            void onResult(Boolean result, String message);
+
         }
 
     }

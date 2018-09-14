@@ -1,6 +1,8 @@
 package com.goblinworker.filmvote.model.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +61,22 @@ public class Theater {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Get film list for a specific date.
+     *
+     * @param date String yyyy-MM-dd
+     * @return Film List
+     */
+    public List<Film> getFilmList(String date) {
+
+        FilmDate filmDate = filmDateMap.get(date);
+        if (filmDate == null) {
+            return new ArrayList<>();
+        }
+
+        return filmDate.getFilmList();
     }
 
     // Getter / Setter

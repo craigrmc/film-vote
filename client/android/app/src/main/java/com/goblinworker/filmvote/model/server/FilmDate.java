@@ -1,6 +1,8 @@
 package com.goblinworker.filmvote.model.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,6 +13,15 @@ public class FilmDate {
     private String date;
 
     private final Map<String, Film> filmMap = new HashMap<>();
+
+    /**
+     * Get film list from map.
+     *
+     * @return Film List
+     */
+    public List<Film> getFilmList() {
+        return new ArrayList<>(filmMap.values());
+    }
 
     // Getter / Setter
 
