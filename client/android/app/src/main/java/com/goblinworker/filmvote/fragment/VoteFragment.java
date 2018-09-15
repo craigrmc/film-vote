@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,7 +70,7 @@ public class VoteFragment extends Fragment {
      * @return View of Fragment
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
         View view = inflater.inflate(R.layout.fragment_vote, container, false);
 
@@ -227,7 +228,7 @@ public class VoteFragment extends Fragment {
 
         private final Vote vote;
 
-        public VoteListItem(Vote vote) {
+        VoteListItem(Vote vote) {
             this.vote = vote;
         }
 
@@ -344,7 +345,7 @@ public class VoteFragment extends Fragment {
         private String asyncMessage;
         private final List<Vote> asyncVoteList = new ArrayList<>();
 
-        public VoteListTask(String startDate, String endDate) {
+        VoteListTask(String startDate, String endDate) {
             this.startDate = startDate;
             this.endDate = endDate;
         }
@@ -365,7 +366,7 @@ public class VoteFragment extends Fragment {
                 asyncVoteList.addAll(voteList);
 
                 asyncResult = true;
-                asyncMessage = "Success";
+                asyncMessage = "Request was successful.";
             } catch (Exception e) {
 
                 asyncResult = false;
@@ -377,9 +378,9 @@ public class VoteFragment extends Fragment {
 
         @Override
         protected void onCancelled() {
-            if (asyncCallback != null) {
-                asyncCallback.onResult(asyncResult, asyncMessage, asyncVoteList);
-            }
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(false);
         }
 
         @Override
@@ -389,7 +390,7 @@ public class VoteFragment extends Fragment {
             }
         }
 
-        public void setCallback(Callback callback) {
+        void setCallback(Callback callback) {
             this.asyncCallback = callback;
         }
 

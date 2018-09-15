@@ -49,13 +49,23 @@ public class MobileClient extends BaseClient {
      * @param user String
      * @return User
      */
-    public User signUp(String club, String user) throws IOException, JsonSyntaxException {
+    public User signUp(String club, String user) throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + SIGN_UP + encode(club) + SLASH + encode(user);
 
         // TODO: change api from post to put
         String json = post(url, "");
 
-        return gson.fromJson(json, User.class);
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        User responseUser = gson.fromJson(json, User.class);
+        if (responseUser == null || !responseUser.isValid()) {
+            throw new JSONException("Invalid User.");
+        }
+
+        return responseUser;
     }
 
     /**
@@ -81,7 +91,7 @@ public class MobileClient extends BaseClient {
             throw new JSONException("Invalid User.");
         }
 
-        return gson.fromJson(json, User.class);
+        return responseUser;
     }
 
     /**
@@ -155,17 +165,6 @@ public class MobileClient extends BaseClient {
         String json = delete(url);
 
         return gson.fromJson(json, Theater.class);
-    }
-
-    /**
-     * Get a map of Theaters in a club.
-     *
-     * @param club String
-     * @return Map of Theaters
-     */
-    public Map<String, Theater> getTheatersForClub(String club) {
-        // TODO: finish him!!!
-        return null;
     }
 
     /**

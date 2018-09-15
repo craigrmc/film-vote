@@ -16,7 +16,6 @@ import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.fragment.HomeFragment;
 import com.goblinworker.filmvote.fragment.TheaterFragment;
 import com.goblinworker.filmvote.fragment.VoteFragment;
-import com.goblinworker.filmvote.model.server.Theater;
 
 /**
  * Activity that displays the Home / Vote / Club Fragments via Bottom Navigation View.
@@ -56,8 +55,7 @@ public class MainActivity extends AppCompatActivity
      * @return Intent to Start Activity
      */
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        return intent;
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -65,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation_view_main);
+        BottomNavigationView navigation = findViewById(R.id.bottom_navigation_view_main);
         navigation.setOnNavigationItemSelectedListener(navigationListener);
 
         // Create the adapter that will return a fragment for each of the three
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        viewPager = (ViewPager) findViewById(R.id.view_pager_main);
+        viewPager = findViewById(R.id.view_pager_main);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
@@ -84,13 +82,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTheaterDelete(Theater theater) {
-        // TODO: send network request to delete
-    }
-
-    @Override
     public void onTheaterFind() {
-        // TODO: fit add / find / delete into this activity
         Intent intent = TheaterFindActivity.newIntent(this);
         startActivity(intent);
     }
@@ -105,7 +97,7 @@ public class MainActivity extends AppCompatActivity
          *
          * @param manager FragmentManager
          */
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 

@@ -88,6 +88,13 @@ public class VoteDateActivity extends AppCompatActivity {
         startTheaterTask();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelTheaterTask();
+        cancelVoteTask();
+    }
+
     /**
      * Display show time selection dialog for a film.
      *

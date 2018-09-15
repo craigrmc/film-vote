@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,8 +37,8 @@ public class TheaterFragment extends Fragment {
     private Listener listener;
 
     private TheaterListAdapter theaterListAdapter;
-
-    private TheaterTask theaterTask;
+    private TheaterListTask theaterListTask;
+    private RemoveTheaterTask removeTheaterTask;
 
     /**
      * Required empty public constructor.
@@ -72,7 +74,7 @@ public class TheaterFragment extends Fragment {
      * @return View of Fragment
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
         View view = inflater.inflate(R.layout.fragment_theater, container, false);
 
@@ -141,11 +143,49 @@ public class TheaterFragment extends Fragment {
     public void onStop() {
         super.onStop();
         cancelTheaterListTask();
+        cancelTheaterRemoveTask();
     }
 
     protected void updateTheaterList(List<Theater> theaterList) {
+
+        View view = getView();
+        if (view == null) {
+            Log.w(TAG, "failed to update theater list, invalid list");
+            return;
+        }
+
+        TextView messageTextView = view.findViewById(R.id.text_view_theater);
+        ListView listLinearLayout = view.findViewById(R.id.list_view_theater);
+
+        if (theaterList == null || theaterList.isEmpty()) {
+            messageTextView.setVisibility(View.VISIBLE);
+            listLinearLayout.setVisibility(View.GONE);
+        } else {
+            messageTextView.setVisibility(View.GONE);
+            listLinearLayout.setVisibility(View.VISIBLE);
+        }
+
         theaterListAdapter.setItemList(theaterList);
         theaterListAdapter.notifyDataSetChanged();
+    }
+
+    protected void showFailDialog(String message) {
+
+        // TODO: move to strings.xml
+        String title = "Failed to send request";
+        String defaultMessage = "Please try again later.";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+
+        if (message == null || message.isEmpty()) {
+            builder.setMessage(defaultMessage);
+        } else {
+            builder.setMessage(message);
+        }
+
+        builder.setPositiveButton("OK", null);
+        builder.show();
     }
 
     protected void showItemDialog(final Theater theater) {
@@ -156,9 +196,7 @@ public class TheaterFragment extends Fragment {
         builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
-                if (listener != null) {
-                    listener.onTheaterDelete(theater);
-                }
+                startTheaterRemoveTask(theater);
             }
         });
         builder.setPositiveButton("OK", null);
@@ -171,24 +209,50 @@ public class TheaterFragment extends Fragment {
 
         // TODO: suppress data reloads
 
-        theaterTask = new TheaterTask();
-        theaterTask.setCallback(new TheaterTask.Callback() {
+        theaterListTask = new TheaterListTask();
+        theaterListTask.setCallback(new TheaterListTask.Callback() {
             @Override
             public void onResult(Boolean result, String message, List<Theater> theaterList) {
                 if (result) {
                     updateTheaterList(theaterList);
                 } else {
-                    Log.w(TAG, "failed to get theaters: " + message);
+                    showFailDialog(message);
                 }
             }
         });
-        theaterTask.execute();
+        theaterListTask.execute();
     }
 
     protected void cancelTheaterListTask() {
-        if (theaterTask != null) {
-            theaterTask.cancel(true);
-            theaterTask = null;
+        if (theaterListTask != null) {
+            theaterListTask.cancel(true);
+            theaterListTask = null;
+        }
+    }
+
+    protected void startTheaterRemoveTask(Theater theater) {
+
+        cancelTheaterRemoveTask();
+
+        removeTheaterTask = new RemoveTheaterTask(theater);
+        removeTheaterTask.setCallback(new RemoveTheaterTask.Callback() {
+            @Override
+            public void onResult(Boolean result, String message) {
+                if (result) {
+                    updateTheaterList(null);
+                    startTheaterListTask();
+                } else {
+                    showFailDialog(message);
+                }
+            }
+        });
+        removeTheaterTask.execute();
+    }
+
+    protected void cancelTheaterRemoveTask() {
+        if (removeTheaterTask != null) {
+            removeTheaterTask.cancel(true);
+            removeTheaterTask = null;
         }
     }
 
@@ -256,7 +320,7 @@ public class TheaterFragment extends Fragment {
 
         private final Theater theater;
 
-        public TheaterListItem(Theater theater) {
+        TheaterListItem(Theater theater) {
             this.theater = theater;
         }
 
@@ -293,14 +357,12 @@ public class TheaterFragment extends Fragment {
 
         void onTheaterFind();
 
-        void onTheaterDelete(Theater theater);
-
     }
 
     /**
      * Task to get list of theaters from server.
      */
-    public static class TheaterTask extends AsyncTask<Void, Void, Boolean> {
+    public static class TheaterListTask extends AsyncTask<Void, Void, Boolean> {
 
         private Callback asyncCallback;
         private Boolean asyncResult;
@@ -324,7 +386,7 @@ public class TheaterFragment extends Fragment {
                 asyncTheaterList.addAll(theaterMap.values());
 
                 asyncResult = true;
-                asyncMessage = "Success";
+                asyncMessage = "Request was successful.";
             } catch (Exception e) {
 
                 asyncResult = false;
@@ -336,13 +398,13 @@ public class TheaterFragment extends Fragment {
 
         @Override
         protected void onCancelled() {
-            if (asyncCallback != null) {
-                asyncCallback.onResult(asyncResult, asyncMessage, asyncTheaterList);
-            }
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(false);
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
+        protected void onPostExecute(Boolean result) {
             if (asyncCallback != null) {
                 asyncCallback.onResult(asyncResult, asyncMessage, asyncTheaterList);
             }
@@ -355,6 +417,70 @@ public class TheaterFragment extends Fragment {
         interface Callback {
 
             void onResult(Boolean result, String message, List<Theater> theaterList);
+
+        }
+
+    }
+
+    /**
+     * Task that sends remove theater request to server.
+     */
+    public static class RemoveTheaterTask extends AsyncTask<Void, Void, Boolean> {
+
+        private final Theater theater;
+
+        private Callback asyncCallback;
+        private Boolean asyncResult;
+        private String asyncMessage;
+
+        RemoveTheaterTask(Theater theater) {
+            this.theater = theater;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            AppInstance appInstance = AppInstance.getInstance();
+
+            MobileClient client = new MobileClient(appInstance.getServer());
+
+            try {
+
+                client.removeTheater(appInstance.getClubName(), theater.getName());
+
+                asyncResult = true;
+                asyncMessage = "Request was successful.";
+            } catch (Exception e) {
+                asyncResult = false;
+                asyncMessage = e.getMessage();
+            }
+
+            return asyncResult;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(true);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            if (asyncCallback != null) {
+                asyncCallback.onResult(asyncResult, asyncMessage);
+            }
+        }
+
+        void setCallback(Callback callback) {
+            this.asyncCallback = callback;
+        }
+
+        interface Callback {
+
+            void onResult(Boolean result, String message);
 
         }
 

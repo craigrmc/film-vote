@@ -2,6 +2,7 @@ package com.goblinworker.filmvote.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,7 +47,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -245,7 +246,7 @@ public class HomeFragment extends Fragment {
                 asyncVote = client.getFilmVote(appInstance.getClubName());
 
                 asyncResult = true;
-                asyncMessage = "Success";
+                asyncMessage = "Request was successful.";
 
             } catch (Exception e) {
 
@@ -260,9 +261,9 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onCancelled() {
-            if (asyncCallback != null) {
-                asyncCallback.onResult(asyncResult, asyncMessage, asyncVote);
-            }
+            asyncResult = false;
+            asyncMessage = "Request was canceled.";
+            onPostExecute(false);
         }
 
         @Override

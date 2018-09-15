@@ -11,10 +11,20 @@
         android:layout_height="wrap_content"
         android:queryHint="Search by name or location" />
 
+    <TextView
+        android:id="@+id/theater_find_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="No theaters found"
+        android:visibility="visible" />
+
     <ListView
         android:id="@+id/theater_find_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/theater_find_search_view" />
+        android:layout_below="@id/theater_find_search_view"
+        android:visibility="gone" />
 
 </RelativeLayout>

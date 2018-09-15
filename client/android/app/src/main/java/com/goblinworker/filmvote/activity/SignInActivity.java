@@ -51,6 +51,12 @@ public class SignInActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelSignInTask();
+    }
+
+    @Override
     public void onGetStarted() {
         viewPager.setCurrentItem(1);
     }
@@ -129,6 +135,11 @@ public class SignInActivity extends AppCompatActivity
 
     private void startMainActivity(User user) {
 
+        if (user == null || !user.isValid()) {
+            Log.w(TAG, "failed to start main activity, invalid user");
+            return;
+        }
+
         AppInstance.getInstance().setUser(user);
 
         Intent intent = MainActivity.newIntent(this);
@@ -146,7 +157,7 @@ public class SignInActivity extends AppCompatActivity
          *
          * @param manager FragmentManager
          */
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -207,16 +218,6 @@ public class SignInActivity extends AppCompatActivity
         private User asyncUser;
 
         /**
-         * Constructor to sign in a user.
-         *
-         * @param clubName String Club Name
-         * @param userName String User Name
-         */
-        SignInTask(String clubName, String userName) {
-            this(clubName, userName, false);
-        }
-
-        /**
          * Constructor to sign up a user.
          *
          * @param clubName   String Club Name
@@ -236,13 +237,15 @@ public class SignInActivity extends AppCompatActivity
 
             MobileClient client = new MobileClient(appInstance.getServer());
 
-            // TODO: add support to create club / user
-
             try {
 
-                asyncUser = client.signIn(clubName, userName);
+                if (createUser) {
+                    asyncUser = client.signUp(clubName, userName);
+                } else {
+                    asyncUser = client.signIn(clubName, userName);
+                }
 
-                asyncMessage = "Sign In Success.";
+                asyncMessage = "Sign in was successful.";
                 asyncResult = true;
 
                 Log.i(TAG, "sign in success");
@@ -260,20 +263,20 @@ public class SignInActivity extends AppCompatActivity
         }
 
         @Override
+        protected void onCancelled() {
+            asyncResult = false;
+            asyncMessage = "Sign in was canceled.";
+            onPostExecute(false);
+        }
+
+        @Override
         protected void onPostExecute(final Boolean result) {
             if (asyncCallback != null) {
                 asyncCallback.onResult(asyncResult, asyncMessage, asyncUser);
             }
         }
 
-        @Override
-        protected void onCancelled() {
-            if (asyncCallback != null) {
-                asyncCallback.onResult(asyncResult, asyncMessage, asyncUser);
-            }
-        }
-
-        public void setCallback(Callback callback) {
+        void setCallback(Callback callback) {
             this.asyncCallback = callback;
         }
 
