@@ -2,16 +2,12 @@ package com.goblinworker.filmvote.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 /**
  * Object that holds a vote for when and where to watch a film.
  */
 public class Vote {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String TIME_FORMAT = "HH:mm:ss";
 
     private Integer tally;
     private String date;
@@ -30,7 +26,7 @@ public class Vote {
      * Constructor used to tally votes.
      *
      * @param tally Integer
-     * @param date String
+     * @param date  String
      */
     public Vote(Integer tally, String date) {
         this.tally = tally;
@@ -95,11 +91,11 @@ public class Vote {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         try {
             dateFormat.parse(date);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 
@@ -107,11 +103,11 @@ public class Vote {
             return false;
         }
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+        DateFormat timeFormat = ServerDateTime.getTimeFormat();
 
         try {
             timeFormat.parse(time);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 

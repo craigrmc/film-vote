@@ -2,8 +2,7 @@ package com.goblinworker.filmvote.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +10,6 @@ import java.util.Map;
  * Object that holds all the theaters / films / votes for a given day.
  */
 public class FilmDate {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private final String date;
 
@@ -86,15 +83,11 @@ public class FilmDate {
     @JsonIgnore
     public boolean isValid() {
 
-        if (date == null || date.isEmpty()) {
-            return false;
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         try {
             dateFormat.parse(date);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 

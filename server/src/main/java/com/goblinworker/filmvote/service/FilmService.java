@@ -175,10 +175,10 @@ public class FilmService {
         film.getActorList().add("Rutger Hauer");
         film.getActorList().add("Sean Young");
 
-        film.addShowTime("13:10:00");
-        film.addShowTime("17:00:00");
-        film.addShowTime("19:30:00");
-        film.addShowTime("22:05:00");
+        film.addShowTime("20:10:00");
+        film.addShowTime("22:00:00");
+        film.addShowTime("00:30:00");
+        film.addShowTime("03:05:00");
 
         return film;
     }
@@ -202,10 +202,10 @@ public class FilmService {
         film.getActorList().add("Edward Norton");
         film.getActorList().add("Meat Loaf");
 
-        film.addShowTime("13:05:00");
-        film.addShowTime("17:10:00");
-        film.addShowTime("19:30:00");
-        film.addShowTime("22:00:00");
+        film.addShowTime("20:05:00");
+        film.addShowTime("22:10:00");
+        film.addShowTime("00:30:00");
+        film.addShowTime("03:00:00");
 
         return film;
     }
@@ -230,10 +230,10 @@ public class FilmService {
         film.getActorList().add("Laurence Fishburne");
         film.getActorList().add("Carrie-Anne Moss");
 
-        film.addShowTime("13:00:00");
-        film.addShowTime("17:15:00");
-        film.addShowTime("19:00:00");
-        film.addShowTime("22:30:00");
+        film.addShowTime("20:00:00");
+        film.addShowTime("22:15:00");
+        film.addShowTime("00:00:00");
+        film.addShowTime("03:30:00");
 
         return film;
     }

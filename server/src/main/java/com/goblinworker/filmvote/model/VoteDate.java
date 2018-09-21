@@ -2,16 +2,13 @@ package com.goblinworker.filmvote.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.*;
 
 /**
  * Object that holds all votes for a specific date.
  */
 public class VoteDate {
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     private final String date;
 
@@ -120,7 +117,7 @@ public class VoteDate {
     @JsonIgnore
     public boolean isBetween(String start, String end) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         Date startDate;
         try {
@@ -155,7 +152,7 @@ public class VoteDate {
     @JsonIgnore
     public boolean isBefore(String when) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         Date whenDate;
         try {
@@ -183,7 +180,7 @@ public class VoteDate {
     @JsonIgnore
     public boolean isAfter(String when) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         Date whenDate;
         try {
@@ -215,11 +212,11 @@ public class VoteDate {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         try {
             dateFormat.parse(date);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 

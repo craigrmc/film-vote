@@ -1,7 +1,6 @@
 package com.goblinworker.filmvote.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +8,6 @@ import java.util.List;
  * Object that holds info for a specific film.
  */
 public class Film {
-
-    private static final String TIME_FORMAT = "HH:mm:ss";
 
     private final String name;
     private String description;
@@ -51,11 +48,11 @@ public class Film {
             return false;
         }
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT);
+        DateFormat timeFormat = ServerDateTime.getTimeFormat();
 
         try {
             timeFormat.parse(time);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             return false;
         }
 
