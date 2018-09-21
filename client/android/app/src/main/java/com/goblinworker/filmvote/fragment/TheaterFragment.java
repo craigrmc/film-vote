@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.app.AppInstance;
+import com.goblinworker.filmvote.model.server.ServerDateTime;
 import com.goblinworker.filmvote.model.server.Theater;
 import com.goblinworker.filmvote.network.MobileClient;
 
@@ -374,14 +375,16 @@ public class TheaterFragment extends Fragment {
 
             AppInstance appInstance = AppInstance.getInstance();
 
+            ServerDateTime dateTime = new ServerDateTime();
+
             MobileClient client = new MobileClient(appInstance.getServer());
 
             asyncTheaterList.clear();
 
             try {
 
-                Map<String, Theater> theaterMap = client
-                        .getTheatersForDate(appInstance.getClubName(), "2000-01-01");
+                Map<String, Theater> theaterMap = client.getTheatersForDate(
+                        appInstance.getClubName(), dateTime.getClientDate());
 
                 asyncTheaterList.addAll(theaterMap.values());
 

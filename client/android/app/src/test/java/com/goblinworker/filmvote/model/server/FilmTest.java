@@ -1,25 +1,6 @@
 package com.goblinworker.filmvote.model.server;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 public class FilmTest {
-
-    @Test
-    public void getShowTimeDisplayTestNewFilm() {
-        Film film = new Film();
-        String result = film.getShowTimes();
-
-        Assert.assertEquals("", result);
-    }
-
-    @Test
-    public void getShowTimeDisplayTestFullFilm() {
-        Film film = makeFilm();
-        String result = film.getShowTimes();
-
-        Assert.assertEquals("12:00 PM, 3:00 PM, 5:00 PM, 7:00 PM, 10:00 PM", result);
-    }
 
     private Film makeFilm() {
 

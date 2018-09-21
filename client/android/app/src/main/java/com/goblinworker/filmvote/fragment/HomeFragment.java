@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.goblinworker.filmvote.BuildConfig;
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.app.AppInstance;
+import com.goblinworker.filmvote.model.server.ServerDateTime;
 import com.goblinworker.filmvote.model.server.Vote;
 import com.goblinworker.filmvote.network.MobileClient;
 
@@ -88,6 +89,13 @@ public class HomeFragment extends Fragment {
             return;
         }
 
+        ServerDateTime dateTime;
+        if (vote == null) {
+            dateTime = null;
+        } else {
+            dateTime = new ServerDateTime(vote.getDate(), vote.getTime());
+        }
+
         LinearLayout voteLinearLayout = view.findViewById(R.id.linear_layout_home_vote);
         if (vote == null) {
             voteLinearLayout.setVisibility(View.GONE);
@@ -110,10 +118,10 @@ public class HomeFragment extends Fragment {
         }
 
         TextView dateTextView = view.findViewById(R.id.text_view_home_vote_date);
-        if (vote == null || vote.getDate() == null) {
+        if (dateTime == null || dateTime.getServerDate() == null) {
             dateTextView.setText("");
         } else {
-            dateTextView.setText(vote.getDayLegacy());
+            dateTextView.setText(dateTime.getDisplayDate());
         }
 
         TextView theaterTextView = view.findViewById(R.id.text_view_home_vote_theater);
@@ -131,10 +139,10 @@ public class HomeFragment extends Fragment {
         }
 
         TextView timeTextView = view.findViewById(R.id.text_view_home_vote_time);
-        if (vote == null || vote.getTime() == null) {
+        if (dateTime == null || dateTime.getServerTime() == null) {
             timeTextView.setText("");
         } else {
-            timeTextView.setText(vote.getLocalTimeLegacy());
+            timeTextView.setText(dateTime.getDisplayTime());
         }
     }
 

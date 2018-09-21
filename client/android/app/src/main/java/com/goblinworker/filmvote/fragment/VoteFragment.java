@@ -2,7 +2,6 @@ package com.goblinworker.filmvote.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.app.AppInstance;
+import com.goblinworker.filmvote.model.server.ServerDateTime;
 import com.goblinworker.filmvote.model.server.Vote;
 import com.goblinworker.filmvote.network.MobileClient;
 
@@ -142,8 +142,12 @@ public class VoteFragment extends Fragment {
 
         // TODO: suppress data reloads
 
-        // TODO: get real dates
-        voteListTask = new VoteListTask("2000-01-01", "2000-01-07");
+        long sixDaysFromNow = System.currentTimeMillis() + 86400000 * 6;
+
+        ServerDateTime startDateTime = new ServerDateTime();
+        ServerDateTime endDateTime = new ServerDateTime(sixDaysFromNow);
+
+        voteListTask = new VoteListTask(startDateTime.getClientDate(), endDateTime.getClientDate());
         voteListTask.setCallback(new VoteListTask.Callback() {
             @Override
             public void onResult(Boolean result, String message, List<Vote> voteList) {
@@ -238,7 +242,7 @@ public class VoteFragment extends Fragment {
                 return null;
             }
 
-            String day = getDay();
+            String date = getDisplayDate();
 
             Integer tally = vote.getTally();
             if (tally == null || tally < 0) {
@@ -253,7 +257,7 @@ public class VoteFragment extends Fragment {
                 vote = "Votes";
             }
 
-            return day + " (" + tally + " " + vote + ")";
+            return date + " (" + tally + " " + vote + ")";
         }
 
         public String getDetail() {
@@ -268,7 +272,7 @@ public class VoteFragment extends Fragment {
                 film = "N/A";
             }
 
-            String time = getLocalTime();
+            String time = getDisplayTime();
             if (time == null) {
                 time = "N/A";
             }
@@ -276,38 +280,26 @@ public class VoteFragment extends Fragment {
             return film + " - " + time;
         }
 
-        String getDay() {
+        public String getDisplayDate() {
 
             if (vote == null) {
                 return null;
             }
 
-            String day;
+            ServerDateTime dateTime = new ServerDateTime(vote.getDate(), null);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                day = vote.getDay();
-            } else {
-                day = vote.getDayLegacy();
-            }
-
-            return day;
+            return dateTime.getDisplayDate();
         }
 
-        String getLocalTime() {
+        public String getDisplayTime() {
 
             if (vote == null) {
                 return null;
             }
 
-            String time;
+            ServerDateTime dateTime = new ServerDateTime(vote.getDate(), vote.getTime());
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                time = vote.getLocalTime();
-            } else {
-                time = vote.getLocalTimeLegacy();
-            }
-
-            return time;
+            return dateTime.getDisplayTime();
         }
 
         public String getDate() {

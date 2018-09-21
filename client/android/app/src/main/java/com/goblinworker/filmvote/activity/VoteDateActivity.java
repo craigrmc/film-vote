@@ -19,12 +19,14 @@ import android.widget.TextView;
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.app.AppInstance;
 import com.goblinworker.filmvote.model.server.Film;
+import com.goblinworker.filmvote.model.server.ServerDateTime;
 import com.goblinworker.filmvote.model.server.Theater;
 import com.goblinworker.filmvote.model.server.Vote;
 import com.goblinworker.filmvote.network.MobileClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +72,10 @@ public class VoteDateActivity extends AppCompatActivity {
             date = getIntent().getStringExtra(EXTRA_DATE);
         }
 
-        // TODO: use relative date
+        ServerDateTime dateTime = new ServerDateTime(date, null);
+
         TextView headerTextView = findViewById(R.id.vote_date_header_text_view);
-        headerTextView.setText(date);
+        headerTextView.setText(dateTime.getDisplayDate());
 
         listAdapter = new VoteDateListAdapter();
 
@@ -155,7 +158,7 @@ public class VoteDateActivity extends AppCompatActivity {
 
         for (Theater theater : theaterMap.values()) {
             for (Film film : theater.getFilmList(date)) {
-                itemList.add(new VoteDateListItem(theater.getName(), film));
+                itemList.add(new VoteDateListItem(theater.getName(), date, film));
             }
         }
 
@@ -313,25 +316,55 @@ public class VoteDateActivity extends AppCompatActivity {
 
         private final Film film;
 
+        /**
+         * Constructor to create list view adapter.
+         *
+         * @param film Film
+         */
         VoteTimeListAdapter(Film film) {
             this.film = film;
         }
 
+        /**
+         * Get number of show times.
+         *
+         * @return int
+         */
         @Override
         public int getCount() {
             return film.getShowTimeList().size();
         }
 
+        /**
+         * Get show time in server timezone.
+         *
+         * @param index int
+         * @return String
+         */
         @Override
         public String getItem(int index) {
             return film.getShowTimeList().get(index);
         }
 
+        /**
+         * Not Supported.
+         *
+         * @param index int
+         * @return long
+         */
         @Override
         public long getItemId(int index) {
             return 0;
         }
 
+        /**
+         * Get the list view item view, with show time in client timezone.
+         *
+         * @param index int
+         * @param view  View
+         * @param root  ViewGroup
+         * @return View
+         */
         @Override
         public View getView(int index, View view, ViewGroup root) {
 
@@ -340,10 +373,14 @@ public class VoteDateActivity extends AppCompatActivity {
                 view = inflater.inflate(R.layout.item_time, root, false);
             }
 
-            String showTime = getItem(index);
+            String serverShowTime = getItem(index);
+
+            ServerDateTime dateTime = new ServerDateTime(date, serverShowTime);
+
+            String clientShowTime = dateTime.getDisplayTime();
 
             TextView headerTextView = view.findViewById(R.id.item_time_text_view);
-            headerTextView.setText(showTime);
+            headerTextView.setText(clientShowTime);
 
             return view;
         }
@@ -356,19 +393,50 @@ public class VoteDateActivity extends AppCompatActivity {
     public class VoteDateListItem {
 
         private final String theaterName;
+        private final String date;
         private final Film film;
 
-        VoteDateListItem(String theaterName, Film film) {
+        VoteDateListItem(String theaterName, String date, Film film) {
             this.theaterName = theaterName;
+            this.date = date;
             this.film = film;
         }
 
         public String getHeader() {
+
+            if (film == null) {
+                return "N/A";
+            }
+
             return theaterName + " - " + film.getName();
         }
 
         public String getDetail() {
-            return film.getShowTimes();
+
+            if (film == null) {
+                return "N/A";
+            }
+
+            StringBuilder builder = new StringBuilder();
+
+            Iterator<String> iterator = film.getShowTimeList().iterator();
+
+            while (iterator.hasNext()) {
+
+                String serverShowTime = iterator.next();
+
+                ServerDateTime dateTime = new ServerDateTime(date, serverShowTime);
+
+                String clientShowTime = dateTime.getDisplayTime();
+
+                builder.append(clientShowTime);
+
+                if (iterator.hasNext()) {
+                    builder.append(", ");
+                }
+            }
+
+            return builder.toString();
         }
 
         // Getter / Setter
