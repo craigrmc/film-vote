@@ -1,18 +1,12 @@
 package com.goblinworker.filmvote.model;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.*;
 
 /**
  * Object that holds the collection of user's that will vote on a film.
  */
 public class Club {
-
-    private static final Locale DATE_LOCALE = Locale.US;
-
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
-    private static final TimeZone DATE_TIMEZONE = TimeZone.getTimeZone("GMT");
 
     private final String name;
 
@@ -288,7 +282,7 @@ public class Club {
             return null;
         }
 
-        Calendar calendar = Calendar.getInstance(DATE_TIMEZONE, DATE_LOCALE);
+        Calendar calendar = Calendar.getInstance(ServerDateTime.TIME_ZONE, ServerDateTime.LOCALE);
         calendar.setTime(date);
 
         return calendar;
@@ -303,8 +297,7 @@ public class Club {
      */
     Date getDate(String string) {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, DATE_LOCALE);
-        dateFormat.setTimeZone(DATE_TIMEZONE);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         Date date;
         try {
@@ -328,8 +321,7 @@ public class Club {
             return null;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, DATE_LOCALE);
-        dateFormat.setTimeZone(DATE_TIMEZONE);
+        DateFormat dateFormat = ServerDateTime.getDateFormat();
 
         return dateFormat.format(date);
     }
