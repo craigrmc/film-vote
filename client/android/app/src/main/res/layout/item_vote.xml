@@ -14,14 +14,12 @@
             android:id="@+id/text_view_vote_item_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Monday (1 Vote)"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/text_view_vote_item_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Matrix - 7: 30 PM"
             android:textAppearance="?attr/textAppearanceListItem" />
 
     </LinearLayout>

@@ -22,7 +22,7 @@
             android:id="@+id/sign_in_work_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signing in..." />
+            android:text="@string/signing_in" />
 
     </LinearLayout>
 

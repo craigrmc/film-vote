@@ -14,14 +14,12 @@
             android:id="@+id/text_view_theater_item_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="The Grand 16 - Pier Park"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/text_view_theater_item_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pier Park"
             android:textAppearance="?attr/textAppearanceListItem" />
 
     </LinearLayout>

@@ -16,7 +16,7 @@
             android:id="@+id/text_view_sign_in_get_started_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome to Film Vote"
+            android:text="@string/welcome_to_film_vote"
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25dp"
-            android:text="An open source app to let you and your friends vote on the new films to watch."
+            android:text="@string/an_open_source_app_to_let_you_and_your_friends_vote_on_the_new_films_to_watch"
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/button_sign_in_get_started"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get Started" />
+            android:text="@string/get_started" />
 
     </LinearLayout>
 

@@ -22,27 +22,28 @@
                 android:id="@+id/sign_in_club_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your club name"
-                android:textSize="25dp" />
+                android:hint="@string/your_club_name"
+                android:inputType="textCapWords"
+                android:textSize="@dimen/edit_text_large" />
 
             <TextView
                 android:id="@+id/sign_in_club_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sign in to or sign up for a club." />
+                android:text="@string/sign_in_to_or_sign_up_for_a_club" />
 
             <Button
                 android:id="@+id/sign_in_club_next_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Next" />
+                android:text="@string/next" />
 
             <!-- TODO: move to bottom -->
             <Button
                 android:id="@+id/sign_in_club_back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Back" />
+                android:text="@string/back" />
 
         </LinearLayout>
 
