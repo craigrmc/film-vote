@@ -104,24 +104,27 @@ public class TheaterFindActivity extends AppCompatActivity {
 
     protected void showItemDialog(final Theater theater) {
 
+        String add = getString(R.string.add);
+        String cancel = getString(R.string.cancel);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(theater.getName());
         builder.setMessage(theater.getInfo());
-        builder.setNegativeButton("ADD", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
                 startAddTheaterTask(theater);
             }
         });
-        builder.setPositiveButton("CANCEL", null);
+        builder.setPositiveButton(cancel, null);
         builder.show();
     }
 
     protected void showFailDialog(String message) {
 
-        // TODO: move to strings.xml
-        String title = "Failed to send request";
-        String defaultMessage = "Please try again later.";
+        String title = getString(R.string.failed_to_send_request);
+        String defaultMessage = getString(R.string.please_try_again_later);
+        String ok = getString(R.string.ok);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -132,7 +135,7 @@ public class TheaterFindActivity extends AppCompatActivity {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(ok, null);
         builder.show();
     }
 
@@ -313,7 +316,7 @@ public class TheaterFindActivity extends AppCompatActivity {
 
                 asyncResult = true;
                 asyncMessage = "Request was successful";
-            } catch (IOException e) {
+            } catch (Exception e) {
                 asyncResult = false;
                 asyncMessage = e.getMessage();
             }

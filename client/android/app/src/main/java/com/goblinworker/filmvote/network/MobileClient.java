@@ -99,41 +99,59 @@ public class MobileClient extends BaseClient {
      *
      * @param club String
      * @param user String
+     * @return String response
      */
-    public void signOut(String club, String user) throws IOException {
+    public String signOut(String club, String user) throws IOException {
         String url = server + MOBILE_V1 + SIGN_OUT + encode(club) + SLASH + encode(user);
 
         // TODO: change api from post to put
         String json = post(url, "");
 
-        return;
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        return json;
     }
 
     /**
      * Add a voting club.
      *
      * @param club String
+     * @return String response
      */
-    public void addClub(String club) throws IOException {
+    public String addClub(String club) throws IOException {
         String url = server + MOBILE_V1 + ADD_CLUB + encode(club);
 
         // TODO: change api from post to put
         String json = post(url, "");
 
-        return;
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        return json;
     }
 
     /**
      * Remove a voting club.
      *
      * @param club String
+     * @return String response
      */
-    public void removeClub(String club) throws IOException {
+    public String removeClub(String club) throws IOException {
         String url = server + MOBILE_V1 + REMOVE_CLUB + encode(club);
 
         String json = delete(url);
 
-        return;
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        return json;
     }
 
     /**
@@ -143,13 +161,24 @@ public class MobileClient extends BaseClient {
      * @param theater String
      * @return Theater
      */
-    public Theater addTheater(String club, Theater theater) throws IOException, JsonSyntaxException {
+    public Theater addTheater(String club, Theater theater)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + ADD_THEATER + encode(club);
 
         String requestJson = gson.toJson(theater);
         String responseJson = post(url, requestJson);
 
-        return gson.fromJson(responseJson, Theater.class);
+        Error responseError = gson.fromJson(responseJson, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        Theater responseTheater = gson.fromJson(responseJson, Theater.class);
+        if (responseTheater == null) {
+            // TODO: throw exception
+        }
+
+        return responseTheater;
     }
 
     /**
@@ -159,12 +188,23 @@ public class MobileClient extends BaseClient {
      * @param theater String
      * @return Theater
      */
-    public Theater removeTheater(String club, String theater) throws IOException, JsonSyntaxException {
+    public Theater removeTheater(String club, String theater)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + REMOVE_THEATER + encode(club) + SLASH + encode(theater);
 
         String json = delete(url);
 
-        return gson.fromJson(json, Theater.class);
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        Theater responseTheater = gson.fromJson(json, Theater.class);
+        if (responseTheater == null) {
+            // TODO: throw exception
+        }
+
+        return responseTheater;
     }
 
     /**
@@ -174,7 +214,8 @@ public class MobileClient extends BaseClient {
      * @param date String yyyy-MM-dd
      * @return Map of Theaters
      */
-    public Map<String, Theater> getTheatersForDate(String club, String date) throws IOException, JsonSyntaxException {
+    public Map<String, Theater> getTheatersForDate(String club, String date)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + GET_THEATERS_FOR_DATE + encode(club) + SLASH + encode(date);
 
         String json = get(url);
@@ -182,7 +223,12 @@ public class MobileClient extends BaseClient {
         Type type = new TypeToken<Map<String, Theater>>() {
         }.getType();
 
-        return gson.fromJson(json, type);
+        Map<String, Theater> theaterMap = gson.fromJson(json, type);
+        if (theaterMap == null) {
+            throw new JSONException("Invalid Theater Map.");
+        }
+
+        return theaterMap;
     }
 
     /**
@@ -191,7 +237,8 @@ public class MobileClient extends BaseClient {
      * @param location String address or zipcode
      * @return Map of Theaters
      */
-    public Map<String, Theater> getTheatersForLocation(String location) throws IOException, JsonSyntaxException {
+    public Map<String, Theater> getTheatersForLocation(String location)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + GET_THEATERS_FOR_LOCATION + encode(location);
 
         String json = get(url);
@@ -199,7 +246,12 @@ public class MobileClient extends BaseClient {
         Type type = new TypeToken<Map<String, Theater>>() {
         }.getType();
 
-        return gson.fromJson(json, type);
+        Map<String, Theater> theaterMap = gson.fromJson(json, type);
+        if (theaterMap == null) {
+            throw new JSONException("Invalid Theater Map.");
+        }
+
+        return theaterMap;
     }
 
     /**
@@ -210,14 +262,24 @@ public class MobileClient extends BaseClient {
      * @param vote String
      * @return Vote
      */
-    public Vote addVote(String club, String user, Vote vote) throws IOException, JsonSyntaxException {
+    public Vote addVote(String club, String user, Vote vote)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + ADD_VOTE + encode(club) + SLASH + encode(user);
 
-        // TODO: check for server error
         String requestJson = gson.toJson(vote);
         String responseJson = post(url, requestJson);
 
-        return gson.fromJson(responseJson, Vote.class);
+        Error responseError = gson.fromJson(responseJson, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
+        Vote responseVote = gson.fromJson(responseJson, Vote.class);
+        if (responseVote == null) {
+            throw new JSONException("Invalid Vote.");
+        }
+
+        return responseVote;
     }
 
     /**
@@ -230,6 +292,11 @@ public class MobileClient extends BaseClient {
         String url = server + MOBILE_V1 + GET_FILM_VOTE + encode(club);
 
         String json = get(url);
+
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
 
         return gson.fromJson(json, Vote.class);
     }
@@ -246,6 +313,11 @@ public class MobileClient extends BaseClient {
 
         String json = get(url);
 
+        Error responseError = gson.fromJson(json, Error.class);
+        if (responseError != null && responseError.isValid()) {
+            throw new IOException(responseError.getMessage());
+        }
+
         return gson.fromJson(json, Vote.class);
     }
 
@@ -257,7 +329,8 @@ public class MobileClient extends BaseClient {
      * @param end   String yyyy-MM-dd
      * @return Vote List
      */
-    public List<Vote> getFilmVoteList(String club, String start, String end) throws IOException, JsonSyntaxException {
+    public List<Vote> getFilmVoteList(String club, String start, String end)
+            throws IOException, JsonSyntaxException, JSONException {
         String url = server + MOBILE_V1 + GET_FILM_VOTE + encode(club) + SLASH + start + SLASH + end;
 
         String json = get(url);
@@ -265,7 +338,12 @@ public class MobileClient extends BaseClient {
         Type type = new TypeToken<List<Vote>>() {
         }.getType();
 
-        return gson.fromJson(json, type);
+        List<Vote> voteList = gson.fromJson(json, type);
+        if (voteList == null) {
+            throw new JSONException("Invalid Vote List");
+        }
+
+        return voteList;
     }
 
 }

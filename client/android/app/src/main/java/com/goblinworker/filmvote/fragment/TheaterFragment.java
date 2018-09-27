@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -172,9 +171,9 @@ public class TheaterFragment extends Fragment {
 
     protected void showFailDialog(String message) {
 
-        // TODO: move to strings.xml
-        String title = "Failed to send request";
-        String defaultMessage = "Please try again later.";
+        String title = getString(R.string.failed_to_send_request);
+        String defaultMessage = getString(R.string.please_try_again_later);
+        String ok = getString(R.string.ok);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(title);
@@ -185,22 +184,25 @@ public class TheaterFragment extends Fragment {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(ok, null);
         builder.show();
     }
 
     protected void showItemDialog(final Theater theater) {
 
+        String delete = getString(R.string.delete);
+        String ok = getString(R.string.ok);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(theater.getName());
         builder.setMessage(theater.getInfo());
-        builder.setNegativeButton("DELETE", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
                 startTheaterRemoveTask(theater);
             }
         });
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(ok, null);
         builder.show();
     }
 

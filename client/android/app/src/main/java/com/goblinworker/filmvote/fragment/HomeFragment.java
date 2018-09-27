@@ -177,8 +177,7 @@ public class HomeFragment extends Fragment {
 
         String clubName = AppInstance.getInstance().getClubName();
         if (clubName == null || clubName.isEmpty()) {
-            // TODO: move to strings.xml
-            return "N/A";
+            return getString(R.string.na);
         }
 
         return clubName;
@@ -188,8 +187,7 @@ public class HomeFragment extends Fragment {
 
         String userName = AppInstance.getInstance().getUserName();
         if (userName == null || userName.isEmpty()) {
-            // TODO: move to strings.xml
-            return "N/A";
+            return getString(R.string.na);
         }
 
         return userName;
@@ -197,12 +195,11 @@ public class HomeFragment extends Fragment {
 
     public String getBuild() {
 
-        // TODO: move to strings.xml
         String type;
         if (BuildConfig.DEBUG) {
-            type = "(Debug)";
+            type = getString(R.string.debug);
         } else {
-            type = "(Release)";
+            type = getString(R.string.release);
         }
 
         return BuildConfig.VERSION_CODE + " " + type;
@@ -214,19 +211,17 @@ public class HomeFragment extends Fragment {
 
     public String getVoteHeader(Integer tally) {
 
-        // TODO: move to strings.xml
-
         if (tally == null || tally < 0) {
-            return "No Film Votes";
+            return getString(R.string.no_film_votes);
         }
 
-        String nextFilm = "Next Film";
+        String nextFilm = getString(R.string.next_film);
 
         String vote;
         if (tally == 1) {
-            vote = "vote";
+            vote = getString(R.string.vote);
         } else {
-            vote = "votes";
+            vote = getString(R.string.votes);
         }
 
         return nextFilm + " (" + tally + " " + vote + ")";

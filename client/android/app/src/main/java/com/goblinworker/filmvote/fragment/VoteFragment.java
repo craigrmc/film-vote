@@ -249,12 +249,11 @@ public class VoteFragment extends Fragment {
                 tally = 0;
             }
 
-            // TODO: move to strings.xml
             String vote;
             if (tally == 1) {
-                vote = "Vote";
+                vote = getString(R.string.vote);
             } else {
-                vote = "Votes";
+                vote = getString(R.string.votes);
             }
 
             return date + " (" + tally + " " + vote + ")";
@@ -262,19 +261,18 @@ public class VoteFragment extends Fragment {
 
         public String getDetail() {
 
-            // TODO: move to strings.xml
             if (vote == null) {
-                return "N/A";
+                return getString(R.string.na);
             }
 
             String film = vote.getFilm();
             if (film == null) {
-                film = "N/A";
+                film = getString(R.string.na);
             }
 
             String time = getDisplayTime();
             if (time == null) {
-                time = "N/A";
+                time = getString(R.string.na);
             }
 
             return film + " - " + time;

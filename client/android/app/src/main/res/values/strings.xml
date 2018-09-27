@@ -20,4 +20,19 @@
     <string name="no_theaters_found">No Theaters Found</string>
     <string name="no_upcoming_votes">No Upcoming Votes</string>
     <string name="no_theaters_in_the_club">No Theaters in the Club</string>
+    <string name="failed_to_sign_in">Failed to Sign In</string>
+    <string name="failed_to_send_request">Failed to send request</string>
+    <string name="failed_to_send_vote">Failed to send vote</string>
+    <string name="please_try_again_later">Please try again later.</string>
+    <string name="na">N/A</string>
+    <string name="debug">(Debug)</string>
+    <string name="release">(Release)</string>
+    <string name="no_film_votes">No Film Votes</string>
+    <string name="next_film">Next Film</string>
+    <string name="vote">Vote</string>
+    <string name="votes">Votes</string>
+    <string name="ok">OK</string>
+    <string name="add">ADD</string>
+    <string name="delete">DELETE</string>
+    <string name="cancel">CANCEL</string>
 </resources>

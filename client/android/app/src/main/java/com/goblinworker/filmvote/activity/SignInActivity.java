@@ -116,9 +116,9 @@ public class SignInActivity extends AppCompatActivity
 
         viewPager.setCurrentItem(1);
 
-        // TODO: move to strings.xml
-        String title = "Failed to Sign In";
-        String defaultMessage = "Please try again later.";
+        String title = getString(R.string.failed_to_sign_in);
+        String defaultMessage = getString(R.string.please_try_again_later);
+        String ok = getString(R.string.ok);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this);
         builder.setTitle(title);
@@ -129,7 +129,7 @@ public class SignInActivity extends AppCompatActivity
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(ok, null);
         builder.create().show();
     }
 

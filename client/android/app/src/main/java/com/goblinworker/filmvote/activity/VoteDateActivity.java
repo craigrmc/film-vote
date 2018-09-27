@@ -110,6 +110,8 @@ public class VoteDateActivity extends AppCompatActivity {
             return;
         }
 
+        String cancel = getString(R.string.cancel);
+
         final VoteTimeListAdapter showTimeListAdapter = new VoteTimeListAdapter(item.getFilm());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -120,7 +122,7 @@ public class VoteDateActivity extends AppCompatActivity {
                 onTimeSelect(item.getTheaterName(), item.getFilm(), showTimeListAdapter.getItem(index));
             }
         });
-        builder.setNegativeButton("CANCEL", null);
+        builder.setNegativeButton(cancel, null);
         builder.show();
     }
 
@@ -173,9 +175,9 @@ public class VoteDateActivity extends AppCompatActivity {
      */
     protected void showFailDialog(String message) {
 
-        // TODO: move to strings.xml
-        String title = "Failed to send vote";
-        String defaultMessage = "Please try again later.";
+        String title = getString(R.string.failed_to_send_vote);
+        String defaultMessage = getString(R.string.please_try_again_later);
+        String ok = getString(R.string.ok);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -186,7 +188,7 @@ public class VoteDateActivity extends AppCompatActivity {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton("OK", null);
+        builder.setPositiveButton(ok, null);
         builder.create().show();
     }
 
@@ -405,7 +407,7 @@ public class VoteDateActivity extends AppCompatActivity {
         public String getHeader() {
 
             if (film == null) {
-                return "N/A";
+                return getString(R.string.na);
             }
 
             return theaterName + " - " + film.getName();
@@ -414,7 +416,7 @@ public class VoteDateActivity extends AppCompatActivity {
         public String getDetail() {
 
             if (film == null) {
-                return "N/A";
+                return getString(R.string.na);
             }
 
             StringBuilder builder = new StringBuilder();
