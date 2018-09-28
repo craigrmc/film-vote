@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Film Vote</string>
+    <string name="title_server">Server</string>
     <string name="title_home">Home</string>
     <string name="title_vote">Vote</string>
     <string name="title_theater">Theaters</string>
+    <string name="title_sign_out">Sign Out</string>
     <string name="club_name">Club Name:</string>
     <string name="user_name">User Name:</string>
     <string name="version">Version:</string>
@@ -17,9 +19,11 @@
     <string name="your_user_name">Your user name</string>
     <string name="sign_in_or_sign_up_start_voting">Sign in or sign up start voting.</string>
     <string name="signing_in">Signing in…</string>
+    <string name="signing_out">Signing out…</string>
     <string name="no_theaters_found">No Theaters Found</string>
     <string name="no_upcoming_votes">No Upcoming Votes</string>
     <string name="no_theaters_in_the_club">No Theaters in the Club</string>
+    <string name="server_address">Server Address</string>
     <string name="failed_to_sign_in">Failed to Sign In</string>
     <string name="failed_to_send_request">Failed to send request</string>
     <string name="failed_to_send_vote">Failed to send vote</string>

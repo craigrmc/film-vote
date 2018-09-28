@@ -110,8 +110,6 @@ public class VoteDateActivity extends AppCompatActivity {
             return;
         }
 
-        String cancel = getString(R.string.cancel);
-
         final VoteTimeListAdapter showTimeListAdapter = new VoteTimeListAdapter(item.getFilm());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -122,7 +120,7 @@ public class VoteDateActivity extends AppCompatActivity {
                 onTimeSelect(item.getTheaterName(), item.getFilm(), showTimeListAdapter.getItem(index));
             }
         });
-        builder.setNegativeButton(cancel, null);
+        builder.setNegativeButton(R.string.cancel, null);
         builder.show();
     }
 
@@ -175,20 +173,16 @@ public class VoteDateActivity extends AppCompatActivity {
      */
     protected void showFailDialog(String message) {
 
-        String title = getString(R.string.failed_to_send_vote);
-        String defaultMessage = getString(R.string.please_try_again_later);
-        String ok = getString(R.string.ok);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
+        builder.setTitle(R.string.failed_to_send_vote);
 
         if (message == null || message.isEmpty()) {
-            builder.setMessage(defaultMessage);
+            builder.setMessage(R.string.please_try_again_later);
         } else {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton(ok, null);
+        builder.setPositiveButton(R.string.ok, null);
         builder.create().show();
     }
 

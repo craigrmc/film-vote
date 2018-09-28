@@ -171,38 +171,31 @@ public class TheaterFragment extends Fragment {
 
     protected void showFailDialog(String message) {
 
-        String title = getString(R.string.failed_to_send_request);
-        String defaultMessage = getString(R.string.please_try_again_later);
-        String ok = getString(R.string.ok);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(title);
+        builder.setTitle(R.string.failed_to_send_request);
 
         if (message == null || message.isEmpty()) {
-            builder.setMessage(defaultMessage);
+            builder.setMessage(R.string.please_try_again_later);
         } else {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton(ok, null);
+        builder.setPositiveButton(R.string.ok, null);
         builder.show();
     }
 
     protected void showItemDialog(final Theater theater) {
 
-        String delete = getString(R.string.delete);
-        String ok = getString(R.string.ok);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(theater.getName());
         builder.setMessage(theater.getInfo());
-        builder.setNegativeButton(delete, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
                 startTheaterRemoveTask(theater);
             }
         });
-        builder.setPositiveButton(ok, null);
+        builder.setPositiveButton(R.string.ok, null);
         builder.show();
     }
 

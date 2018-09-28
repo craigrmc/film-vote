@@ -1,5 +1,6 @@
 package com.goblinworker.filmvote.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.goblinworker.filmvote.R;
 import com.goblinworker.filmvote.app.AppInstance;
@@ -54,6 +59,28 @@ public class SignInActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         cancelSignInTask();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sign_in, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.server:
+                showServerDialog();
+            default:
+                Log.w(TAG, "unknown item selected: " + item.getItemId());
+        }
+
+        return true;
     }
 
     @Override
@@ -112,24 +139,40 @@ public class SignInActivity extends AppCompatActivity
         }
     }
 
+    private void showServerDialog() {
+
+        final AppInstance appInstance = AppInstance.getInstance();
+
+        final EditText editText = new EditText(this);
+        editText.setText(appInstance.getServer());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.server_address);
+        builder.setView(editText);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                appInstance.setServer(editText.getText().toString());
+            }
+        });
+        builder.show();
+    }
+
     private void showFailDialog(String message) {
 
         viewPager.setCurrentItem(1);
 
-        String title = getString(R.string.failed_to_sign_in);
-        String defaultMessage = getString(R.string.please_try_again_later);
-        String ok = getString(R.string.ok);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this);
-        builder.setTitle(title);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.failed_to_sign_in);
 
         if (message == null || message.isEmpty()) {
-            builder.setMessage(defaultMessage);
+            builder.setMessage(R.string.please_try_again_later);
         } else {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton(ok, null);
+        builder.setPositiveButton(R.string.ok, null);
         builder.create().show();
     }
 

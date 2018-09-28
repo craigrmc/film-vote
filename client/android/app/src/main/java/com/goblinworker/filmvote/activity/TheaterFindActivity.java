@@ -104,38 +104,31 @@ public class TheaterFindActivity extends AppCompatActivity {
 
     protected void showItemDialog(final Theater theater) {
 
-        String add = getString(R.string.add);
-        String cancel = getString(R.string.cancel);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(theater.getName());
         builder.setMessage(theater.getInfo());
-        builder.setNegativeButton(add, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index) {
                 startAddTheaterTask(theater);
             }
         });
-        builder.setPositiveButton(cancel, null);
         builder.show();
     }
 
     protected void showFailDialog(String message) {
 
-        String title = getString(R.string.failed_to_send_request);
-        String defaultMessage = getString(R.string.please_try_again_later);
-        String ok = getString(R.string.ok);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
+        builder.setTitle(R.string.failed_to_send_request);
 
         if (message == null || message.isEmpty()) {
-            builder.setMessage(defaultMessage);
+            builder.setMessage(R.string.please_try_again_later);
         } else {
             builder.setMessage(message);
         }
 
-        builder.setPositiveButton(ok, null);
+        builder.setPositiveButton(R.string.ok, null);
         builder.show();
     }
 
