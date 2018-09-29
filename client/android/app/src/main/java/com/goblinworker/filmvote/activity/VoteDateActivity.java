@@ -74,7 +74,7 @@ public class VoteDateActivity extends AppCompatActivity {
 
         ServerDateTime dateTime = new ServerDateTime(date, null);
 
-        TextView headerTextView = findViewById(R.id.vote_date_header_text_view);
+        TextView headerTextView = findViewById(R.id.vote_date_text_view);
         headerTextView.setText(dateTime.getDisplayDate());
 
         listAdapter = new VoteDateListAdapter();
@@ -287,10 +287,10 @@ public class VoteDateActivity extends AppCompatActivity {
 
             VoteDateListItem item = getItem(index);
 
-            TextView headerTextView = view.findViewById(R.id.item_film_header_text_view);
+            TextView headerTextView = view.findViewById(R.id.film_item_text_view_header);
             headerTextView.setText(item.getHeader());
 
-            TextView detailTextView = view.findViewById(R.id.item_film_detail_text_view);
+            TextView detailTextView = view.findViewById(R.id.film_item_text_view_detail);
             detailTextView.setText(item.getDetail());
 
             return view;
@@ -375,7 +375,7 @@ public class VoteDateActivity extends AppCompatActivity {
 
             String clientShowTime = dateTime.getDisplayTime();
 
-            TextView headerTextView = view.findViewById(R.id.item_time_text_view);
+            TextView headerTextView = view.findViewById(R.id.time_item_text_view);
             headerTextView.setText(clientShowTime);
 
             return view;

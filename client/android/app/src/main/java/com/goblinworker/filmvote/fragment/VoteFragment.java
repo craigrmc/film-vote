@@ -76,7 +76,7 @@ public class VoteFragment extends Fragment {
 
         listAdapter = new VoteListAdapter();
 
-        ListView listView = view.findViewById(R.id.list_view_vote);
+        ListView listView = view.findViewById(R.id.vote_list_view);
         listView.setAdapter(listAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -205,10 +205,10 @@ public class VoteFragment extends Fragment {
 
             VoteListItem item = getItem(index);
 
-            TextView headerTextView = view.findViewById(R.id.text_view_vote_item_header);
+            TextView headerTextView = view.findViewById(R.id.vote_item_text_view_header);
             headerTextView.setText(item.getHeader());
 
-            TextView detailTextView = view.findViewById(R.id.text_view_vote_item_detail);
+            TextView detailTextView = view.findViewById(R.id.vote_item_text_view_detail);
             detailTextView.setText(item.getDetail());
 
             return view;

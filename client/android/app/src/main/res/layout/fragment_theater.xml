@@ -6,7 +6,7 @@
     tools:context=".fragment.TheaterFragment">
 
     <TextView
-        android:id="@+id/text_view_theater"
+        android:id="@+id/theater_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,13 +15,13 @@
         android:visibility="visible" />
 
     <ListView
-        android:id="@+id/list_view_theater"
+        android:id="@+id/theater_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_action_button_theater_add"
+        android:id="@+id/theater_floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

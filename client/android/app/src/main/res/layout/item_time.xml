@@ -4,14 +4,14 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/linear_layout_time_item"
+        android:id="@+id/time_item_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/item_time_text_view"
+            android:id="@+id/time_item_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

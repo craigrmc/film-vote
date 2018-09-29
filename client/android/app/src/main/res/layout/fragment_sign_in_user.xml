@@ -7,6 +7,7 @@
 
     <!-- Wrap in Scroll View to handle Keyboard -->
     <ScrollView
+        android:id="@+id/sign_in_user_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -33,14 +34,14 @@
                 android:text="@string/sign_in_or_sign_up_start_voting" />
 
             <Button
-                android:id="@+id/sign_in_user_next_button"
+                android:id="@+id/sign_in_user_button_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/next" />
 
             <!-- TODO: move to bottom -->
             <Button
-                android:id="@+id/sign_in_user_back_button"
+                android:id="@+id/sign_in_user_button_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/back" />

@@ -21,7 +21,6 @@ import com.goblinworker.filmvote.app.AppInstance;
 import com.goblinworker.filmvote.model.server.Theater;
 import com.goblinworker.filmvote.network.MobileClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -219,10 +218,10 @@ public class TheaterFindActivity extends AppCompatActivity {
 
             TheaterListItem item = getItem(position);
 
-            TextView headerTextView = convertView.findViewById(R.id.text_view_theater_item_header);
+            TextView headerTextView = convertView.findViewById(R.id.theater_item_text_view_header);
             headerTextView.setText(item.getHeader());
 
-            TextView detailTextView = convertView.findViewById(R.id.text_view_theater_item_detail);
+            TextView detailTextView = convertView.findViewById(R.id.theater_item_text_view_detail);
             detailTextView.setText(item.getDetail());
 
             return convertView;

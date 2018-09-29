@@ -7,7 +7,7 @@
     tools:context=".activity.VoteDateActivity">
 
     <TextView
-        android:id="@+id/vote_date_header_text_view"
+        android:id="@+id/vote_date_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_view_text_size_header" />
@@ -16,6 +16,6 @@
         android:id="@+id/vote_date_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/vote_date_header_text_view" />
+        android:layout_below="@id/vote_date_text_view" />
 
 </RelativeLayout>

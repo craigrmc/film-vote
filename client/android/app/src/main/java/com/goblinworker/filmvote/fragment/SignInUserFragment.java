@@ -60,7 +60,7 @@ public class SignInUserFragment extends Fragment {
 
         final EditText userEditText = view.findViewById(R.id.sign_in_user_edit_text);
 
-        final Button nextButton = view.findViewById(R.id.sign_in_user_next_button);
+        final Button nextButton = view.findViewById(R.id.sign_in_user_button_next);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +71,7 @@ public class SignInUserFragment extends Fragment {
             }
         });
 
-        final Button backButton = view.findViewById(R.id.sign_in_user_back_button);
+        final Button backButton = view.findViewById(R.id.sign_in_user_button_back);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

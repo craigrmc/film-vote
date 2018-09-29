@@ -6,14 +6,14 @@
     tools:context=".fragment.SignInGetStartedFragment">
 
     <LinearLayout
-        android:id="@+id/linear_layout_sign_in_get_started"
+        android:id="@+id/sign_in_get_started_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_view_sign_in_get_started_header"
+            android:id="@+id/sign_in_get_started_text_view_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_to_film_vote"
@@ -21,16 +21,16 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
 
         <TextView
-            android:id="@+id/text_view_sign_in_get_started_detail"
+            android:id="@+id/sign_in_get_started_text_view_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="25dp"
-            android:text="@string/an_open_source_app_to_let_you_and_your_friends_vote_on_the_new_films_to_watch"
+            android:text="@string/an_open_source_app"
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat" />
 
         <Button
-            android:id="@+id/button_sign_in_get_started"
+            android:id="@+id/sign_in_get_started_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/get_started" />

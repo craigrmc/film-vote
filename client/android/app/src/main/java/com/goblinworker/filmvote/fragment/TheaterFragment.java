@@ -80,7 +80,7 @@ public class TheaterFragment extends Fragment {
 
         theaterListAdapter = new TheaterListAdapter();
 
-        ListView listView = view.findViewById(R.id.list_view_theater);
+        ListView listView = view.findViewById(R.id.theater_list_view);
         listView.setAdapter(theaterListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class TheaterFragment extends Fragment {
             }
         });
 
-        FloatingActionButton addTheaterButton = view.findViewById(R.id.floating_action_button_theater_add);
+        FloatingActionButton addTheaterButton = view.findViewById(R.id.theater_floating_action_button);
         addTheaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,8 +154,8 @@ public class TheaterFragment extends Fragment {
             return;
         }
 
-        TextView messageTextView = view.findViewById(R.id.text_view_theater);
-        ListView listLinearLayout = view.findViewById(R.id.list_view_theater);
+        TextView messageTextView = view.findViewById(R.id.theater_text_view);
+        ListView listLinearLayout = view.findViewById(R.id.theater_list_view);
 
         if (theaterList == null || theaterList.isEmpty()) {
             messageTextView.setVisibility(View.VISIBLE);
@@ -289,10 +289,10 @@ public class TheaterFragment extends Fragment {
 
             TheaterListItem item = getItem(index);
 
-            TextView headerTextView = view.findViewById(R.id.text_view_theater_item_header);
+            TextView headerTextView = view.findViewById(R.id.theater_item_text_view_header);
             headerTextView.setText(item.getHeader());
 
-            TextView detailTextView = view.findViewById(R.id.text_view_theater_item_detail);
+            TextView detailTextView = view.findViewById(R.id.theater_item_text_view_detail);
             detailTextView.setText(item.getDetail());
 
             return view;

@@ -51,7 +51,7 @@ public class SignInActivity extends AppCompatActivity
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        viewPager = findViewById(R.id.view_pager_sign_in);
+        viewPager = findViewById(R.id.sign_in_view_pager);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
@@ -74,7 +74,7 @@ public class SignInActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.server:
+            case R.id.menu_server:
                 showServerDialog();
             default:
                 Log.w(TAG, "unknown item selected: " + item.getItemId());

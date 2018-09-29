@@ -6,19 +6,19 @@
     tools:context=".fragment.HomeFragment">
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_club_user"
+        android:id="@+id/home_linear_layout_club_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear_layout_home_club"
+            android:id="@+id/home_linear_layout_club"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_view_home_club_title"
+                android:id="@+id/home_text_view_club_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/club_name" />
@@ -28,20 +28,20 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/text_view_home_club_value"
+                android:id="@+id/home_text_view_club_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linear_layout_home_user"
+            android:id="@+id/home_linear_layout_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_view_home_user_title"
+                android:id="@+id/home_text_view_user_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/user_name" />
@@ -51,7 +51,7 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/text_view_home_user_value"
+                android:id="@+id/home_text_view_user_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_vote"
+        android:id="@+id/home_linear_layout_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -68,34 +68,34 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/text_view_home_vote_header"
+            android:id="@+id/home_text_view_vote_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/text_view_home_vote_date"
+            android:id="@+id/home_text_view_vote_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/text_view_home_vote_theater"
+            android:id="@+id/home_text_view_vote_theater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/text_view_home_vote_film"
+            android:id="@+id/home_text_view_vote_film"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/text_view_home_vote_time"
+            android:id="@+id/home_text_view_vote_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_vote_none"
+        android:id="@+id/home_linear_layout_vote_none"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -103,7 +103,7 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/text_view_home_vote_none"
+            android:id="@+id/home_text_view_vote_none"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/no_upcoming_votes" />
@@ -111,20 +111,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_build_version"
+        android:id="@+id/home_linear_layout_version_build"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/linear_layout_home_version"
+            android:id="@+id/home_linear_layout_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_view_home_version_title"
+                android:id="@+id/home_text_view_version_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/version" />
@@ -134,20 +134,20 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/text_view_home_version_value"
+                android:id="@+id/home_text_view_version_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linear_layout_home_build"
+            android:id="@+id/home_linear_layout_build"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_view_home_build_title"
+                android:id="@+id/home_text_view_build_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/build" />
@@ -157,7 +157,7 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:id="@+id/text_view_home_build_value"
+                android:id="@+id/home_text_view_build_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

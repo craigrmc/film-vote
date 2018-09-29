@@ -52,16 +52,16 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        TextView clubTextView = view.findViewById(R.id.text_view_home_club_value);
+        TextView clubTextView = view.findViewById(R.id.home_text_view_club_value);
         clubTextView.setText(getClubName());
 
-        TextView userTextView = view.findViewById(R.id.text_view_home_user_value);
+        TextView userTextView = view.findViewById(R.id.home_text_view_user_value);
         userTextView.setText(getUserName());
 
-        TextView buildTextView = view.findViewById(R.id.text_view_home_build_value);
+        TextView buildTextView = view.findViewById(R.id.home_text_view_build_value);
         buildTextView.setText(getBuild());
 
-        TextView versionTextView = view.findViewById(R.id.text_view_home_version_value);
+        TextView versionTextView = view.findViewById(R.id.home_text_view_version_value);
         versionTextView.setText(getVersion());
 
         return view;
@@ -96,49 +96,49 @@ public class HomeFragment extends Fragment {
             dateTime = new ServerDateTime(vote.getDate(), vote.getTime());
         }
 
-        LinearLayout voteLinearLayout = view.findViewById(R.id.linear_layout_home_vote);
+        LinearLayout voteLinearLayout = view.findViewById(R.id.home_linear_layout_vote);
         if (vote == null) {
             voteLinearLayout.setVisibility(View.GONE);
         } else {
             voteLinearLayout.setVisibility(View.VISIBLE);
         }
 
-        LinearLayout voteNoneLinearLayout = view.findViewById(R.id.linear_layout_home_vote_none);
+        LinearLayout voteNoneLinearLayout = view.findViewById(R.id.home_linear_layout_vote_none);
         if (vote == null) {
             voteNoneLinearLayout.setVisibility(View.VISIBLE);
         } else {
             voteNoneLinearLayout.setVisibility(View.GONE);
         }
 
-        TextView headerTextView = view.findViewById(R.id.text_view_home_vote_header);
+        TextView headerTextView = view.findViewById(R.id.home_text_view_vote_header);
         if (vote == null || vote.getTally() == null) {
             headerTextView.setText(getVoteHeader(-1));
         } else {
             headerTextView.setText(getVoteHeader(vote.getTally()));
         }
 
-        TextView dateTextView = view.findViewById(R.id.text_view_home_vote_date);
+        TextView dateTextView = view.findViewById(R.id.home_text_view_vote_date);
         if (dateTime == null || dateTime.getServerDate() == null) {
             dateTextView.setText("");
         } else {
             dateTextView.setText(dateTime.getDisplayDate());
         }
 
-        TextView theaterTextView = view.findViewById(R.id.text_view_home_vote_theater);
+        TextView theaterTextView = view.findViewById(R.id.home_text_view_vote_theater);
         if (vote == null || vote.getTheater() == null) {
             theaterTextView.setText("");
         } else {
             theaterTextView.setText(vote.getTheater());
         }
 
-        TextView filmTextView = view.findViewById(R.id.text_view_home_vote_film);
+        TextView filmTextView = view.findViewById(R.id.home_text_view_vote_film);
         if (vote == null || vote.getFilm() == null) {
             filmTextView.setText("");
         } else {
             filmTextView.setText(vote.getFilm());
         }
 
-        TextView timeTextView = view.findViewById(R.id.text_view_home_vote_time);
+        TextView timeTextView = view.findViewById(R.id.home_text_view_vote_time);
         if (dateTime == null || dateTime.getServerTime() == null) {
             timeTextView.setText("");
         } else {

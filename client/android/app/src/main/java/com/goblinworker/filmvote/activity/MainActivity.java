@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navigation = findViewById(R.id.bottom_navigation_view_main);
+        BottomNavigationView navigation = findViewById(R.id.main_bottom_navigation_view);
         navigation.setOnNavigationItemSelectedListener(navigationListener);
 
         // Create the adapter that will return a fragment for each of the three
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        viewPager = findViewById(R.id.view_pager_main);
+        viewPager = findViewById(R.id.main_view_pager);
         viewPager.setAdapter(viewPagerAdapter);
     }
 
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.sign_out:
+            case R.id.menu_sign_out:
                 startSignOutTask();
             default:
                 Log.w(TAG, "unknown item selected: " + item.getItemId());

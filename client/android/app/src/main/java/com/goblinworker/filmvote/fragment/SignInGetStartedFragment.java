@@ -55,7 +55,7 @@ public class SignInGetStartedFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_sign_in_get_started, container, false);
 
-        Button getStartedButton = view.findViewById(R.id.button_sign_in_get_started);
+        Button getStartedButton = view.findViewById(R.id.sign_in_get_started_button);
         getStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,42 +1,52 @@
 <resources>
+    <!--Manifest-->
     <string name="app_name">Film Vote</string>
-    <string name="title_server">Server</string>
-    <string name="title_home">Home</string>
-    <string name="title_vote">Vote</string>
-    <string name="title_theater">Theaters</string>
-    <string name="title_sign_out">Sign Out</string>
+    <!--TextView-->
+    <string name="welcome_to_film_vote">Welcome to Film Vote</string>
+    <string name="an_open_source_app">An open source app to let you and your friends vote on the new films to watch.</string>
+    <string name="sign_in_or_sign_up">Sign in to or sign up for a club.</string>
+    <string name="sign_in_or_sign_up_start_voting">Sign in or sign up to start voting.</string>
     <string name="club_name">Club Name:</string>
     <string name="user_name">User Name:</string>
     <string name="version">Version:</string>
     <string name="build">Build:</string>
-    <string name="your_club_name">Your club name</string>
-    <string name="back">Back</string>
-    <string name="next">Next</string>
-    <string name="welcome_to_film_vote">Welcome to Film Vote</string>
-    <string name="sign_in_to_or_sign_up_for_a_club">Sign in to or sign up for a club.</string>
-    <string name="an_open_source_app_to_let_you_and_your_friends_vote_on_the_new_films_to_watch">An open source app to let you and your friends vote on the new films to watch.</string>
-    <string name="get_started">Get Started</string>
-    <string name="your_user_name">Your user name</string>
-    <string name="sign_in_or_sign_up_start_voting">Sign in or sign up start voting.</string>
-    <string name="signing_in">Signing in…</string>
-    <string name="signing_out">Signing out…</string>
+    <string name="debug">(Debug)</string>
+    <string name="release">(Release)</string>
     <string name="no_theaters_found">No Theaters Found</string>
     <string name="no_upcoming_votes">No Upcoming Votes</string>
     <string name="no_theaters_in_the_club">No Theaters in the Club</string>
-    <string name="server_address">Server Address</string>
-    <string name="failed_to_sign_in">Failed to Sign In</string>
-    <string name="failed_to_send_request">Failed to send request</string>
-    <string name="failed_to_send_vote">Failed to send vote</string>
-    <string name="please_try_again_later">Please try again later.</string>
-    <string name="na">N/A</string>
-    <string name="debug">(Debug)</string>
-    <string name="release">(Release)</string>
     <string name="no_film_votes">No Film Votes</string>
     <string name="next_film">Next Film</string>
     <string name="vote">Vote</string>
     <string name="votes">Votes</string>
+    <string name="signing_in">Signing in…</string>
+    <string name="signing_out">Signing out…</string>
+    <!--ListView-->
+    <string name="na">N/A</string>
+    <!--EditText-->
+    <string name="your_club_name">Your club name</string>
+    <string name="your_user_name">Your user name</string>
+    <!--Button-->
+    <string name="get_started">Get Started</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <!--Dialog Title-->
+    <string name="server_address">Server Address</string>
+    <string name="failed_to_sign_in">Failed to sign in</string>
+    <string name="failed_to_send_request">Failed to send request</string>
+    <string name="failed_to_send_vote">Failed to send vote</string>
+    <!--Dialog Message-->
+    <string name="please_try_again_later">Please try again later.</string>
+    <!--Dialog Button-->
     <string name="ok">OK</string>
     <string name="add">ADD</string>
     <string name="delete">DELETE</string>
     <string name="cancel">CANCEL</string>
+    <!--Navigation Menu-->
+    <string name="navigation_home">Home</string>
+    <string name="navigation_vote">Vote</string>
+    <string name="navigation_theater">Theaters</string>
+    <!--Options Menu-->
+    <string name="menu_server">Server</string>
+    <string name="menu_sign_out">Sign Out</string>
 </resources>
