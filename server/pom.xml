@@ -14,7 +14,7 @@
 
     <groupId>com.goblin-worker</groupId>
     <artifactId>film-vote</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Film Vote</name>
